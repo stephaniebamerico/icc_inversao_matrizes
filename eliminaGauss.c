@@ -46,7 +46,7 @@ void elimina (double a[N][N], double l[N][N], double u[N][N] ) {
     }
 }
 
-int resolve (double a[N][N], double x[N], double b[N]) {
+int resolveSup (double a[N][N], double x[N], double b[N]) {
     double soma = 0;
     x[N-1] = b[N-1]/a[N-1][N-1];
     for (int k = N-2; k >= 0; --k) {
@@ -60,9 +60,32 @@ int resolve (double a[N][N], double x[N], double b[N]) {
 
     for (int i = 0; i < N; ++i) {
         if (x[i] == 0) x[i] = 0;
-        //if (x[i] >= 0) printf(" ");
-        //printf("%.20lf \n", x[i]);
+        if (x[i] >= 0) printf(" ");
+        printf("%.2lf \n", x[i]);
     }
+    printf("\n");
+    
+    return 0;
+}
+
+int resolveInf (double a[N][N], double x[N], double b[N]) {
+    double soma = 0;
+    x[0] = b[0]/a[0][0];
+    for (int k = 1; k < N; ++k) {
+        soma = b[k];
+
+        for (int j = 0; j <= k; ++j)
+            soma-= a[k][j]*(x[j]);
+        
+        x[k]=(soma*1.0)/a[k][k];
+    }
+
+    for (int i = 0; i < N; ++i) {
+        if (x[i] == 0) x[i] = 0;
+        if (x[i] >= 0) printf(" ");
+        printf("%.2lf \n", x[i]);
+    }
+    printf("\n");
     
     return 0;
 }
@@ -81,19 +104,19 @@ int main(int argc, char const *argv[]) {
     b[0] = 1;
     b[1] = 0;
     b[2] = 0;
-    resolve(l,y1,b);
+    resolveInf(l,y1,b);
     b[0] = 0;
     b[1] = 1;
     b[2] = 0;
-    resolve(l,y2,b);
+    resolveInf(l,y2,b);
     b[0] = 0;
     b[1] = 0;
     b[2] = 1;
-    resolve(l,y3,b);
-    
-    resolve(u,x1,y1);
-    resolve(u,x2,y2);
-    resolve(u,x3,y3);
+    resolveInf(l,y3,b);
+
+    resolveSup(u,x1,y1);
+    resolveSup(u,x2,y2);
+    resolveSup(u,x3,y3);
 
     for (int i = 0; i < N; ++i)
     {
