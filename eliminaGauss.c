@@ -8,7 +8,7 @@ int troca (double a[N][N], int j, int k) {
         a[k][i]=aux;
     }
 }
-
+//TODO: pivotamento parcial
 void elimina (double a[N][N], double l[N][N], double u[N][N] ) {
     double m;
     for (int k = 0; k < N-1; ++k) {
@@ -46,6 +46,11 @@ void elimina (double a[N][N], double l[N][N], double u[N][N] ) {
     }
 }
 
+/*TODOs: 
+    resolver superior e inferior na mesma função
+    resolver usando só uma matriz (LU)
+    resolver sem precisar passar o vetor b
+*/
 int resolveSup (double a[N][N], double x[N], double b[N]) {
     double soma = 0;
     x[N-1] = b[N-1]/a[N-1][N-1];
@@ -67,6 +72,17 @@ int resolveSup (double a[N][N], double x[N], double b[N]) {
     
     return 0;
 }
+/*
+TODO:
+    refinamento
+        R = I - A * inv(A)
+        ||r|| = sqrt( sum( R[i,j] ² ) ), [i,j] = {1,2,...,n}
+    mensagem de erro se A não for inversível
+    opções para execução do programa
+    alocar matrizes dinâmicamente
+    calcular tempo
+    gerar matriz aleatoria
+*/
 
 int resolveInf (double a[N][N], double x[N], double b[N]) {
     double soma = 0;
