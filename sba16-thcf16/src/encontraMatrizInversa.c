@@ -127,8 +127,8 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
 		y->dados[pos(i, i, y->tam)] = 1;
 
 	for (int b = 0; b < y->tam-1; ++b) { // cada coluna da matriz é um vetor b para resolver o sistema
-		for (int lin = 1; lin < y->tam; ++lin) { // até a diagonal principal
-			for (int col = 0; col < lin; ++col) {
+		for (int lin = 1; lin < y->tam; ++lin) { // da segunda linha até até a diagonal principal
+			for (int col = b; col < lin; ++col) { // começa a partir da primeira valoração não nula (b)
 				y->dados[pos(lin, b, y->tam)] -= L.dados[pos(lin, col, L.tam)]*y->dados[pos(col, b, y->tam)];
 			}
 		}
