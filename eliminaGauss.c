@@ -63,12 +63,6 @@ int resolveSup (double a[N][N], double x[N], double b[N]) {
         x[k]=(soma*1.0)/a[k][k];
     }
 
-    for (int i = 0; i < N; ++i) {
-        if (x[i] == 0) x[i] = 0;
-        if (x[i] >= 0) printf(" ");
-        printf("%.2lf \n", x[i]);
-    }
-    printf("\n");
     
     return 0;
 }
@@ -96,12 +90,7 @@ int resolveInf (double a[N][N], double x[N], double b[N]) {
         x[k]=(soma*1.0)/a[k][k];
     }
 
-    for (int i = 0; i < N; ++i) {
-        if (x[i] == 0) x[i] = 0;
-        if (x[i] >= 0) printf(" ");
-        printf("%.2lf \n", x[i]);
-    }
-    printf("\n");
+
     
     return 0;
 }
@@ -129,6 +118,20 @@ int main(int argc, char const *argv[]) {
     b[1] = 0;
     b[2] = 1;
     resolveInf(l,y3,b);
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            printf("%lf ",u[i][j] );
+        }
+        printf("\n");
+    }
+    printf("\n");
+    for (int i = 0; i < N; ++i)
+    {
+        printf("%.1lf %.1lf %.1lf\n",y1[i],y2[i],y3[i] );
+    }
+    printf("\n");
 
     resolveSup(u,x1,y1);
     resolveSup(u,x2,y2);

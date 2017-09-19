@@ -3,6 +3,7 @@
 void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 void fatoracaoLU (MATRIZ *matriz);
+void retrosubstituicao (MATRIZ U, MATRIZ *Y);
 
 int main (int argc, char const *argv[]) {
     srand( 20172 );
@@ -10,7 +11,7 @@ int main (int argc, char const *argv[]) {
     
 
     MATRIZ matriz;
-    matriz.tam = 5; // 1 < tam < 32768
+    matriz.tam = 3; // 1 < tam < 32768
 
     if(! (matriz.dados = generateSquareRandomMatrix(matriz.tam)) ) {
         fprintf(stderr, "Erro ao alocar a matriz usando generateSquareRandomMatrix.\n");
@@ -22,7 +23,7 @@ int main (int argc, char const *argv[]) {
     fatoracaoLU(&matriz);
     
     imprimeMatriz(matriz);
-
+    
     return 0;
 }
 
@@ -64,6 +65,51 @@ void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
         matriz->dados[pos(l2, i, matriz->tam)] = aux;
     }
 }
+
+void retrosubstituicao (MATRIZ U, MATRIZ *Y)
+{
+    unsigned int tam = U.tam;
+    double *x = (double*)(malloc (tam * sizeof (double)));
+    double soma = 0;
+    for (int i = 0; i < tam; ++i)
+    {
+        x[tam-1] = (Y->dados[pos(i,tam-1,tam)]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
+        for (int k = tam-2; k >= 0; --k)
+        {
+            soma = Y->dados[pos(i,k,tam)];
+            for (int j = 0; j < tam; ++j)
+                soma-=U.dados[pos(k,j,tam)]*x[j];
+            x[k]=(soma*1.0)/U.dados[pos(k,k,tam)];
+        }
+        for (int j = 0; j < tam; ++j)
+        {
+            Y->dados[pos(i,j,tam)]=x[j];
+        }
+    }
+
+}
+
+/*int resolveSup (double a[N][N], double x[N], double b[N]) {
+    double soma = 0;
+    x[N-1] = b[N-1]/a[N-1][N-1];
+    for (int k = N-2; k >= 0; --k) {
+        soma = b[k];
+
+        for (int j = k; j < N; ++j)
+            soma-= a[k][j]*(x[j]);
+        
+        x[k]=(soma*1.0)/a[k][k];
+    }
+
+    for (int i = 0; i < N; ++i) {
+        if (x[i] == 0) x[i] = 0;
+        if (x[i] >= 0) printf(" ");
+        printf("%.2lf \n", x[i]);
+    }
+    printf("\n");
+    
+    return 0;
+}*/
 
 /*int retrosubstituicao (double **A, unsigned int tam, double *x, unsigned int b) {
     double soma = 0;
