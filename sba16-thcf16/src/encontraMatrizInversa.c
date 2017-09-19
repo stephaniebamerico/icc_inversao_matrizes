@@ -5,37 +5,35 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y);
 void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 void retrosubstituicao (MATRIZ U, MATRIZ *Y);
+void retrosubstituicaoUxy (MATRIZ U, MATRIZ *y);
 
 int main (int argc, char const *argv[]) {
     srand( 20172 );
 
     MATRIZ matriz;
-    matriz.tam = 3; // 1 < tam < 32768
+    matriz.tam = 2; // 1 < tam < 32768
 
     if(! (matriz.dados = generateSquareRandomMatrix(matriz.tam)) ) {
         fprintf(stderr, "Erro ao alocar a matriz usando generateSquareRandomMatrix.\n");
         return 0;
     }
 
+    matriz.dados[pos(0, 0, matriz.tam)]=2;
+    matriz.dados[pos(0, 1, matriz.tam)]=1;
+    matriz.dados[pos(1, 0, matriz.tam)]=5;
+    matriz.dados[pos(1, 1, matriz.tam)]=3;
 
-    
-    printf("LU:\n");
-    
-
+    imprimeMatriz(matriz);
     
     fatoracaoLU(&matriz);
-    MATRIZ x;
-    x.tam = matriz.tam;
-    x.dados = generateSquareRandomMatrix(x.tam);
-    printf("matriz\n");
-    imprimeMatriz(matriz);  
-   
-    substituicao_Lyb(matriz, &x);
-    printf("matriz\n");
+    printf("matriz depois de LU:\n");
     imprimeMatriz(matriz);
-    printf("x\n");
+
+    MATRIZ x;   
+    substituicao_Lyb(matriz, &x);
+    printf("x depois de Ly=b:\n");
     imprimeMatriz(x);
-    retrosubstituicao(matriz,&x);
+    retrosubstituicaoUxy(matriz,&x);
     printf("inv:\n");
     imprimeMatriz(x);
 
@@ -81,44 +79,29 @@ void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
     }
 }
 
-void retrosubstituicao (MATRIZ U, MATRIZ *Y)
-{
-    unsigned int tam = U.tam;
-    double *x = (double*)(malloc (tam * sizeof (double)));
-    
-    
-    for (int i = 0; i < tam; ++i)
-    {
-        double soma = 0;
-        for (int k = 0; k < tam; ++k)
-        {
-            x[k] = Y->dados[pos(k,i,tam)];
-             //Y->dados[pos(k,i,tam)] = 0;
-        }
-        Y->dados[pos(tam-1,i,tam)] = (x[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
-        for (int k = tam-2; k >= 0; --k)
-        {
-            soma = x[k];
+void retrosubstituicaoUxy (MATRIZ U, MATRIZ *y) {
+	double *b = NULL;
+	if(! (b = (double *) malloc(U.tam*sizeof(double))) ){
+		fprintf(stderr, "[retrosubstituicaoUxy]: impossível alocar b.\n");
+		return;
+	}
 
-            for (int j = tam; j > k; --j)
-                soma -= U.dados[pos(k,j,tam)]*Y->dados[pos(j,i,tam)];
-            Y->dados[pos(k,i,tam)]=(soma*1.0)/U.dados[pos(k,k,tam)];
-        }
+	for (int sl = 0; sl < U.tam; ++sl) {
+		for (int i = 0; i < y->tam; ++i) {
+			b[i] = y->dados[pos(i, sl, y->tam)];
+		}
+		for (int lin = U.tam-1; lin >= 0; --lin) {
+			y->dados[pos(lin, sl, y->tam)] = b[lin];
 
-        
-    }
+			for (int col = lin+1; col < U.tam; ++col) {
+				y->dados[pos(lin, sl, y->tam)] = U.dados[pos(lin, col, U.tam)]*y->dados[pos(col, sl, y->tam)];
+			}
 
+			y->dados[pos(lin, sl, y->tam)] /= U.dados[pos(lin, lin, U.tam)];
+		}
+	}
 }
-/*
-x[N-1] = b[N-1]/a[N-1][N-1];
-    for (int k = N-2; k >= 0; --k) {
-        soma = b[k];
 
-        for (int j = k; j < N; ++j)
-            soma-= a[k][j]*(x[j]);
-        
-        x[k]=(soma*1.0)/a[k][k];
-    }*/
 void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
 	y->tam = L.tam;
 	y->dados = (double *) calloc(y->tam, sizeof(double));
@@ -133,4 +116,20 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
 			}
 		}
 	}
+}
+
+double *residuo (MATRIZ A, MATRIZ inv_A) {
+	double *r = NULL;
+	if ( ! (r = (double *) malloc(A.tam*sizeof(double))) )
+    	return NULL;
+    // r = A * inv_A
+    for(int lin=0; lin < A.tam; lin++) 
+        for(col=0; col < A.tam; col++){ 
+        	somaprod=0;
+        	for(i=0; i < A.tam; i++)
+          		somaprod += A[pos(lin, i, A->tam)]*inv_A[A[pos(i, col, A->tam)]]; 
+        	r[pos(lin, col, A->tam)]=somaprod; 
+		}
+
+    return r;
 }
