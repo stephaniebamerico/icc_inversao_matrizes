@@ -7,6 +7,7 @@ int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 void retrosubstituicao (MATRIZ U, MATRIZ *Y);
 
 int main (int argc, char const *argv[]) {
+    setvbuf (stdout, 0, _IONBF, 0); 
     srand( 20172 );
 
     MATRIZ matriz;
@@ -18,7 +19,7 @@ int main (int argc, char const *argv[]) {
     }
 
         
-    matriz.dados[pos(0,0,matriz.tam)] =1;
+    /*matriz.dados[pos(0,0,matriz.tam)] =1;
     matriz.dados[pos(0,1,matriz.tam)] =2;
     matriz.dados[pos(0,2,matriz.tam)] =3;
     matriz.dados[pos(1,0,matriz.tam)] =4;
@@ -26,13 +27,13 @@ int main (int argc, char const *argv[]) {
     matriz.dados[pos(1,2,matriz.tam)] =6;
     matriz.dados[pos(2,0,matriz.tam)] =7;
     matriz.dados[pos(2,1,matriz.tam)] =8;
-    matriz.dados[pos(2,2,matriz.tam)] =1;
+    matriz.dados[pos(2,2,matriz.tam)] =1;*/
 
     //imprimeMatriz(matriz);  
 
-       
+     
     fatoracaoLU(&matriz);
-    printf("LU:..\n"); 
+    //printf("LU:..\n"); 
     //imprimeMatriz(matriz);  
 
     MATRIZ x;
@@ -42,7 +43,7 @@ int main (int argc, char const *argv[]) {
     imprimeMatriz(x);
     retrosubstituicao(matriz,&x);
     //printf("inv:\n");
-    //imprimeMatriz(x);
+    imprimeMatriz(x);
 
     return 0;
 }
@@ -88,12 +89,11 @@ void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
 
 void retrosubstituicao (MATRIZ U, MATRIZ *Y)
 {
-    printf("%d\n",Y );
+
     imprimeMatriz(*Y);
     unsigned int tam = U.tam;
     //double *x = (double*)(calloc (tam, sizeof(double)));
     double x[U.tam];
-    printf("%u %u\n",Y,x );
     imprimeMatriz(*Y);
 
     
