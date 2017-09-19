@@ -20,15 +20,15 @@ double *generateSquareRandomMatrix( unsigned int n ) {
   return (mat);
 }
 
-void imprimeMatriz (double *matriz, unsigned int tam) {
-  printf("Matriz %ux%u\n", tam, tam);
+void imprimeMatriz (MATRIZ matriz) {
+  printf("Matriz %ux%u\n", matriz.tam, matriz.tam);
   fprintf(stderr, "TROCAR LF POR G\n");
-  for (int i = 0; i < tam; ++i) {
-    for (int j = 0; j < tam; ++j) {
-      if (matriz[pos(i, j, tam)] == 0) matriz[pos(i, j, tam)] = 0;
-        if (matriz[pos(i, j, tam)] >= 0) printf(" ");
+  for (int i = 0; i < matriz.tam; ++i) {
+    for (int j = 0; j < matriz.tam; ++j) {
+      if (matriz.dados[pos(i, j, matriz.tam)] == 0) matriz.dados[pos(i, j, matriz.tam)] = 0;
+        if (matriz.dados[pos(i, j, matriz.tam)] >= 0) printf(" ");
         // usar %.17g porque lf arredonda...
-        printf("%.17lf  ", matriz[pos(i, j, tam)]);
+        printf("%.17lf  ", matriz.dados[pos(i, j, matriz.tam)]);
     }
       printf("\n");
   }

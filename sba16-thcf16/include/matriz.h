@@ -10,7 +10,7 @@ typedef struct MATRIZ {
 } MATRIZ;
 
 double *generateSquareRandomMatrix(unsigned int n);
-void imprimeMatriz (double *matriz, unsigned int tam);
+void imprimeMatriz (MATRIZ matriz);
 unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
 
 #endif
