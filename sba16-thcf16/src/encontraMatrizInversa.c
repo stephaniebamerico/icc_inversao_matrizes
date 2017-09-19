@@ -1,14 +1,13 @@
 #include "matriz.h"
 
+void fatoracaoLU (MATRIZ *matriz);
+void substituicao_Lyb (MATRIZ L, MATRIZ *y);
 void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
-void fatoracaoLU (MATRIZ *matriz);
 void retrosubstituicao (MATRIZ U, MATRIZ *Y);
 
 int main (int argc, char const *argv[]) {
     srand( 20172 );
-
-    
 
     MATRIZ matriz;
     matriz.tam = 3; // 1 < tam < 32768
@@ -18,12 +17,28 @@ int main (int argc, char const *argv[]) {
         return 0;
     }
 
-    imprimeMatriz(matriz);
 
+    
+    printf("LU:\n");
+    
+
+    
     fatoracaoLU(&matriz);
-    
+    MATRIZ x;
+    x.tam = matriz.tam;
+    x.dados = generateSquareRandomMatrix(x.tam);
+    printf("matriz\n");
+    imprimeMatriz(matriz);  
+   
+    substituicao_Lyb(matriz, &x);
+    printf("matriz\n");
     imprimeMatriz(matriz);
-    
+    printf("x\n");
+    imprimeMatriz(x);
+    retrosubstituicao(matriz,&x);
+    printf("inv:\n");
+    imprimeMatriz(x);
+
     return 0;
 }
 
@@ -70,28 +85,32 @@ void retrosubstituicao (MATRIZ U, MATRIZ *Y)
 {
     unsigned int tam = U.tam;
     double *x = (double*)(malloc (tam * sizeof (double)));
-    double soma = 0;
+    
+    
     for (int i = 0; i < tam; ++i)
     {
-        x[tam-1] = (Y->dados[pos(i,tam-1,tam)]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
+        double soma = 0;
+        for (int k = 0; k < tam; ++k)
+        {
+            x[k] = Y->dados[pos(k,i,tam)];
+             //Y->dados[pos(k,i,tam)] = 0;
+        }
+        Y->dados[pos(tam-1,i,tam)] = (x[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
         for (int k = tam-2; k >= 0; --k)
         {
-            soma = Y->dados[pos(i,k,tam)];
-            for (int j = 0; j < tam; ++j)
-                soma-=U.dados[pos(k,j,tam)]*x[j];
-            x[k]=(soma*1.0)/U.dados[pos(k,k,tam)];
+            soma = x[k];
+
+            for (int j = tam; j > k; --j)
+                soma -= U.dados[pos(k,j,tam)]*Y->dados[pos(j,i,tam)];
+            Y->dados[pos(k,i,tam)]=(soma*1.0)/U.dados[pos(k,k,tam)];
         }
-        for (int j = 0; j < tam; ++j)
-        {
-            Y->dados[pos(i,j,tam)]=x[j];
-        }
+
+        
     }
 
 }
-
-/*int resolveSup (double a[N][N], double x[N], double b[N]) {
-    double soma = 0;
-    x[N-1] = b[N-1]/a[N-1][N-1];
+/*
+x[N-1] = b[N-1]/a[N-1][N-1];
     for (int k = N-2; k >= 0; --k) {
         soma = b[k];
 
@@ -99,36 +118,19 @@ void retrosubstituicao (MATRIZ U, MATRIZ *Y)
             soma-= a[k][j]*(x[j]);
         
         x[k]=(soma*1.0)/a[k][k];
-    }
+    }*/
+void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
+	y->tam = L.tam;
+	y->dados = (double *) calloc(y->tam, sizeof(double));
 
-    for (int i = 0; i < N; ++i) {
-        if (x[i] == 0) x[i] = 0;
-        if (x[i] >= 0) printf(" ");
-        printf("%.2lf \n", x[i]);
-    }
-    printf("\n");
-    
-    return 0;
-}*/
+	for (int i = 0; i < y->tam; ++i) // inicia como uma matriz identidade
+		y->dados[pos(i, i, y->tam)] = 1;
 
-/*int retrosubstituicao (double **A, unsigned int tam, double *x, unsigned int b) {
-    double soma = 0;
-    x[tam-1] = (b == tam-1 ? 1 : 0); // b é a coluna da matriz identidade
-    x[tam-1] /= A[pos(tam, tam-1, tam-1)];
-    for (int lin = tam-2; lin >= 0; --lin) {
-        soma = (b == lin ? 1 : 0);
-
-        for (int col = lin; col < tam; ++col)
-            soma-= A[lin][col]*(x[col]);
-        
-        x[lin]=(soma*1.0)/A[lin][lin];
-    }
-
-    for (int i = 0; i < N; ++i) {
-        if (x[i] == 0) x[i] = 0;
-        if (x[i] >= 0) printf(" ");
-        printf("%.17lf \n", x[i]);
-    }
-    
-    return 0;
-}*/
+	for (int b = 0; b < y->tam-1; ++b) { // cada coluna da matriz é um vetor b para resolver o sistema
+		for (int lin = 1; lin < y->tam; ++lin) { // até a diagonal principal
+			for (int col = 0; col < lin; ++col) {
+				y->dados[pos(lin, b, y->tam)] -= L.dados[pos(lin, col, L.tam)]*y->dados[pos(col, b, y->tam)];
+			}
+		}
+	}
+}

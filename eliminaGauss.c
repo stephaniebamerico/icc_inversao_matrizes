@@ -58,7 +58,10 @@ int resolveSup (double a[N][N], double x[N], double b[N]) {
         soma = b[k];
 
         for (int j = k; j < N; ++j)
+        {
             soma-= a[k][j]*(x[j]);
+        }
+
         
         x[k]=(soma*1.0)/a[k][k];
     }
@@ -122,7 +125,7 @@ int main(int argc, char const *argv[]) {
     {
         for (int j = 0; j < 3; ++j)
         {
-            printf("%lf ",u[i][j] );
+            printf("%lf ",a[i][j] );
         }
         printf("\n");
     }

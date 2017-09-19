@@ -1,6 +1,6 @@
 #include "matriz.h"
 
-double *generateSquareRandomMatrix( unsigned int n ) {
+double *generateSquareRandomMatrix( unsigned int n ) { // função dada pelo professor
   double *mat = NULL;
 
   /* return NULL if memory allocation fails */
