@@ -1,16 +1,15 @@
 #include "matriz.h"
 
+void fatoracaoLU (MATRIZ *matriz);
+void substituicao_Lyb (MATRIZ L, MATRIZ *y);
 void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
-void fatoracaoLU (MATRIZ *matriz);
 
 int main (int argc, char const *argv[]) {
     srand( 20172 );
 
-    
-
     MATRIZ matriz;
-    matriz.tam = 5; // 1 < tam < 32768
+    matriz.tam = 3; // 1 < tam < 32768
 
     if(! (matriz.dados = generateSquareRandomMatrix(matriz.tam)) ) {
         fprintf(stderr, "Erro ao alocar a matriz usando generateSquareRandomMatrix.\n");
@@ -22,6 +21,12 @@ int main (int argc, char const *argv[]) {
     fatoracaoLU(&matriz);
     
     imprimeMatriz(matriz);
+
+    MATRIZ x;
+
+    substituicao_Lyb(matriz, &x);
+
+    imprimeMatriz(x);
 
     return 0;
 }
@@ -63,6 +68,22 @@ void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
         matriz->dados[pos(l1, i, matriz->tam)] = matriz->dados[pos(l2, i, matriz->tam)];
         matriz->dados[pos(l2, i, matriz->tam)] = aux;
     }
+}
+
+void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
+	y->tam = L.tam;
+	y->dados = (double *) calloc(y->tam, sizeof(double));
+
+	for (int i = 0; i < y->tam; ++i) // inicia como uma matriz identidade
+		y->dados[pos(i, i, y->tam)] = 1;
+
+	for (int b = 0; b < y->tam-1; ++b) { // cada coluna da matriz é um vetor b para resolver o sistema
+		for (int lin = 1; lin < y->tam; ++lin) { // até a diagonal principal
+			for (int col = 0; col < lin; ++col) {
+				y->dados[pos(lin, b, y->tam)] -= L.dados[pos(lin, col, L.tam)]*y->dados[pos(col, b, y->tam)];
+			}
+		}
+	}
 }
 
 /*int retrosubstituicao (double **A, unsigned int tam, double *x, unsigned int b) {
