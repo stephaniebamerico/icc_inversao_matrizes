@@ -10,8 +10,10 @@ typedef struct MATRIZ {
     double *dados;
 } MATRIZ;
 
-double *generateSquareRandomMatrix(unsigned int n);
+double *geraMatrizQuadradaRandomica(unsigned int n);
 void imprimeMatriz (MATRIZ matriz);
+void multiplicaMatrizes(MATRIZ A, MATRIZ B);
+void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2);
+int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
-
 #endif

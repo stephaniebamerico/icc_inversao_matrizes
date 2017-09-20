@@ -1,162 +1,142 @@
 #include "matriz.h"
-#include <string.h>
 
-void fatoracaoLU (MATRIZ *matriz);
-int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
+int fatoracaoLU (MATRIZ *matriz);
 int substituicao_Lyb (MATRIZ L, MATRIZ *y);
 int substituicao_Uxy (MATRIZ U, MATRIZ *Y);
-void multiplicaMatrizes(MATRIZ A, MATRIZ B);
 
 int main (int argc, char const *argv[]) {
     srand( 20172 );
 
-    MATRIZ matriz,origin,x;
-    matriz.tam = 10; // 1 < tam < 32768
-    origin.tam = matriz.tam;
-    
+    MATRIZ original, originalLU, inversa;
+    original.tam = 10; // 1 < tam < 32768
+    originalLU.tam = original.tam;    
 
-
-    if(! (matriz.dados = generateSquareRandomMatrix(matriz.tam)) ) {
-        fprintf(stderr, "Erro ao alocar a matriz usando generateSquareRandomMatrix.\n");
+    // lê a matriz original... (alterar)
+    if(! (original.dados = geraMatrizQuadradaRandomica(original.tam)) ) {
+#ifdef DEBUG
+    printf("[MAIN] Falha ao alocar a matriz original.\n");
+#endif
+        fprintf(stderr, "Erro ao alocar a matriz original.\n");
         return 0;
     }
-    if (! (origin.dados = (double*)malloc (origin.tam*origin.tam*sizeof(double))))
-    {
-        fprintf(stderr, "Erro ao alocar a matriz\n");
+
+    // alocando a matriz que guardará a fatoração LU
+    if (! (originalLU.dados = (double*)malloc (originalLU.tam*originalLU.tam*sizeof(double)))) {
+#ifdef DEBUG
+    printf("[MAIN] Falha ao alocar a matriz originalLU.\n");
+#endif
+        fprintf(stderr, "Erro ao alocar a matriz originalLU\n");
         return 0;
     }
-    //copia matriz pra matriz original
-    for (int i = 0; i < matriz.tam*matriz.tam; ++i)
-        origin.dados[i]=matriz.dados[i];
+
+    // copia matriz original para a matriz que sofrerá a fatoração LU
+    for (int i = 0; i < original.tam*original.tam; ++i)
+        originalLU.dados[i] = original.dados[i];
     
-     
-    fatoracaoLU(&matriz);
-    //funções retornam 0 se malloc falhar   
-    if (!substituicao_Lyb(matriz, &x))
-        return 0;
-    if (!substituicao_Uxy(matriz, &x))
-        return 0;
+    fatoracaoLU(&originalLU); // fatora a matriz original em uma LU
 
-    multiplicaMatrizes(origin,x);
+    // funções retornam -1 se ocorrer algum problema   
+    if (substituicao_Lyb(originalLU, &inversa) == -1) { // resolve o sistema L*y=b (o resultado é armazenado na inversa)
+        fprintf(stderr, "Erro em substituicao_Lyb.\n");
+        return 0;
+    }
+    if (substituicao_Uxy(originalLU, &inversa) == -1) { // resolve o sistema U*x=y (o resultado é armazenado na inversa)
+        return 0;
+        fprintf(stderr, "Erro em substituicao_Uxy.\n");
+    }
 
+    //imprimeMatriz(inversa);
+    
+    // neste ponto, a inversa deveria estar correta... partimos para o refinamento
+    multiplicaMatrizes(originalLU, inversa);
     
     return 0;
 }
 
-/*==============================*/
-/*FUNÇÕES NÃO UTILIZADAS NA MAIN*/
-/*==============================*/
-void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
-
-void fatoracaoLU (MATRIZ *matriz) {
+int fatoracaoLU (MATRIZ *matriz) {
+#ifdef DEBUG
+    printf("[FATORACAOLU] Iniciando a fatoracao LU.\n");
+#endif
     double m;
-    for (int col = 0; col < matriz->tam-1; ++col) {
-        //pivotamentoParcial(matriz, col);            
-            for (int lin = col+1; lin < matriz->tam; ++lin) {
-                m = (matriz->dados[pos(lin, col, matriz->tam)]*1.0)/matriz->dados[pos(col, col, matriz->tam)];
-                // U
-                for (int j = col; j < matriz->tam; ++j)
-                        matriz->dados[pos(lin, j, matriz->tam)] -= m*matriz->dados[pos(col, j, matriz->tam)];
-                // L
-                matriz->dados[pos(lin, col, matriz->tam)] = m;
-            }
-    }   
-}
-
-int pivotamentoParcial (MATRIZ *matriz, unsigned int col) {
-    unsigned int max = col;
-    for (unsigned int l_atual = col+1; l_atual < matriz->tam; ++l_atual)
-        if (matriz->dados[pos(max, col, matriz->tam)] < matriz->dados[pos(l_atual, col, matriz->tam)])
-            max = l_atual;
-
-    if (matriz->dados[pos(max, col, matriz->tam)] == 0) {
-        fprintf(stderr, "Matriz singular, impossivel fatorar.\n");
-        return -1;
-    }
-    else if (max != col) troca (matriz, max, col);
-
-    return 0;
-}
-
-void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
-    double aux;
-    for (int i = 0; i < matriz->tam; ++i) {
-        aux = matriz->dados[pos(l1, i, matriz->tam)];
-        matriz->dados[pos(l1, i, matriz->tam)] = matriz->dados[pos(l2, i, matriz->tam)];
-        matriz->dados[pos(l2, i, matriz->tam)] = aux;
-    }
-}
-
-int substituicao_Uxy (MATRIZ U, MATRIZ *Y)
-{
-    //variavel auxiliar pro tamanho das matrizes
-    unsigned int tam = U.tam;
-    //vetor auxiliar 
-    double *b ;
-    //aloca memória para o vetor X
-    if (!(b = (double*)(calloc (tam, sizeof(double)))))
-    {
-        fprintf(stderr,"Erro ao alocar vetor auxiliar X na retrosubstituição\n");
-        return 0;
-    }
-    //i é a coluna da matriz na qual estamos realizando a substituição
-    for (int i = 0; i < tam; ++i)
-    {
-        //Y será alterado diretamente, funcionando como x em Ax = b
-        //A coluna de Y é copiada para o vetor b
-        for (int k = 0; k < tam; ++k)
-            b[k] = Y->dados[pos(k,i,tam)];
-        //faz a retrosubstituição 
-        Y->dados[pos(tam-1,i,tam)] = (b[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
-        for (int k = tam-1; k >= 0; --k)
-        {
-            Y->dados[pos(k,i,tam)] = b[k];
-            for (int j = tam-1; j > k; --j)
-                Y->dados[pos(k,i,tam)] -= U.dados[pos(k,j,tam)]*Y->dados[pos(j,i,tam)];
-            Y->dados[pos(k,i,tam)]=(Y->dados[pos(k,i,tam)]*1.0)/U.dados[pos(k,k,tam)];
+    for (int col = 0; col < matriz->tam-1; ++col) { // zerando colunas
+        if(pivotamentoParcial(matriz, col) == -1) { // se o pivotamento falha, a matriz é inválida
+            fprintf(stderr, "[fatoracaoLU] Matriz singular, impossivel fatorar.\n");
+            return -1;
         }
-
-        
-    }
-    return 1;
+        for (int lin = col+1; lin < matriz->tam; ++lin) { // calcula o modificador m para cada linha
+            m = (matriz->dados[pos(lin, col, matriz->tam)]*1.0)/matriz->dados[pos(col, col, matriz->tam)];
+            // U
+            for (int j = col; j < matriz->tam; ++j) // percorrendo linha para aplicar m
+                matriz->dados[pos(lin, j, matriz->tam)] -= m*matriz->dados[pos(col, j, matriz->tam)];
+            // L
+            matriz->dados[pos(lin, col, matriz->tam)] = m; // armazena o modificador m onde seria 0
+        }
+    } 
+#ifdef DEBUG
+    printf("[FATORACAOLU] Fatoracao LU completa.\n");
+#endif 
+    return 0;
 }
 
 int substituicao_Lyb (MATRIZ L, MATRIZ *y) {
-    y->tam = L.tam;
-    if (!(y->dados = (double *) calloc(y->tam*y->tam, sizeof(double))))
-    {
-        fprintf(stderr,"Erro ao alocar matriz Y na substituição progressiva\n");
+#ifdef DEBUG
+    printf("[SUBSTITUICAO_LYB] Iniciando a resolucao do sistema Ly=b.\n");
+#endif
+    // variavel auxiliar pro tamanho das matrizes
+    unsigned int tam = L.tam;
+    y->tam = tam;
+    if (!(y->dados = (double *) calloc(tam*tam, sizeof(double)))) {
+        fprintf(stderr,"[substituicao_Lyb] Erro ao alocar a matriz y.\n");
         return 0;
     }
 
+    for (int i = 0; i < tam; ++i) // y inicia como uma matriz identidade
+        y->dados[pos(i, i, tam)] = 1;
 
-    for (int i = 0; i < y->tam; ++i) // inicia como uma matriz identidade
-        y->dados[pos(i, i, y->tam)] = 1;
-
-    for (int b = 0; b < y->tam-1; ++b) { // cada coluna da matriz é um vetor b para resolver o sistema
-        for (int lin = 1; lin < y->tam; ++lin) { // da segunda linha até até a diagonal principal
+    for (int b = 0; b < tam-1; ++b) { // cada coluna da matriz é um vetor b (A*x=b) para resolver o sistema
+        for (int lin = 1; lin < tam; ++lin) { // da segunda linha em diante (a primeira sofre alteração)
             for (int col = b; col < lin; ++col) { // começa a partir da primeira valoração não nula (b)
-                y->dados[pos(lin, b, y->tam)] -= L.dados[pos(lin, col, L.tam)]*y->dados[pos(col, b, y->tam)];
+                y->dados[pos(lin, b, tam)] -= L.dados[pos(lin, col, tam)]*y->dados[pos(col, b, tam)];
             }
         }
     }
-    return 1;
+#ifdef DEBUG
+    printf("[SUBSTITUICAO_LYB] Resolucao do sistema Ly=b completa.\n");
+#endif 
+    return 0;
 }
 
-void multiplicaMatrizes(MATRIZ A, MATRIZ B)
-{
-    printf("Multiplicando A por X:\n");
-    int i, j, k;
-    for (i = 0; i < A.tam; i++)
-    {
-        for (j = 0; j < A.tam; j++)
-        {
-            double C = 0;
-            for (k = 0; k < A.tam; k++)
-                C += A.dados[pos(i,k,A.tam)]*B.dados[pos(k,j,B.tam)];
-           
-            printf("%s%.0lf ",C>=0?" ":"",C );
-        }
-        printf("\n");
+int substituicao_Uxy (MATRIZ U, MATRIZ *y) {
+#ifdef DEBUG
+    printf("[SUBSTITUICAO_UXY] Iniciando a resolucao do sistema Ux=y.\n");
+#endif
+    // variavel auxiliar pro tamanho das matrizes
+    unsigned int tam = U.tam;
+    // vetor auxiliar (b de A*x=b), pois utilizaremos a matriz y para armazenar a matriz resultante
+    double *b ;
+    // aloca memória para o vetor b
+    if (!(b = (double*)(calloc (tam, sizeof(double))))) {
+        fprintf(stderr,"[substituicao_Uxy] Erro ao alocar vetor auxiliar b.\n");
+        return -1;
     }
+    // i é a coluna da matriz na qual estamos realizando a substituição (cada coluna é o vetor b de um sistema linear A*x=b)
+    for (int i = 0; i < tam; ++i) {
+        // y será alterado para armazenar a matriz resultante (funcionando como x em Ax = b)
+        // a coluna i de y é copiada para o vetor b
+        for (int k = 0; k < tam; ++k)
+            b[k] = y->dados[pos(k,i,tam)];
+        // faz a retrosubstituição 
+        y->dados[pos(tam-1,i,tam)] = (b[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
+        for (int k = tam-1; k >= 0; --k)
+        {
+            y->dados[pos(k,i,tam)] = b[k];
+            for (int j = tam-1; j > k; --j)
+                y->dados[pos(k,i,tam)] -= U.dados[pos(k,j,tam)]*y->dados[pos(j,i,tam)];
+            y->dados[pos(k,i,tam)]=(y->dados[pos(k,i,tam)]*1.0)/U.dados[pos(k,k,tam)];
+        }        
+    }
+#ifdef DEBUG
+    printf("[SUBSTITUICAO_UXY] Resolucao do sistema Ux=y completa.\n");
+#endif 
+    return 0;
 }
