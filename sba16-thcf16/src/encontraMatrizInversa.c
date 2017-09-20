@@ -1,4 +1,5 @@
 #include "matriz.h"
+#include <string.h>
 
 void fatoracaoLU (MATRIZ *matriz);
 void substituicao_Lyb (MATRIZ L, MATRIZ *y);
@@ -89,11 +90,9 @@ void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
 
 void retrosubstituicao (MATRIZ U, MATRIZ *Y)
 {
-
     imprimeMatriz(*Y);
     unsigned int tam = U.tam;
-    //double *x = (double*)(calloc (tam, sizeof(double)));
-    double x[U.tam];
+    double *x = (double*)(calloc (tam, sizeof(double)));
     imprimeMatriz(*Y);
 
     
@@ -123,7 +122,6 @@ void retrosubstituicao (MATRIZ U, MATRIZ *Y)
 
         
     }
-
 }
 /*
 int resolveSup (double a[N][N], double x[N], double b[N]) {
@@ -147,7 +145,7 @@ int resolveSup (double a[N][N], double x[N], double b[N]) {
 */
 void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
     y->tam = L.tam;
-    y->dados = (double *) calloc(y->tam, sizeof(double));
+    y->dados = (double *) calloc(y->tam*y->tam, sizeof(double));
 
     for (int i = 0; i < y->tam; ++i) // inicia como uma matriz identidade
         y->dados[pos(i, i, y->tam)] = 1;
