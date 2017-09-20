@@ -2,46 +2,51 @@
 #include <string.h>
 
 void fatoracaoLU (MATRIZ *matriz);
-void substituicao_Lyb (MATRIZ L, MATRIZ *y);
-void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
-void retrosubstituicao (MATRIZ U, MATRIZ *Y);
-void multiply(MATRIZ A, MATRIZ B);
+int substituicao_Lyb (MATRIZ L, MATRIZ *y);
+int substituicao_Uxy (MATRIZ U, MATRIZ *Y);
+void multiplicaMatrizes(MATRIZ A, MATRIZ B);
 
 int main (int argc, char const *argv[]) {
     srand( 20172 );
 
-    MATRIZ matriz,origin;
+    MATRIZ matriz,origin,x;
     matriz.tam = 10; // 1 < tam < 32768
     origin.tam = matriz.tam;
-    origin.dados = (double*)(malloc (origin.tam*origin.tam*sizeof(double)));
-    //matriz.dados = (double*)(malloc (origin.tam*origin.tam*sizeof(double)));
-
+    
 
 
     if(! (matriz.dados = generateSquareRandomMatrix(matriz.tam)) ) {
         fprintf(stderr, "Erro ao alocar a matriz usando generateSquareRandomMatrix.\n");
         return 0;
     }
+    if (! (origin.dados = (double*)malloc (origin.tam*origin.tam*sizeof(double))))
+    {
+        fprintf(stderr, "Erro ao alocar a matriz\n");
+        return 0;
+    }
+    //copia matriz pra matriz original
     for (int i = 0; i < matriz.tam*matriz.tam; ++i)
         origin.dados[i]=matriz.dados[i];
     
      
     fatoracaoLU(&matriz);
+    //funções retornam 0 se malloc falhar   
+    if (!substituicao_Lyb(matriz, &x))
+        return 0;
+    if (!substituicao_Uxy(matriz, &x))
+        return 0;
 
-    MATRIZ x;
-    substituicao_Lyb(matriz, &x);
-
-    printf("x\n");
-    imprimeMatriz(x);
-    retrosubstituicao(matriz,&x);
-    //printf("inv:\n");
-    imprimeMatriz(x);
-    multiply(origin,x);
+    multiplicaMatrizes(origin,x);
 
     
     return 0;
 }
+
+/*==============================*/
+/*FUNÇÕES NÃO UTILIZADAS NA MAIN*/
+/*==============================*/
+void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 
 void fatoracaoLU (MATRIZ *matriz) {
     double m;
@@ -82,57 +87,46 @@ void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
     }
 }
 
-void retrosubstituicao (MATRIZ U, MATRIZ *Y)
+int substituicao_Uxy (MATRIZ U, MATRIZ *Y)
 {
-
-    printf("antes\n");
-    imprimeMatriz(*Y);
+    //variavel auxiliar pro tamanho das matrizes
     unsigned int tam = U.tam;
-    double *x ;
-    if (!(x = (double*)(calloc (tam, sizeof(double)))))
+    //vetor auxiliar 
+    double *b ;
+    //aloca memória para o vetor X
+    if (!(b = (double*)(calloc (tam, sizeof(double)))))
     {
-        printf("deu ruim\n");
-        return;
+        fprintf(stderr,"Erro ao alocar vetor auxiliar X na retrosubstituição\n");
+        return 0;
     }
-    //double x[U.tam];
-    printf("depois\n");
-
-
-    
+    //i é a coluna da matriz na qual estamos realizando a substituição
     for (int i = 0; i < tam; ++i)
     {
-        double soma = 0;
+        //Y será alterado diretamente, funcionando como x em Ax = b
+        //A coluna de Y é copiada para o vetor b
         for (int k = 0; k < tam; ++k)
-        {
-            x[k] = Y->dados[pos(k,i,tam)];
-            Y->dados[pos(k,i,tam)] = 0;
-        }
-        
-
-        Y->dados[pos(tam-1,i,tam)] = (x[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
-
+            b[k] = Y->dados[pos(k,i,tam)];
+        //faz a retrosubstituição 
+        Y->dados[pos(tam-1,i,tam)] = (b[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
         for (int k = tam-1; k >= 0; --k)
         {
-            soma = x[k];
-
-
+            Y->dados[pos(k,i,tam)] = b[k];
             for (int j = tam-1; j > k; --j)
-            {
-                soma -= U.dados[pos(k,j,tam)]*Y->dados[pos(j,i,tam)];
-            }
-            Y->dados[pos(k,i,tam)]=(soma*1.0)/U.dados[pos(k,k,tam)];
+                Y->dados[pos(k,i,tam)] -= U.dados[pos(k,j,tam)]*Y->dados[pos(j,i,tam)];
+            Y->dados[pos(k,i,tam)]=(Y->dados[pos(k,i,tam)]*1.0)/U.dados[pos(k,k,tam)];
         }
 
         
     }
+    return 1;
 }
 
-void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
+int substituicao_Lyb (MATRIZ L, MATRIZ *y) {
     y->tam = L.tam;
     if (!(y->dados = (double *) calloc(y->tam*y->tam, sizeof(double))))
     {
-        printf("deu ruim\n");
-        return;
+        fprintf(stderr,"Erro ao alocar matriz Y na substituição progressiva\n");
+        return 0;
     }
 
 
@@ -146,11 +140,11 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
             }
         }
     }
+    return 1;
 }
 
-void multiply(MATRIZ A, MATRIZ B)
+void multiplicaMatrizes(MATRIZ A, MATRIZ B)
 {
-    printf("\n");
     printf("Multiplicando A por X:\n");
     int i, j, k;
     for (i = 0; i < A.tam; i++)
