@@ -1,4 +1,5 @@
 #include "matriz.h"
+#include <string.h>
 
 void fatoracaoLU (MATRIZ *matriz);
 void substituicao_Lyb (MATRIZ L, MATRIZ *y);
@@ -95,7 +96,7 @@ void retrosubstituicao (MATRIZ U, MATRIZ *Y)
     }
     //double x[U.tam];
     printf("depois\n");
-    imprimeMatriz(*Y);
+
 
     
     for (int i = 0; i < tam; ++i)
@@ -124,29 +125,8 @@ void retrosubstituicao (MATRIZ U, MATRIZ *Y)
 
         
     }
-    //free(x);
-
 }
-/*
-int resolveSup (double a[N][N], double x[N], double b[N]) {
-    double soma = 0;
-    x[N-1] = b[N-1]/a[N-1][N-1];
-    for (int k = N-2; k >= 0; --k) {
-        soma = b[k];
 
-        for (int j = k; j < N; ++j)
-        {
-            soma-= a[k][j]*(x[j]);
-        }
-
-        
-        x[k]=(soma*1.0)/a[k][k];
-    }
-
-    
-    return 0;
-}
-*/
 void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
     y->tam = L.tam;
     if (!(y->dados = (double *) calloc(y->tam*y->tam, sizeof(double))))
@@ -154,6 +134,7 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
         printf("deu ruim\n");
         return;
     }
+
 
     for (int i = 0; i < y->tam; ++i) // inicia como uma matriz identidade
         y->dados[pos(i, i, y->tam)] = 1;
@@ -180,7 +161,7 @@ void multiply(MATRIZ A, MATRIZ B)
             for (k = 0; k < A.tam; k++)
                 C += A.dados[pos(i,k,A.tam)]*B.dados[pos(k,j,B.tam)];
            
-            printf("%.0lf ",C );
+            printf("%s%.0lf ",C>=0?" ":"",C );
         }
         printf("\n");
     }
