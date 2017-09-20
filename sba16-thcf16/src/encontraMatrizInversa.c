@@ -5,36 +5,28 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y);
 void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 void retrosubstituicao (MATRIZ U, MATRIZ *Y);
+void multiply(MATRIZ A, MATRIZ B);
 
 int main (int argc, char const *argv[]) {
-    setvbuf (stdout, 0, _IONBF, 0); 
     srand( 20172 );
 
-    MATRIZ matriz;
-    matriz.tam = 3; // 1 < tam < 32768
+    MATRIZ matriz,origin;
+    matriz.tam = 10; // 1 < tam < 32768
+    origin.tam = matriz.tam;
+    origin.dados = (double*)(malloc (origin.tam*origin.tam*sizeof(double)));
+    //matriz.dados = (double*)(malloc (origin.tam*origin.tam*sizeof(double)));
+
+
 
     if(! (matriz.dados = generateSquareRandomMatrix(matriz.tam)) ) {
         fprintf(stderr, "Erro ao alocar a matriz usando generateSquareRandomMatrix.\n");
         return 0;
     }
-
-        
-    /*matriz.dados[pos(0,0,matriz.tam)] =1;
-    matriz.dados[pos(0,1,matriz.tam)] =2;
-    matriz.dados[pos(0,2,matriz.tam)] =3;
-    matriz.dados[pos(1,0,matriz.tam)] =4;
-    matriz.dados[pos(1,1,matriz.tam)] =5;
-    matriz.dados[pos(1,2,matriz.tam)] =6;
-    matriz.dados[pos(2,0,matriz.tam)] =7;
-    matriz.dados[pos(2,1,matriz.tam)] =8;
-    matriz.dados[pos(2,2,matriz.tam)] =1;*/
-
-    //imprimeMatriz(matriz);  
-
+    for (int i = 0; i < matriz.tam*matriz.tam; ++i)
+        origin.dados[i]=matriz.dados[i];
+    
      
     fatoracaoLU(&matriz);
-    //printf("LU:..\n"); 
-    //imprimeMatriz(matriz);  
 
     MATRIZ x;
     substituicao_Lyb(matriz, &x);
@@ -44,7 +36,9 @@ int main (int argc, char const *argv[]) {
     retrosubstituicao(matriz,&x);
     //printf("inv:\n");
     imprimeMatriz(x);
+    multiply(origin,x);
 
+    
     return 0;
 }
 
@@ -90,10 +84,17 @@ void troca (MATRIZ *matriz, unsigned int l1, unsigned int l2) {
 void retrosubstituicao (MATRIZ U, MATRIZ *Y)
 {
 
+    printf("antes\n");
     imprimeMatriz(*Y);
     unsigned int tam = U.tam;
-    //double *x = (double*)(calloc (tam, sizeof(double)));
-    double x[U.tam];
+    double *x ;
+    if (!(x = (double*)(calloc (tam, sizeof(double)))))
+    {
+        printf("deu ruim\n");
+        return;
+    }
+    //double x[U.tam];
+    printf("depois\n");
     imprimeMatriz(*Y);
 
     
@@ -123,6 +124,7 @@ void retrosubstituicao (MATRIZ U, MATRIZ *Y)
 
         
     }
+    //free(x);
 
 }
 /*
@@ -147,7 +149,11 @@ int resolveSup (double a[N][N], double x[N], double b[N]) {
 */
 void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
     y->tam = L.tam;
-    y->dados = (double *) calloc(y->tam, sizeof(double));
+    if (!(y->dados = (double *) calloc(y->tam*y->tam, sizeof(double))))
+    {
+        printf("deu ruim\n");
+        return;
+    }
 
     for (int i = 0; i < y->tam; ++i) // inicia como uma matriz identidade
         y->dados[pos(i, i, y->tam)] = 1;
@@ -158,5 +164,24 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y) {
                 y->dados[pos(lin, b, y->tam)] -= L.dados[pos(lin, col, L.tam)]*y->dados[pos(col, b, y->tam)];
             }
         }
+    }
+}
+
+void multiply(MATRIZ A, MATRIZ B)
+{
+    printf("\n");
+    printf("Multiplicando A por X:\n");
+    int i, j, k;
+    for (i = 0; i < A.tam; i++)
+    {
+        for (j = 0; j < A.tam; j++)
+        {
+            double C = 0;
+            for (k = 0; k < A.tam; k++)
+                C += A.dados[pos(i,k,A.tam)]*B.dados[pos(k,j,B.tam)];
+           
+            printf("%.0lf ",C );
+        }
+        printf("\n");
     }
 }
