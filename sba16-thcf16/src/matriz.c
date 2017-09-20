@@ -2,60 +2,44 @@
 
 double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo professor
 #ifdef DEBUG
-    printf("[GERAMATRIZQUADRADARANDOMICA] Iniciando.\n");
+	printf("[GERAMATRIZQUADRADARANDOMICA] Iniciando.\n");
 #endif
-  double *mat = NULL;
+	double *mat = NULL;
 
-  /* return NULL if memory allocation fails */
-  if ( ! (mat = (double *) malloc(n*n*sizeof(double))) )
-    return (NULL);
+	/* return NULL if memory allocation fails */
+	if ( ! (mat = (double *) malloc(n*n*sizeof(double))) )
+		return (NULL);
 
-  /* generate a randomly initialized matrix in row-major order */
-  double *ptr = mat;
-  double *end = mat + n*n;
+	/* generate a randomly initialized matrix in row-major order */
+	double *ptr = mat;
+	double *end = mat + n*n;
 
-  double invRandMax = 1.0/(double)RAND_MAX;
+	double invRandMax = 1.0/(double)RAND_MAX;
 
-  while( ptr != end ) {
-    *ptr++ = (double)rand() * invRandMax;
-  }
+	while( ptr != end ) {
+		*ptr++ = (double)rand() * invRandMax;
+	}
 #ifdef DEBUG
-    printf("[GERAMATRIZQUADRADARANDOMICA] Matriz randomica gerada.\n");
+	printf("[GERAMATRIZQUADRADARANDOMICA] Matriz randomica gerada.\n");
 #endif
-  return (mat);
+	return (mat);
 }
 
 void imprimeMatriz (MATRIZ matriz) {
 #ifdef DEBUG
-    printf("[IMPRIMEMATRIZ] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
+	printf("[IMPRIMEMATRIZ] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
 #endif
-  fprintf(stderr, "TROCAR LF POR G\n");
-  unsigned int tam = matriz.tam;
-  for (int i = 0; i < tam; ++i) {
-    for (int j = 0; j < tam; ++j) {
-      if (matriz.dados[pos(i, j, tam)] == 0) matriz.dados[pos(i, j, tam)] = 0;
-        if (matriz.dados[pos(i, j, tam)] >= 0) printf(" ");
-        // usar %.17g porque lf arredonda...
-        printf("%.17lf  ", matriz.dados[pos(i, j, tam)]);
-    }
-      printf("\n");
-  }
-}
-
-void multiplicaMatrizes(MATRIZ A, MATRIZ B) {
-#ifdef DEBUG
-    printf("[MULTIPLICAMATRIZES] Iniciando multiplicacao de matrizes %ux%u.\n", A.tam, B.tam);
-#endif
-    unsigned int tam = A.tam;
-    int i, j, k;
-    for (i = 0; i < tam; i++) {
-        for (j = 0; j < tam; j++) {
-            double C = 0;
-            for (k = 0; k < tam; k++)
-                C += A.dados[pos(i,k,tam)]*B.dados[pos(k,j,tam)];
-        }
-        printf("\n");
-    }
+	fprintf(stderr, "TROCAR LF POR G\n");
+	unsigned int tam = matriz.tam;
+	for (int i = 0; i < tam; ++i) {
+		for (int j = 0; j < tam; ++j) {
+			if (matriz.dados[pos(i, j, tam)] == 0) matriz.dados[pos(i, j, tam)] = 0;
+			if (matriz.dados[pos(i, j, tam)] >= 0) printf(" ");
+			// usar %.17g porque lf arredonda...
+			printf("%.17lf  ", matriz.dados[pos(i, j, tam)]);
+		}
+		printf("\n");
+	}
 }
 
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col) {

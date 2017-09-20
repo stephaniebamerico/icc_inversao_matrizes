@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 typedef struct MATRIZ {
     unsigned int tam; 
@@ -12,7 +11,6 @@ typedef struct MATRIZ {
 
 double *geraMatrizQuadradaRandomica(unsigned int n);
 void imprimeMatriz (MATRIZ matriz);
-void multiplicaMatrizes(MATRIZ A, MATRIZ B);
 void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
