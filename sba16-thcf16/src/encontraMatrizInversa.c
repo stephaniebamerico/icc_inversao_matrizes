@@ -3,15 +3,16 @@
 
 int fatoracaoLU (MATRIZ *matriz);
 int substituicao_Lyb (MATRIZ L, MATRIZ *y);
-int substituicao_Uxy (MATRIZ U, MATRIZ *Y);
+int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 double refinamento(MATRIZ A, MATRIZ inv_A);
 
 int main (int argc, char const *argv[]) {
 	srand( 20172 );
 
 	MATRIZ original, originalLU, inversa;
-	original.tam = 10; // 1 < tam < 32768
+	original.tam = 100; // 1 < tam < 32768
 	originalLU.tam = original.tam;    
+	double *aux = NULL;
 
 	// lê a matriz original... (alterar)
 	if(! (original.dados = geraMatrizQuadradaRandomica(original.tam)) ) {
@@ -42,7 +43,7 @@ int main (int argc, char const *argv[]) {
 		fprintf(stderr, "Erro em substituicao_Lyb.\n");
 		return 0;
 	}
-	if (substituicao_Uxy(originalLU, &inversa) == -1) { // resolve o sistema U*x=y (o resultado é armazenado na inversa)
+	if (substituicao_Uxy(originalLU, &inversa, aux) == -1) { // resolve o sistema U*x=y (o resultado é armazenado na inversa)
 		return 0;
 		fprintf(stderr, "Erro em substituicao_Uxy.\n");
 	}
@@ -52,6 +53,10 @@ int main (int argc, char const *argv[]) {
 	// neste ponto, a inversa deveria estar correta... partimos para o refinamento
 	double r = refinamento(original, inversa);
 	printf("r = %.17lf\n", r);
+	free(original.dados);
+	free(originalLU.dados);
+	free(inversa.dados);
+	//free(aux);
 	 
 	return 0;
 }
@@ -109,14 +114,14 @@ int substituicao_Lyb (MATRIZ L, MATRIZ *y) {
 	return 0;
 }
 
-int substituicao_Uxy (MATRIZ U, MATRIZ *y) {
+int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 #ifdef DEBUG
 	printf("[SUBSTITUICAO_UXY] Iniciando a resolucao do sistema Ux=y.\n");
 #endif
 	// variavel auxiliar pro tamanho das matrizes
 	unsigned int tam = U.tam;
 	// vetor auxiliar (b de A*x=b), pois utilizaremos a matriz y para armazenar a matriz resultante
-	double *b ;
+	//double *b ;
 	// aloca memória para o vetor b
 	if (!(b = (double*)(calloc (tam, sizeof(double))))) {
 		fprintf(stderr,"[substituicao_Uxy] Erro ao alocar vetor auxiliar b.\n");
@@ -140,6 +145,7 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y) {
 #ifdef DEBUG
 	printf("[SUBSTITUICAO_UXY] Resolucao do sistema Ux=y completa.\n");
 #endif 
+	free(b);
 	return 0;
 }
 
