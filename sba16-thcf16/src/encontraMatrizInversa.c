@@ -4,11 +4,17 @@
 int fatoracaoLU (MATRIZ *matriz);
 int substituicao_Lyb (MATRIZ L, MATRIZ *y);
 int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
-double refinamento(MATRIZ A, MATRIZ inv_A);
+double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter);
+int trataArgumentos (int argc, char **argv,char** entrada, char** saida, int *N);
+ //void trataArgumentos(int argc, char** argv, char** entrada,char** saida, int *N);
 
-int main (int argc, char const *argv[]) {
+
+int main (int argc, char** argv) {
 	srand( 20172 );
-
+	int n,iteracoes;
+	char *arqEntrada , *arqSaida ;
+	iteracoes = trataArgumentos(argc,argv,&arqEntrada,&arqSaida,&n);
+	
 	MATRIZ original, originalLU, inversa;
 	original.tam = 100; // 1 < tam < 32768
 	originalLU.tam = original.tam;    
@@ -51,14 +57,53 @@ int main (int argc, char const *argv[]) {
 	//imprimeMatriz(inversa);
 	 
 	// neste ponto, a inversa deveria estar correta... partimos para o refinamento
-	double r = refinamento(original, inversa);
+	double r = refinamento(original, inversa, aux, iteracoes);
 	printf("r = %.17lf\n", r);
 	free(original.dados);
 	free(originalLU.dados);
 	free(inversa.dados);
-	//free(aux);
+	free(arqEntrada);
+	free(arqSaida);
 	 
 	return 0;
+}
+
+/*void trataArgumentos(int argc, char** argv, char** entrada,char** saida, int *N)
+{
+	*entrada = (char*)malloc(strlen(argv[2]) + 1);
+    strcpy(*entrada, argv[2]);
+    printf("%s",*entrada); 
+}*/
+
+
+//retorna o numero k de iterações
+int trataArgumentos (int argc, char **argv,char** entrada, char** saida, int *N)
+{
+	*entrada = NULL;
+	*saida = NULL; 
+	*N = -1;
+	int k = 0;
+	for (int i = 0; i < argc; ++i)
+	{
+		if (argv[i][0]=='-')
+		{
+			if (argv[i][1]=='e')
+			{
+				*entrada = (char*)malloc(strlen(argv[2]) + 1);
+				strcpy(*entrada, argv[i+1]);
+			}
+			else if (argv[i][1]=='o')
+			{
+				*saida =  (char*)malloc(strlen(argv[i+1]) + 1);
+				strcpy(*saida, argv[i+1]);
+			}
+			else if (argv[i][1]=='r')
+				*N = atoi (argv[i+1]);
+			else if (argv[i][1]=='i')
+				k = atoi (argv[i+1]);
+		}
+	}
+	return k;
 }
 
 int fatoracaoLU (MATRIZ *matriz) {
@@ -149,9 +194,9 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 	return 0;
 }
 
-double refinamento(MATRIZ A, MATRIZ inv_A) {
+double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter){
 #ifdef DEBUG
-	printf("[MULTIPLICAMATRIZES] Iniciando multiplicacao de matrizes %ux%u.\n", A.tam, A.tam);
+	printf("[MULTIPLICAMATRIZES] Iniciando refinamento de matrizes %ux%u.\n", A.tam, A.tam);
 #endif
 	unsigned int tam = A.tam;
 	double C = 0, r = 0;
@@ -166,6 +211,6 @@ double refinamento(MATRIZ A, MATRIZ inv_A) {
 		}
 	}
 	r = sqrt(r); // ||r|| = sqrt(sum(R[i,j]^2))
-
+	
 	return r;
 }
