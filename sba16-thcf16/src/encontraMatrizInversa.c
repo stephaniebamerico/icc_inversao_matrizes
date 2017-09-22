@@ -1,39 +1,56 @@
 #include "matriz.h"
 #include <math.h>
+#include <time.h>
+#include <sys/time.h>
+
 
 int fatoracaoLU (MATRIZ *matriz);
 int substituicao_Lyb (MATRIZ L, MATRIZ *y);
 int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter);
-int trataArgumentos (int argc, char **argv,char** entrada, char** saida, int *N);
+int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N);
+int entradaPorArquivo (char *entrada, MATRIZ *matriz);
+double timestamp(void);
  //void trataArgumentos(int argc, char** argv, char** entrada,char** saida, int *N);
 
 
 int main (int argc, char** argv) {
 	srand( 20172 );
 	int n,iteracoes;
-	char *arqEntrada , *arqSaida ;
-	iteracoes = trataArgumentos(argc,argv,&arqEntrada,&arqSaida,&n);
-	
+	char *arqEntrada , *arqSaida;
 	MATRIZ original, originalLU, inversa;
-	original.tam = 100; // 1 < tam < 32768
-	originalLU.tam = original.tam;    
 	double *aux = NULL;
+	long tempoLU;
 
-	// lê a matriz original... (alterar)
-	if(! (original.dados = geraMatrizQuadradaRandomica(original.tam)) ) {
-#ifdef DEBUG
-	printf("[MAIN] Falha ao alocar a matriz original.\n");
-#endif
-	fprintf(stderr, "Erro ao alocar a matriz original.\n");
-		return 0;
+	iteracoes = trataArgumentos(argc,argv,&arqEntrada,&arqSaida,&n);	   
+	
+	//leitura dos dados da matriz
+	if ((n == -1) && (arqEntrada != NULL))//MUDAR ISSO NO TRABALHO FINAL!!1!!!11!!
+	{
+		if (entradaPorArquivo(arqEntrada,&original) == -1)
+			return 0;
 	}
-
+	//gera matriz aleatória
+	else 
+	{
+		//caso não se defina nenhum arquivo de entrada e nem o tamanho da matriz, cria uma matriz tam. 10
+		if (arqEntrada == NULL) 
+			n = 100;
+		original.tam = n;
+		if(! (original.dados = geraMatrizQuadradaRandomica(original.tam)) ) {
+		#ifdef DEBUG
+			printf("[MAIN] Falha ao alocar a matriz original.\n");
+		#endif
+			fprintf(stderr, "Erro ao alocar a matriz original.\n");
+			return 0;
+		}
+	}
+	originalLU.tam = original.tam; 
 	// alocando a matriz que guardará a fatoração LU
 	if (! (originalLU.dados = (double*)malloc (originalLU.tam*originalLU.tam*sizeof(double)))) {
-#ifdef DEBUG
-	printf("[MAIN] Falha ao alocar a matriz originalLU.\n");
-#endif
+	#ifdef DEBUG
+		printf("[MAIN] Falha ao alocar a matriz originalLU.\n");
+	#endif
 		fprintf(stderr, "Erro ao alocar a matriz originalLU\n");
 		return 0;
 	}
@@ -42,12 +59,23 @@ int main (int argc, char** argv) {
 	for (int i = 0; i < original.tam*original.tam; ++i)
 		originalLU.dados[i] = original.dados[i];
 	
+	tempoLU = timestamp();
 	fatoracaoLU(&originalLU); // fatora a matriz original em uma LU
+	tempoLU = timestamp() - tempoLU;
+	printf("# Tempo LU: %lu\n", tempoLU);
 
 	// funções retornam -1 se ocorrer algum problema   
 	if (substituicao_Lyb(originalLU, &inversa) == -1) { // resolve o sistema L*y=b (o resultado é armazenado na inversa)
 		fprintf(stderr, "Erro em substituicao_Lyb.\n");
 		return 0;
+	}
+	if (!(aux = (double*) malloc(original.tam*sizeof(double))))
+	{
+	#ifdef DEBUG
+		printf("[MAIN] Falha ao alocar o vetor auxiliar.\n");
+	#endif
+		fprintf(stderr, "Erro ao alocar o vetor auxiliar.\n");
+		return 0;		
 	}
 	if (substituicao_Uxy(originalLU, &inversa, aux) == -1) { // resolve o sistema U*x=y (o resultado é armazenado na inversa)
 		return 0;
@@ -64,20 +92,20 @@ int main (int argc, char** argv) {
 	free(inversa.dados);
 	free(arqEntrada);
 	free(arqSaida);
+	free(aux);
 	 
 	return 0;
 }
 
-/*void trataArgumentos(int argc, char** argv, char** entrada,char** saida, int *N)
-{
-	*entrada = (char*)malloc(strlen(argv[2]) + 1);
-    strcpy(*entrada, argv[2]);
-    printf("%s",*entrada); 
-}*/
+double timestamp(void){
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    return((double)(tp.tv_sec*1000.0 + tp.tv_usec/1000.0));
+}
 
 
 //retorna o numero k de iterações
-int trataArgumentos (int argc, char **argv,char** entrada, char** saida, int *N)
+int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N)
 {
 	*entrada = NULL;
 	*saida = NULL; 
@@ -104,6 +132,50 @@ int trataArgumentos (int argc, char **argv,char** entrada, char** saida, int *N)
 		}
 	}
 	return k;
+}
+
+int entradaPorArquivo (char *entrada, MATRIZ *matriz)
+{
+#ifdef DEBUG
+	printf("[ENTRADAPORARQUIVO] Iniciando leitura de arquivos.\n");
+#endif
+	FILE *in = NULL;
+	if (entrada != NULL)
+	{
+		in = fopen(entrada, "r");
+	}
+	else
+	{
+		in = stdin;
+	}
+	if (!in)
+	{
+	#ifdef DEBUG
+		printf("[ENTRADAPORARQUIVO] Falha ao abrir o arquivo.\n");
+	#endif
+		fprintf(stderr, " Falha ao abrir o arquivo.\n");
+		return -1;
+	}
+
+	fscanf(in,"%d", &matriz->tam);
+	if (!(matriz->dados = (double *)malloc(matriz->tam*matriz->tam*sizeof(double))))
+	{
+	#ifdef DEBUG
+		printf("[ENTRADAPORARQUIVO] Falha ao alocar a matriz.\n");
+	#endif
+		fprintf(stderr, "Falha ao alocar a matriz.\n");
+		return -1;
+	}
+	for (int i = 0; i < matriz->tam*matriz->tam; ++i)
+	{
+		fscanf(in,"%lf", &matriz->dados[i]);
+	}
+	fclose (in);
+#ifdef DEBUG
+	printf("[ENTRADAPORARQUIVO] Leitura de arquivos completa.\n");
+#endif
+	return 0;
+
 }
 
 int fatoracaoLU (MATRIZ *matriz) {
@@ -168,10 +240,6 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 	// vetor auxiliar (b de A*x=b), pois utilizaremos a matriz y para armazenar a matriz resultante
 	//double *b ;
 	// aloca memória para o vetor b
-	if (!(b = (double*)(calloc (tam, sizeof(double))))) {
-		fprintf(stderr,"[substituicao_Uxy] Erro ao alocar vetor auxiliar b.\n");
-		return -1;
-	}
 	// i é a coluna da matriz na qual estamos realizando a substituição (cada coluna é o vetor b de um sistema linear A*x=b)
 	for (int i = 0; i < tam; ++i) {
 		// y será alterado para armazenar a matriz resultante (funcionando como x em Ax = b)
@@ -190,7 +258,6 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 #ifdef DEBUG
 	printf("[SUBSTITUICAO_UXY] Resolucao do sistema Ux=y completa.\n");
 #endif 
-	free(b);
 	return 0;
 }
 
