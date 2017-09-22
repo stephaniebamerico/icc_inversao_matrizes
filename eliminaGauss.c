@@ -109,17 +109,26 @@ int main(int argc, char const *argv[]) {
       double l[N][N], u[N][N];
 
     elimina(a,l,u);
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            printf("%lf ",a[i][j] );
+        }
+        printf("\n");
+    }
+    printf("\n");
     b[0] = 1;
-    b[1] = 0;
-    b[2] = 0;
+    b[1] = 2;
+    b[2] = 3;
     resolveInf(l,y1,b);
-    b[0] = 0;
-    b[1] = 1;
-    b[2] = 0;
+    b[0] = 1;
+    b[1] = 2;
+    b[2] = 3;
     resolveInf(l,y2,b);
-    b[0] = 0;
-    b[1] = 0;
-    b[2] = 1;
+    b[0] = 1;
+    b[1] = 2;
+    b[2] = 6;
     resolveInf(l,y3,b);
     for (int i = 0; i < 3; ++i)
     {

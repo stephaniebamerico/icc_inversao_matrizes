@@ -6,13 +6,11 @@
 
 
 int fatoracaoLU (MATRIZ *matriz);
-int substituicao_Lyb (MATRIZ L, MATRIZ *y);
+int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int inverse) ;
 int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter);
-
 double timestamp (void);
- //void trataArgumentos(int argc, char** argv, char** entrada,char** saida, int *N);
-
+void residuo(MATRIZ LU, MATRIZ B, MATRIZ *R);
 
 
 int main (int argc, char** argv) {
@@ -32,7 +30,7 @@ int main (int argc, char** argv) {
 	}
 	
 	//leitura dos dados da matriz
-	if ((n == -1) && (arqEntrada = NULL))//MUDAR ISSO NO TRABALHO FINAL!!1!!!11!!
+	if ((n == -1))//MUDAR ISSO NO TRABALHO FINAL!!1!!!11!!
 	{
 		if (entradaPorArquivo(arqEntrada,&original) == -1)
 			return 0;
@@ -40,6 +38,8 @@ int main (int argc, char** argv) {
 	//gera matriz aleatória
 	else 
 	{
+		if (n == -1)
+			n = 100;
 		//caso não se defina nenhum arquivo de entrada e nem o tamanho da matriz, cria uma matriz tam. 10
 		/*if (arqEntrada == NULL) 
 			n = 100;*/
@@ -63,20 +63,17 @@ int main (int argc, char** argv) {
 		return 0;
 	}
 
+
+
 	// copia matriz original para a matriz que sofrerá a fatoração LU
 	for (int i = 0; i < original.tam*original.tam; ++i)
 		originalLU.dados[i] = original.dados[i];
 	
 	tempoLU = timestamp();
 	fatoracaoLU(&originalLU); // fatora a matriz original em uma LU
+	imprimeMatriz(originalLU);
 	tempoLU = timestamp() - tempoLU;
 	printf("# Tempo LU: %lu\n", tempoLU);
-
-	// funções retornam -1 se ocorrer algum problema   
-	if (substituicao_Lyb(originalLU, &inversa) == -1) { // resolve o sistema L*y=b (o resultado é armazenado na inversa)
-		fprintf(stderr, "Erro em substituicao_Lyb.\n");
-		return 0;
-	}
 	if (!(aux = (double*) malloc(original.tam*sizeof(double))))
 	{
 	#ifdef DEBUG
@@ -85,16 +82,28 @@ int main (int argc, char** argv) {
 		fprintf(stderr, "Erro ao alocar o vetor auxiliar.\n");
 		return 0;		
 	}
+
+	// funções retornam -1 se ocorrer algum problema   
+	if (substituicao_Lyb(originalLU, &inversa, NULL, 1) == -1) { // resolve o sistema L*y=b (o resultado é armazenado na inversa)
+		fprintf(stderr, "Erro em substituicao_Lyb.\n");
+		return 0;
+	}
+	
 	if (substituicao_Uxy(originalLU, &inversa, aux) == -1) { // resolve o sistema U*x=y (o resultado é armazenado na inversa)
 		return 0;
 		fprintf(stderr, "Erro em substituicao_Uxy.\n");
 	}
-
+	imprimeMatriz(originalLU);
 	//imprimeMatriz(inversa);
 	 
 	// neste ponto, a inversa deveria estar correta... partimos para o refinamento
 	double r = refinamento(original, inversa, aux, iteracoes);
 	printf("r = %.17lf\n", r);
+	
+	
+	residuo(originalLU,inversa,&original);
+	imprimeMatriz(original);
+
 	free(original.dados);
 	free(originalLU.dados);
 	free(inversa.dados);
@@ -138,7 +147,7 @@ int fatoracaoLU (MATRIZ *matriz) {
 	return 0;
 }
 
-int substituicao_Lyb (MATRIZ L, MATRIZ *y) {
+int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *B, int inverse) {
 #ifdef DEBUG
 	printf("[SUBSTITUICAO_LYB] Iniciando a resolucao do sistema Ly=b.\n");
 #endif
@@ -154,10 +163,23 @@ int substituicao_Lyb (MATRIZ L, MATRIZ *y) {
 		y->dados[pos(i, i, tam)] = 1;
 
 	for (int b = 0; b < tam-1; ++b) { // cada coluna da matriz é um vetor b (A*x=b) para resolver o sistema
+		if (!inverse)
+		{
+			for (int k = 0; k < tam; ++k)
+				B[k] = y->dados[pos(k,b,tam)];
+			y->dados[pos(0,b,tam)] = (B[0]*1.0)/L.dados[pos(0, 0, tam)];
+		}
+
 		for (int lin = 1; lin < tam; ++lin) { // da segunda linha em diante (a primeira sofre alteração)
+			if (!inverse)
+			{
+				y->dados[pos(lin,b,tam)] = B[lin];
+			}
 			for (int col = b; col < lin; ++col) { // começa a partir da primeira valoração não nula (b)
 				y->dados[pos(lin, b, tam)] -= L.dados[pos(lin, col, tam)]*y->dados[pos(col, b, tam)];
 			}
+			if (!inverse)
+				y->dados[pos(lin, b, tam)]=(y->dados[pos(lin,b,tam)]*1.0)/L.dados[pos(lin,lin,tam)];
 		}
 	}
 #ifdef DEBUG
@@ -212,4 +234,66 @@ double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter){
 	r = sqrt(r); // ||r|| = sqrt(sum(R[i,j]^2))
 	
 	return r;
+}
+
+/*R = I - A * inv(A)
+||r|| = sqrt( sum( R[i,j] ² ) ), [i,j] = {1,2,...,n}
+*/
+void refina(MATRIZ LU, MATRIZ inv_A, MATRIZ *R, double *y, int iter)
+{
+
+
+}
+void multiply(MATRIZ *A, MATRIZ B);
+
+void residuo (MATRIZ LU, MATRIZ B, MATRIZ *R)
+{	
+	int i, j, k;
+	double C, l, u;
+	
+	for (i = 0; i < B.tam; i++)
+    {
+    	
+        for (j = 0; j < B.tam; j++)
+        {
+        	C = 0;
+            for (k = 0; k < B.tam; k++)
+            {
+            	if (i == k)
+            		l = 1;
+            	else if (i > k)
+	            	l = LU.dados[pos(i,k,LU.tam)];
+	            else
+	            	l = 0;
+	            if (k>j)
+	            	u = 0;
+	            else
+	            	u = LU.dados[pos(k,j,LU.tam)];
+            	C+=l*u;
+            }
+            R->dados[pos(i,j,R->tam)] = C;
+        }
+    }
+    imprimeMatriz(*R);
+    multiply(R,B);
+}
+
+void multiply(MATRIZ *A, MATRIZ B)
+{
+	double aux[B.tam];
+    int i, j, k;
+    for (i = 0; i < A->tam; i++)
+    {
+        for (j = 0; j < A->tam; j++)
+        {
+            double C = 0;
+            for (k = 0; k < A->tam; k++)
+                C += A->dados[pos(i,k,A->tam)]*B.dados[pos(k,j,B.tam)];
+            aux[j]=C;
+        }
+        for (int j = 0; j < A->tam; ++j)
+        {
+        	A->dados[pos(i,j,A->tam)] = aux[j];
+        }
+    }
 }
