@@ -3,7 +3,7 @@ OBJ = obj
 INCLUDE = include
 
 CC = gcc
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -DDEBUG -lrt
+CFLAGS = -Wall -g -lm -I $(INCLUDE) -DDEBUG
 
 .PHONY: dir
 
@@ -15,15 +15,18 @@ clean:
 
 # ----
 
-invmat: $(OBJ)/encontraMatrizInversa.o $(OBJ)/matriz.o
+invmat: $(OBJ)/encontraMatrizInversa.o $(OBJ)/matriz.o $(OBJ)/inOut.o
 		$(CC) -o invmat $(OBJ)/*.o $(CFLAGS) 
 # ----
 
-$(OBJ)/encontraMatrizInversa.o: $(SRC)/encontraMatrizInversa.c $(INCLUDE)/matriz.h
+$(OBJ)/encontraMatrizInversa.o: $(SRC)/encontraMatrizInversa.c $(INCLUDE)/matriz.h $(INCLUDE)/inOut.h
 		$(CC) -c $(SRC)/encontraMatrizInversa.c -o $(OBJ)/encontraMatrizInversa.o $(CFLAGS)
 
 $(OBJ)/matriz.o: $(SRC)/matriz.c
 		$(CC) -c $(SRC)/matriz.c -o $(OBJ)/matriz.o $(CFLAGS)
+
+$(OBJ)/inOut.o: $(SRC)/inOut.c
+		$(CC) -c $(SRC)/inOut.c -o $(OBJ)/inOut.o $(CFLAGS)
 
 dir:
 	mkdir -p $(OBJ)

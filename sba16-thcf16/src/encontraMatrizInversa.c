@@ -1,4 +1,5 @@
 #include "matriz.h"
+#include "inOut.h"
 #include <math.h>
 #include <time.h>
 #include <sys/time.h>
@@ -8,10 +9,10 @@ int fatoracaoLU (MATRIZ *matriz);
 int substituicao_Lyb (MATRIZ L, MATRIZ *y);
 int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter);
-int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N);
-int entradaPorArquivo (char *entrada, MATRIZ *matriz);
-double timestamp(void);
+
+double timestamp (void);
  //void trataArgumentos(int argc, char** argv, char** entrada,char** saida, int *N);
+
 
 
 int main (int argc, char** argv) {
@@ -21,11 +22,17 @@ int main (int argc, char** argv) {
 	MATRIZ original, originalLU, inversa;
 	double *aux = NULL;
 	long tempoLU;
+	out = stdout;
+
 
 	iteracoes = trataArgumentos(argc,argv,&arqEntrada,&arqSaida,&n);	   
+	if (arqSaida != NULL)
+	{
+		saidaPorArquivo(arqSaida);
+	}
 	
 	//leitura dos dados da matriz
-	if ((n == -1) && (arqEntrada != NULL))//MUDAR ISSO NO TRABALHO FINAL!!1!!!11!!
+	if ((n == -1) && (arqEntrada = NULL))//MUDAR ISSO NO TRABALHO FINAL!!1!!!11!!
 	{
 		if (entradaPorArquivo(arqEntrada,&original) == -1)
 			return 0;
@@ -34,8 +41,8 @@ int main (int argc, char** argv) {
 	else 
 	{
 		//caso não se defina nenhum arquivo de entrada e nem o tamanho da matriz, cria uma matriz tam. 10
-		if (arqEntrada == NULL) 
-			n = 100;
+		/*if (arqEntrada == NULL) 
+			n = 100;*/
 		original.tam = n;
 		if(! (original.dados = geraMatrizQuadradaRandomica(original.tam)) ) {
 		#ifdef DEBUG
@@ -45,6 +52,7 @@ int main (int argc, char** argv) {
 			return 0;
 		}
 	}
+	
 	originalLU.tam = original.tam; 
 	// alocando a matriz que guardará a fatoração LU
 	if (! (originalLU.dados = (double*)malloc (originalLU.tam*originalLU.tam*sizeof(double)))) {
@@ -93,7 +101,7 @@ int main (int argc, char** argv) {
 	free(arqEntrada);
 	free(arqSaida);
 	free(aux);
-	 
+	fclose(out);
 	return 0;
 }
 
@@ -104,79 +112,6 @@ double timestamp(void){
 }
 
 
-//retorna o numero k de iterações
-int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N)
-{
-	*entrada = NULL;
-	*saida = NULL; 
-	*N = -1;
-	int k = 0;
-	for (int i = 0; i < argc; ++i)
-	{
-		if (argv[i][0]=='-')
-		{
-			if (argv[i][1]=='e')
-			{
-				*entrada = (char*)malloc(strlen(argv[2]) + 1);
-				strcpy(*entrada, argv[i+1]);
-			}
-			else if (argv[i][1]=='o')
-			{
-				*saida =  (char*)malloc(strlen(argv[i+1]) + 1);
-				strcpy(*saida, argv[i+1]);
-			}
-			else if (argv[i][1]=='r')
-				*N = atoi (argv[i+1]);
-			else if (argv[i][1]=='i')
-				k = atoi (argv[i+1]);
-		}
-	}
-	return k;
-}
-
-int entradaPorArquivo (char *entrada, MATRIZ *matriz)
-{
-#ifdef DEBUG
-	printf("[ENTRADAPORARQUIVO] Iniciando leitura de arquivos.\n");
-#endif
-	FILE *in = NULL;
-	if (entrada != NULL)
-	{
-		in = fopen(entrada, "r");
-	}
-	else
-	{
-		in = stdin;
-	}
-	if (!in)
-	{
-	#ifdef DEBUG
-		printf("[ENTRADAPORARQUIVO] Falha ao abrir o arquivo.\n");
-	#endif
-		fprintf(stderr, " Falha ao abrir o arquivo.\n");
-		return -1;
-	}
-
-	fscanf(in,"%d", &matriz->tam);
-	if (!(matriz->dados = (double *)malloc(matriz->tam*matriz->tam*sizeof(double))))
-	{
-	#ifdef DEBUG
-		printf("[ENTRADAPORARQUIVO] Falha ao alocar a matriz.\n");
-	#endif
-		fprintf(stderr, "Falha ao alocar a matriz.\n");
-		return -1;
-	}
-	for (int i = 0; i < matriz->tam*matriz->tam; ++i)
-	{
-		fscanf(in,"%lf", &matriz->dados[i]);
-	}
-	fclose (in);
-#ifdef DEBUG
-	printf("[ENTRADAPORARQUIVO] Leitura de arquivos completa.\n");
-#endif
-	return 0;
-
-}
 
 int fatoracaoLU (MATRIZ *matriz) {
 #ifdef DEBUG
@@ -237,9 +172,6 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 #endif
 	// variavel auxiliar pro tamanho das matrizes
 	unsigned int tam = U.tam;
-	// vetor auxiliar (b de A*x=b), pois utilizaremos a matriz y para armazenar a matriz resultante
-	//double *b ;
-	// aloca memória para o vetor b
 	// i é a coluna da matriz na qual estamos realizando a substituição (cada coluna é o vetor b de um sistema linear A*x=b)
 	for (int i = 0; i < tam; ++i) {
 		// y será alterado para armazenar a matriz resultante (funcionando como x em Ax = b)
