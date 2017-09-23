@@ -1,0 +1,74 @@
+\hypertarget{example-with-doxygen-comments_8c}{}\section{example-\/with-\/doxygen-\/comments.c File Reference}
+\label{example-with-doxygen-comments_8c}\index{example-\/with-\/doxygen-\/comments.\+c@{example-\/with-\/doxygen-\/comments.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+Include dependency graph for example-\/with-\/doxygen-\/comments.c\+:
+% FIG 0
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structpoint}{point}
+\begin{DoxyCompactList}\small\item\em a structure representing a point in a 2D plane \end{DoxyCompactList}\item 
+struct \hyperlink{structline__segment}{line\+\_\+segment}
+\begin{DoxyCompactList}\small\item\em a structure representing a line segment (x0,y0) to (x1,y1) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structpoint}{point} \hyperlink{example-with-doxygen-comments_8c_a7a31ff9ffbde2c44d8a5b7f56faeed48}{point\+\_\+t}
+\begin{DoxyCompactList}\small\item\em a structure representing a point in a 2D plane \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structline__segment}{line\+\_\+segment} \hyperlink{example-with-doxygen-comments_8c_a266046e4684fda82d45d99f5e257aefc}{line\+\_\+segment\+\_\+t}
+\begin{DoxyCompactList}\small\item\em a structure representing a line segment (x0,y0) to (x1,y1) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{example-with-doxygen-comments_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em application entry point \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\index{example-\/with-\/doxygen-\/comments.\+c@{example-\/with-\/doxygen-\/comments.\+c}!line\+\_\+segment\+\_\+t@{line\+\_\+segment\+\_\+t}}
+\index{line\+\_\+segment\+\_\+t@{line\+\_\+segment\+\_\+t}!example-\/with-\/doxygen-\/comments.\+c@{example-\/with-\/doxygen-\/comments.\+c}}
+\subsubsection[{\texorpdfstring{line\+\_\+segment\+\_\+t}{line_segment_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf line\+\_\+segment}  {\bf line\+\_\+segment\+\_\+t}}\hypertarget{example-with-doxygen-comments_8c_a266046e4684fda82d45d99f5e257aefc}{}\label{example-with-doxygen-comments_8c_a266046e4684fda82d45d99f5e257aefc}
+
+
+a structure representing a line segment (x0,y0) to (x1,y1) 
+
+\index{example-\/with-\/doxygen-\/comments.\+c@{example-\/with-\/doxygen-\/comments.\+c}!point\+\_\+t@{point\+\_\+t}}
+\index{point\+\_\+t@{point\+\_\+t}!example-\/with-\/doxygen-\/comments.\+c@{example-\/with-\/doxygen-\/comments.\+c}}
+\subsubsection[{\texorpdfstring{point\+\_\+t}{point_t}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf point}  {\bf point\+\_\+t}}\hypertarget{example-with-doxygen-comments_8c_a7a31ff9ffbde2c44d8a5b7f56faeed48}{}\label{example-with-doxygen-comments_8c_a7a31ff9ffbde2c44d8a5b7f56faeed48}
+
+
+a structure representing a point in a 2D plane 
+
+Here goes a more detailed description, blah, blah. it serves the following purposes \+:
+
+
+\begin{DoxyItemize}
+\item it works 
+\item it works fine! 
+\end{DoxyItemize}
+
+And finally the end. 
+
+\subsection{Function Documentation}
+\index{example-\/with-\/doxygen-\/comments.\+c@{example-\/with-\/doxygen-\/comments.\+c}!main@{main}}
+\index{main@{main}!example-\/with-\/doxygen-\/comments.\+c@{example-\/with-\/doxygen-\/comments.\+c}}
+\subsubsection[{\texorpdfstring{main(int argc, char $\ast$$\ast$argv)}{main(int argc, char **argv)}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$$\ast$}]{argv}
+\end{DoxyParamCaption}
+)}\hypertarget{example-with-doxygen-comments_8c_a3c04138a5bfe5d72780bb7e82a18e627}{}\label{example-with-doxygen-comments_8c_a3c04138a5bfe5d72780bb7e82a18e627}
+
+
+application entry point 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & is number of arguments passed in \\
+\hline
+{\em argv} & is an array of arguments as strings (char$\ast$)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+exit code to the OS 
+\end{DoxyReturn}

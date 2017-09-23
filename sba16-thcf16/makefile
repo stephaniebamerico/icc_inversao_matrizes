@@ -9,6 +9,9 @@ CFLAGS = -Wall -g -lm -I $(INCLUDE) -DDEBUG
 
 all: dir invmat
 
+doc: 
+	doxygen Doxyfile 
+
 clean:
 	-rm invmat
 	-rm -r $(OBJ)

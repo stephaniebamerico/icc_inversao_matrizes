@@ -1,19 +1,111 @@
+/*! \mainpage My Personal Index Page
+ *
+ * @author Stephanie Briere Americo GRR29165313
+ * @author Talita Halboth Cunha Fernandes GRR29165399
+ * \section intro_sec Introdução
+ *
+ * O objetivo deste trabalho é 
+ * implementar um programa computacional que, 
+ * dada uma matriz quadrada A de dimensão n, 
+ * encontre a matriz inversa de A (inv(A)), tal que A * inv(A) 
+ * = I, onde I é a matriz identidade.
+ * Para tal, o programa utiliza o Método da Eliminação de Gauss com Pivotamento Parcial, Fatoração LU e Refinamento.
+ *
+ * \subsection install_sec Compilação
+ * Há uma makefile no projeto que compila o código, gerando o executável @p invmat
+ *
+ * \subsection run_sec Rodando o programa
+ * @verbatim invmat [-e arquivo_entrada] [-o arquivo_saida] [-r N] -i k@endverbatim
+ *
+ *<ul>
+ *	<li> @p -i @p arquivo_entrada: parâmetro opcional no qual @p arquivo_entrada é o caminho completo para o arquivo contendo a matriz a ser invertida. Em caso de ausência do parâmetro, a entrada será lida de @p stdin.
+ *	<li>@p -o @p arquivo_saida: parâmetro opcional no qual @p arquivo_saida é o caminho completo para o arquivo que vai conter a matriz inversa. Em caso de ausência do parâmetro, a saída será impressa em @p stdout.
+ *	<li>@p -r @p N: parâmetro opcional no qual @p N é a dimensão da matriz de entrada a ser gerada aleatoriamente
+ *	<li>@p -i @p k: Número de iterações de refinamento a serem executadas (>0)
+ *
+ *
+ */
+
+
+/**
+ * @file encontraMatrizInversa.c
+ * @author Stephanie Briere Americo GRR29165313
+ * @author Talita Halboth Cunha Fernandes GRR29165399
+ * @date 23 Sep 2017
+ * @brief Código que realiza a inversão de matrizes através da fatoração LU, resolução de sistemas lineares e refinamento
+ *
+ */
+
 #include "matriz.h"
 #include "inOut.h"
 #include <math.h>
 #include <time.h>
 #include <sys/time.h>
 
-
+/**
+ * @brief Função que faz a fatoração LU de uma matriz quadrada.
+ *
+ * Esta função recebe apenas um parâmetro, @p matriz do tipo #MATRIZ.
+ *
+ */
 int fatoracaoLU (MATRIZ *matriz);
-int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int inverse) ;
+
+/**
+ * @brief Função que faz a retrosubstituição de um sistema linear
+ *
+ * Esta funlção é implementada especificamente para resolver
+ * sistemas lineares utilizando matrizes LU, através da resolução
+ * de sistemas lineares do tipo LU*X=B, calculando o sistema com base
+ * em cada coluna de X e B. 
+ * O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Lyb resolve
+ * o sistema L*Y=B. 
+ * @param L É uma matriz do tipo #MATRIZ, resultante da fatoração LU
+ * da matriz original.
+ * @param y É uma matriz do tipo #MATRIZ, que será usada para guardar
+ * os elementos da solução do sistema.
+ * @param b é um vetor auxiliar do tipo double.
+ * @param itentity é uma flag que indica se a matriz B é a identidade.
+ * 
+ */
+int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) ;
+
+/**
+ * @brief Função que faz a substituição avançada de um sistema linear
+ *
+ * Esta funlção é implementada especificamente para resolver
+ * sistemas lineares utilizando matrizes LU, através da resolução
+ * de sistemas lineares do tipo LU*X=B, calculando o sistema com base
+ * em cada coluna de X e B. 
+ * O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Uxy resolve
+ * o sistema L*Y=B. 
+ * @param U É uma matriz do tipo #MATRIZ, resultante da fatoração LU
+ * da matriz original.
+ * @param y É uma matriz do tipo #MATRIZ, que será usada para guardar
+ * os elementos da solução do sistema.
+ * @param b é um vetor auxiliar do tipo double.
+ * 
+ */
 int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
+
+/**
+ * @brief Função que faz a substituição avançada de um sistema linear
+ * Faz o refinamento.
+ * 
+ */
 double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter);
+
+
 double timestamp (void);
+
+/**
+ * @brief Função para calcular o reíduo.
+ * 
+ */
 void residuo(MATRIZ LU, MATRIZ B, MATRIZ *R);
 
 
 int main (int argc, char** argv) {
+
 	srand( 20172 );
 	int n,iteracoes;
 	char *arqEntrada , *arqSaida;
@@ -147,7 +239,7 @@ int fatoracaoLU (MATRIZ *matriz) {
 	return 0;
 }
 
-int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *B, int inverse) {
+int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *B, int identity) {
 #ifdef DEBUG
 	printf("[SUBSTITUICAO_LYB] Iniciando a resolucao do sistema Ly=b.\n");
 #endif
@@ -163,7 +255,7 @@ int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *B, int inverse) {
 		y->dados[pos(i, i, tam)] = 1;
 
 	for (int b = 0; b < tam-1; ++b) { // cada coluna da matriz é um vetor b (A*x=b) para resolver o sistema
-		if (!inverse)
+		if (!identity)
 		{
 			for (int k = 0; k < tam; ++k)
 				B[k] = y->dados[pos(k,b,tam)];
@@ -171,14 +263,14 @@ int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *B, int inverse) {
 		}
 
 		for (int lin = 1; lin < tam; ++lin) { // da segunda linha em diante (a primeira sofre alteração)
-			if (!inverse)
+			if (!identity)
 			{
 				y->dados[pos(lin,b,tam)] = B[lin];
 			}
 			for (int col = b; col < lin; ++col) { // começa a partir da primeira valoração não nula (b)
 				y->dados[pos(lin, b, tam)] -= L.dados[pos(lin, col, tam)]*y->dados[pos(col, b, tam)];
 			}
-			if (!inverse)
+			if (!identity)
 				y->dados[pos(lin, b, tam)]=(y->dados[pos(lin,b,tam)]*1.0)/L.dados[pos(lin,lin,tam)];
 		}
 	}

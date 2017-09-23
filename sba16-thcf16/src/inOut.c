@@ -2,6 +2,15 @@
 #include "matriz.h"
 #include "inOut.h"
 
+/**
+ * @file inOut.h
+ * @author Stephanie Briere Americo, Talita Halboth Cunha Fernandes
+ * @date 23 Sep 2017
+ * @brief Funções referentes à entrada 
+ * e saída de arquivos
+ *
+ */
+
 FILE *out;
 //retorna o numero k de iterações
 int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N)
