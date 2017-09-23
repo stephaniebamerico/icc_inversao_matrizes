@@ -25,26 +25,46 @@ typedef struct MATRIZ {
 
 
 /**
- * @brief Função que faz a retrosubstituição de um sistema linear
+ * @brief Função que gera uma matriz quadrada aleatória
  *
- * Esta funlção é implementada especificamente para resolver
- * sistemas lineares utilizando matrizes LU, através da resolução
- * de sistemas lineares do tipo LU*X=B, calculando o sistema com base
- * em cada coluna de X e B. 
- * O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Lyb resolve
- * o sistema L*Y=B. 
- * @param L É uma matriz do tipo #MATRIZ, resultante da fatoração LU
- * da matriz original.
- * @param y É uma matriz do tipo #MATRIZ, que será usada para guardar
- * os elementos da solução do sistema.
- * @param b é um vetor auxiliar do tipo double.
- * @param itentity é uma flag que indica se a matriz B é a identidade.
- * 
+ * @param n é o tamanho da matriz a ser gerada
+ * \return Retorna o ponteiro para uma matriz
+ *
  */
 double *geraMatrizQuadradaRandomica(unsigned int n);
 
+/**
+ * @brief Função que imprime os elementos de uma matriz
+ *
+ */
 void imprimeMatriz (MATRIZ matriz);
+
+/**
+ * @brief Função que troca duas linhas de uma matriz
+ * @param matriz é um ponteiro para a matriz a ser alterada
+ * @param l1 é uma das linhas a ser trocada
+ * @param l2 é uma das linhas a ser trocada
+ *
+ */
 void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2);
+
+/**
+ * @brief Função que realiza pivotamento parcial em uma matriz para a fatoração LU
+ * @param matriz é um ponteiro para a matriz a ser alterada
+ * @param col é a coluna onde deve ser realizado o pivotamento
+ * \return @c 0 se foi possível realizar o pivotamento
+ * \return @c -1 se não foi possível realizar o pivotamento
+ * 
+ */
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
+
+/**
+ * @brief Função que calcula a posição @p lin x @p col da uma matriz de tamanho @p tam * @p tam, alocada em um vetor
+ * @param lin é a linha da matriz
+ * @param col é a coluna da matriz
+ * @param tam é o tamanho da matriz
+ * \return Retorna um inteiro que é a posição no vetor
+ * 
+ */
 unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
 #endif

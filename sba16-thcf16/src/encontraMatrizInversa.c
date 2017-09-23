@@ -47,6 +47,9 @@
  * @brief Função que faz a fatoração LU de uma matriz quadrada.
  *
  * Esta função recebe apenas um parâmetro, @p matriz do tipo #MATRIZ.
+ * @param matriz é a matriz a ser fatorada.
+ * \return @c 0 se a fatoração não deu erro
+ * \return @c -1 se houve erro na fatoração
  *
  */
 int fatoracaoLU (MATRIZ *matriz);
@@ -66,7 +69,8 @@ int fatoracaoLU (MATRIZ *matriz);
  * os elementos da solução do sistema.
  * @param b é um vetor auxiliar do tipo double.
  * @param itentity é uma flag que indica se a matriz B é a identidade.
- * 
+ * \return @c 0 se a fatoração não deu erro
+ * \return @c -1 se houve erro na fatoração
  */
 int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) ;
 
@@ -84,6 +88,8 @@ int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) ;
  * @param y É uma matriz do tipo #MATRIZ, que será usada para guardar
  * os elementos da solução do sistema.
  * @param b é um vetor auxiliar do tipo double.
+ * \return @c 0 se a fatoração não deu erro
+ * \return @c -1 se houve erro na fatoração
  * 
  */
 int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
@@ -91,6 +97,8 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 /**
  * @brief Função que faz a substituição avançada de um sistema linear
  * Faz o refinamento.
+ * \return @c 0 se a fatoração não deu erro
+ * \return @c -1 se houve erro na fatoração
  * 
  */
 double refinamento(MATRIZ A, MATRIZ inv_A, double *R, int iter);

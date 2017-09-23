@@ -3,16 +3,22 @@
 #include "inOut.h"
 
 /**
- * @file inOut.h
+ * @file inOut.c
  * @author Stephanie Briere Americo, Talita Halboth Cunha Fernandes
  * @date 23 Sep 2017
  * @brief Funções referentes à entrada 
  * e saída de arquivos
- *
  */
 
+
+/**
+ * Variável com o arquivo de saída a ser utilizado na impressão de dados
+ */
 FILE *out;
 //retorna o numero k de iterações
+
+
+
 int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N)
 {
     *entrada = NULL;

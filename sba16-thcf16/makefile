@@ -9,7 +9,7 @@ CFLAGS = -Wall -g -lm -I $(INCLUDE) -DDEBUG
 
 all: dir invmat
 
-doc: 
+doc: $(SRC)/* $(INCLUDE)/*
 	doxygen Doxyfile 
 
 clean:
