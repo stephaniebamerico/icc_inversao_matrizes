@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['refina',['refina',['../encontraMatrizInversa_8c.html#a1f807a8dff8c2ffd11a63bc10923581f',1,'encontraMatrizInversa.c']]],
-  ['refinamento',['refinamento',['../encontraMatrizInversa_8c.html#a8ada016da2268bfbb0dd4b17f44f0465',1,'encontraMatrizInversa.c']]],
-  ['residuo',['residuo',['../encontraMatrizInversa_8c.html#a1b013e84f55d70e71f65f6694411da23',1,'encontraMatrizInversa.c']]]
+  ['pivotamentoparcial',['pivotamentoParcial',['../matriz_8h.html#a0448d327d5d81a22196618455ccbcc47',1,'pivotamentoParcial(MATRIZ *matriz, unsigned int col):&#160;matriz.c'],['../matriz_8c.html#a0448d327d5d81a22196618455ccbcc47',1,'pivotamentoParcial(MATRIZ *matriz, unsigned int col):&#160;matriz.c']]],
+  ['pos',['pos',['../matriz_8h.html#a4f2f3975a346958cb746b371d0140cf0',1,'pos(unsigned int lin, unsigned int col, unsigned int tam):&#160;matriz.c'],['../matriz_8c.html#a4f2f3975a346958cb746b371d0140cf0',1,'pos(unsigned int lin, unsigned int col, unsigned int tam):&#160;matriz.c']]]
 ];

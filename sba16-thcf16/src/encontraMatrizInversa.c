@@ -1,7 +1,8 @@
-/*! \mainpage My Personal Index Page
+/*! \mainpage notitle
  *
- * @author Stephanie Briere Americo GRR29165313
- * @author Talita Halboth Cunha Fernandes GRR29165399
+ * \authors Stephanie Briere Americo @b GRR29165313
+ * \authors Talita Halboth Cunha Fernandes @b GRR29165399
+ * @date 23 Sep 2017
  * \section intro_sec Introdução
  *
  * O objetivo deste trabalho é 
@@ -12,16 +13,16 @@
  * Para tal, o programa utiliza o Método da Eliminação de Gauss com Pivotamento Parcial, Fatoração LU e Refinamento.
  *
  * \subsection install_sec Compilação
- * Há uma makefile no projeto que compila o código, gerando o executável @p invmat
+ * Há uma makefile no projeto que compila o código, gerando o executável @c invmat
  *
  * \subsection run_sec Rodando o programa
  * @verbatim invmat [-e arquivo_entrada] [-o arquivo_saida] [-r N] -i k@endverbatim
  *
  *<ul>
- *	<li> @p -i @p arquivo_entrada: parâmetro opcional no qual @p arquivo_entrada é o caminho completo para o arquivo contendo a matriz a ser invertida. Em caso de ausência do parâmetro, a entrada será lida de @p stdin.
- *	<li>@p -o @p arquivo_saida: parâmetro opcional no qual @p arquivo_saida é o caminho completo para o arquivo que vai conter a matriz inversa. Em caso de ausência do parâmetro, a saída será impressa em @p stdout.
- *	<li>@p -r @p N: parâmetro opcional no qual @p N é a dimensão da matriz de entrada a ser gerada aleatoriamente
- *	<li>@p -i @p k: Número de iterações de refinamento a serem executadas (>0)
+ *	<li> @c -e @c arquivo_entrada: parâmetro opcional no qual @c arquivo_entrada é o caminho completo para o arquivo contendo a matriz a ser invertida. Em caso de ausência do parâmetro, a entrada será lida de @c stdin.
+ *	<li>@c -o @c arquivo_saida: parâmetro opcional no qual @c arquivo_saida é o caminho completo para o arquivo que vai conter a matriz inversa. Em caso de ausência do parâmetro, a saída será impressa em @c stdout.
+ *	<li>@c -r @c N: parâmetro opcional no qual @c N é a dimensão da matriz de entrada a ser gerada aleatoriamente
+ *	<li>@c -i @c k: Número de iterações de refinamento a serem executadas (>0)
  *
  *
  */

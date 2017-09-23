@@ -1,12 +1,12 @@
 var indexSectionsWithContent =
 {
-  0: "defgimoprst",
+  0: "defgimnoprst",
   1: "m",
   2: "eim",
   3: "efgimprst",
   4: "dot",
   5: "m",
-  6: "m"
+  6: "n"
 };
 
 var indexSectionNames =
@@ -22,12 +22,12 @@ var indexSectionNames =
 
 var indexSectionLabels =
 {
-  0: "Tudo",
-  1: "Estruturas de dados",
-  2: "Ficheiros",
-  3: "Funções",
-  4: "Variáveis",
-  5: "Definições de tipos",
-  6: "Páginas"
+  0: "All",
+  1: "Data Structures",
+  2: "Files",
+  3: "Functions",
+  4: "Variables",
+  5: "Typedefs",
+  6: "Pages"
 };
 
