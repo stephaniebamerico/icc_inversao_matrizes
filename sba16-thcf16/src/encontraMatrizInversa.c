@@ -331,8 +331,7 @@ void calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R) {
 				C += A.dados[pos(lin,k,tam)]*inv_A.dados[pos(k,col,tam)];
 			C = (lin == col ? 1.0 - C : -C);
 			R->dados[pos(lin, col, tam)] = C; // R = I - A*inv_A
-			C *= C;
-			r += (lin == col ? 1.0 - C : C); // ||r|| = sum(R[i,j]^2)
+			r += C*C; // ||r|| = sum(R[i,j]^2)
 		}
 	}
 	r = sqrt(r); // ||r|| = sqrt(sum(R[i,j]^2))
