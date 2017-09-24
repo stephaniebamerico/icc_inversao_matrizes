@@ -40,6 +40,7 @@
 #include "matriz.h"
 #include "inOut.h"
 #include <math.h>
+#include <float.h>
 #include <time.h>
 #include <sys/time.h>
 
@@ -102,7 +103,7 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
  * 
  */
 int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter);
-void calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R);
+int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R);
 
 double timestamp (void);
 
@@ -183,6 +184,10 @@ int main (int argc, char** argv) {
 		fprintf(stderr, "Erro em substituicao_Lyb.\n");
 		return 0;
 	}
+	#ifdef DEBUG
+	    printf("[main] Matriz LYB:\n");
+		imprimeMatriz(inversa);
+	#endif
 	if (substituicao_Uxy(originalLU, &inversa, aux) == -1) { // resolve o sistema U*x=y (o resultado é armazenado na inversa)
 		fprintf(stderr, "Erro em substituicao_Uxy.\n");
 		return 0;
@@ -190,16 +195,11 @@ int main (int argc, char** argv) {
 	#ifdef DEBUG
     	printf("[main] Matriz inversa pre-refinamento:\n");
 	#endif
-
-
-
 	imprimeMatriz(inversa);
-	iteracoes = 100;
-	for(int j = 0; j < n*n; ++j)
-		inversa.dados[j] += 10*j;	
-
-
-
+	
+	//iteracoes = 1;
+	/*for(int j = 0; j < n*n; ++j)
+		inversa.dados[j] += 10*j;	*/
 
 	// neste ponto, a inversa deveria estar correta... partimos para o refinamento
 	if(refinamento(original, &inversa, originalLU, aux, iteracoes) == -1) {
@@ -279,11 +279,20 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 		for (int k = 0; k < tam; ++k)
 			b[k] = y->dados[pos(k,i,tam)];
 		// faz a retrosubstituição 
+		if(U.dados[pos(tam-1, tam-1, tam)] == 0) {
+			printf("[substituicao_Uxy] Operacao gera NaN/inf.\n");
+			return -1;
+		}
+
 		y->dados[pos(tam-1,i,tam)] = (b[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
 		for (int k = tam-1; k >= 0; --k) {
 			y->dados[pos(k,i,tam)] = b[k];
 			for (int j = tam-1; j > k; --j)
 				y->dados[pos(k,i,tam)] -= U.dados[pos(k,j,tam)]*y->dados[pos(j,i,tam)];
+			if(U.dados[pos(k,k,tam)] == 0) {
+				printf("[substituicao_Uxy] Operacao gera NaN/inf.\n");
+				return -1;
+			}
 			y->dados[pos(k,i,tam)]=(y->dados[pos(k,i,tam)]*1.0)/U.dados[pos(k,k,tam)];
 		}        
 	}
@@ -302,7 +311,8 @@ int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter) {
 		return -1;
 
 	for (int i = 0; i < iter; ++i) {
-		calculaResiduo(A, *inv_A, &R);
+		if(calculaResiduo(A, *inv_A, &R) == -1)
+			return -1;
 		#ifdef DEBUG
 	    	printf("[refinamento] Matriz R %d:\n", i+1);
 			imprimeMatriz(R);
@@ -327,10 +337,7 @@ int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter) {
 	return 0;
 }
 
-void calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R) {
-#ifdef DEBUG
-	printf("[refinamento] Iniciando refinamento de matrizes %ux%u.\n", A.tam, A.tam);
-#endif
+int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R) {
 	unsigned int tam = A.tam;
 	double C, r = 0;
 	for (int lin = 0; lin < tam; lin++) {
@@ -344,7 +351,13 @@ void calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R) {
 		}
 	}
 	r = sqrt(r); // ||r|| = sqrt(sum(R[i,j]^2))
+	if (r == 0) {
+		printf("[calculaResiduo] Residuo se tornou inf.\n");
+		return -1;
+	}
+
 	printf("r = %.17g\n", r);
+	return 0;
 }
 
 double timestamp(void){
