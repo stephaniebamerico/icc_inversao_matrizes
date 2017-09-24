@@ -248,7 +248,7 @@ int main (int argc, char** argv) {
 /*##############################################*/
 
 	// arruma a inversa (pivotamento)
-	for (int i = 0; i < inversa.tam; ++i)
+	for (int i = inversa.tam-1; i >= 0; --i)
 		if (i != trocas[i]) trocaColunas (&inversa, i, trocas[i]);
 
 /*##############################################*/
