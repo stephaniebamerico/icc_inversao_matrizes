@@ -91,6 +91,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">matriz.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Funções referentes à manipoulação de matrizes.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="matriz_8h_source.html">matriz.h</a>&quot;</code><br />
 </div>
 <p><a href="matriz_8c_source.html">Go to the source code of this file.</a></p>
@@ -118,7 +121,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a88b890af3742b25e56802a773a5300e6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matriz_8c.html#a88b890af3742b25e56802a773a5300e6">alocaMatrizQuadrada</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> *matriz)</td></tr>
 <tr class="separator:a88b890af3742b25e56802a773a5300e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Funções referentes à manipoulação de matrizes. </p>
+<dl class="section author"><dt>Author</dt><dd>Stephanie Briere Americo, Talita Halboth Cunha Fernandes </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>23 Sep 2017 </dd></dl>
+
+<p>Definition in file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a88b890af3742b25e56802a773a5300e6"></a>
 <div class="memitem">
 <div class="memproto">
@@ -133,7 +142,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="matriz_8c_source.html#l00084">84</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+<p>Definition at line <a class="el" href="matriz_8c_source.html#l00093">93</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
 </div>
@@ -158,9 +167,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Retorna o ponteiro para uma matriz </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Retorna um ponteiro para uma matriz de tamanho n*n </dd></dl>
 
-<p>Definition at line <a class="el" href="matriz_8c_source.html#l00003">3</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+<p>Definition at line <a class="el" href="matriz_8c_source.html#l00012">12</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
 </div>
@@ -189,8 +198,15 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função que imprime os elementos de uma matriz. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">matriz</td><td>é a matriz a ser impressa </td></tr>
+    <tr><td class="paramname">out</td><td>é o arquivo onde deve ser impressa a saída </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Definition at line <a class="el" href="matriz_8c_source.html#l00032">32</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+<p>Definition at line <a class="el" href="matriz_8c_source.html#l00041">41</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
 </div>
@@ -230,7 +246,7 @@ Functions</h2></td></tr>
 <dd>
 <code>-1</code> se não foi possível realizar o pivotamento </dd></dl>
 
-<p>Definition at line <a class="el" href="matriz_8c_source.html#l00047">47</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+<p>Definition at line <a class="el" href="matriz_8c_source.html#l00056">56</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
 </div>
@@ -275,7 +291,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Retorna um inteiro que é a posição no vetor </dd></dl>
 
-<p>Definition at line <a class="el" href="matriz_8c_source.html#l00080">80</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+<p>Definition at line <a class="el" href="matriz_8c_source.html#l00089">89</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
 </div>
@@ -319,7 +335,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="matriz_8c_source.html#l00070">70</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+<p>Definition at line <a class="el" href="matriz_8c_source.html#l00079">79</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
 </div>
@@ -363,7 +379,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="matriz_8c_source.html#l00061">61</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
+<p>Definition at line <a class="el" href="matriz_8c_source.html#l00070">70</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
 </div>

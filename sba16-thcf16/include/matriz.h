@@ -35,6 +35,8 @@ double *geraMatrizQuadradaRandomica(unsigned int n);
 
 /**
  * @brief Função que imprime os elementos de uma matriz
+ * @param matriz é a matriz a ser impressa
+ * @param out é o arquivo onde deve ser impressa a saída
  *
  */
 void imprimeMatriz (MATRIZ matriz, FILE *out);

@@ -124,7 +124,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a9b05b7fb541cc5167cb6d485e3b04939"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que faz a substituição avançada de um sistema linear.  <a href="#a9b05b7fb541cc5167cb6d485e3b04939">More...</a><br /></td></tr>
 <tr class="separator:a9b05b7fb541cc5167cb6d485e3b04939"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acebd2025a1b639432db2b24bb61eb23c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#acebd2025a1b639432db2b24bb61eb23c">refinamento</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> A, <a class="el" href="structMATRIZ.html">MATRIZ</a> *inv_A, <a class="el" href="structMATRIZ.html">MATRIZ</a> LU, double *aux, int iter, double *tempoIter, double *tempoResiduo)</td></tr>
-<tr class="memdesc:acebd2025a1b639432db2b24bb61eb23c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que realiza o refinamento da solução obtida pela resolução do S.L. e calcula o residuo a cada nova iteracao do refinamento.  <a href="#acebd2025a1b639432db2b24bb61eb23c">More...</a><br /></td></tr>
+<tr class="memdesc:acebd2025a1b639432db2b24bb61eb23c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que realiza o refinamento da solução obtida pela resolução do S.L. e calcula o residuo a cada nova iteração do refinamento.  <a href="#acebd2025a1b639432db2b24bb61eb23c">More...</a><br /></td></tr>
 <tr class="separator:acebd2025a1b639432db2b24bb61eb23c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eecaf9f872839d3d8e2aa991fefba43"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#a4eecaf9f872839d3d8e2aa991fefba43">calculaResiduo</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> A, <a class="el" href="structMATRIZ.html">MATRIZ</a> inv_A, <a class="el" href="structMATRIZ.html">MATRIZ</a> *R, int iter, double *tempoResiduo)</td></tr>
 <tr class="memdesc:a4eecaf9f872839d3d8e2aa991fefba43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que encontra a <a class="el" href="structMATRIZ.html" title="Estrutura de dados para representar uma matriz. ">MATRIZ</a> R resultado de R = I - A*A_inv. Além disso, calcula o resíduo da iteração atual do refinamento.  <a href="#a4eecaf9f872839d3d8e2aa991fefba43">More...</a><br /></td></tr>
@@ -153,8 +153,9 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>inf negativo </p>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00047">47</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00048">48</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -167,8 +168,9 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Not a Number </p>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00048">48</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00050">50</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -181,7 +183,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>My Preprocessor Macro. </p>
+<p>inf positivo </p>
 
 <p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00046">46</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
@@ -245,7 +247,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>1</code> se o calculo do residuo resultou em NaN ou inf (não consideramos erro) </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00391">391</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00393">393</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -274,7 +276,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 </div><div class="memdoc">
 
 <p>Função que faz a fatoração LU de uma matriz quadrada. </p>
-<p>Esta função recebe apenas um parâmetro, <code>matriz</code> do tipo <a class="el" href="structMATRIZ.html" title="Estrutura de dados para representar uma matriz. ">MATRIZ</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">matriz</td><td>É a matriz a ser fatorada. </td></tr>
     <tr><td class="paramname">trocas</td><td>É um vetor de inteiros que salva quais linhas da matriz foram trocadas para realizar a fatoração </td></tr>
@@ -285,7 +287,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>-1</code> se houve erro na fatoração </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00275">275</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00277">277</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -313,7 +315,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00146">146</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00148">148</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -371,7 +373,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Função que realiza o refinamento da solução obtida pela resolução do S.L. e calcula o residuo a cada nova iteracao do refinamento. </p>
+<p>Função que realiza o refinamento da solução obtida pela resolução do S.L. e calcula o residuo a cada nova iteração do refinamento. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>é uma matriz do tipo <a class="el" href="structMATRIZ.html" title="Estrutura de dados para representar uma matriz. ">MATRIZ</a>, que guarda o valor inicial em cima do qual calculamos a inversa. </td></tr>
@@ -388,7 +390,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>-1</code> se houve algum erro </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00360">360</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00362">362</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -429,7 +431,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 </div><div class="memdoc">
 
 <p>Função que faz a retrosubstituição de um sistema linear. </p>
-<p>Esta funlção é implementada especificamente para resolver sistemas lineares utilizando matrizes LU, através da resolução de sistemas lineares do tipo LU*X=B, calculando o sistema com base em cada coluna de X e B. O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Lyb resolve o sistema L*y=b. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Esta funlção é implementada especificamente para resolver sistemas lineares utilizando matrizes LU, através da resolução de sistemas do tipo LU*X=B, calculando o sistema com base em cada coluna de X e B. O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Lyb resolve o sistema L*y=b. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">L</td><td>É uma matriz do tipo <a class="el" href="structMATRIZ.html" title="Estrutura de dados para representar uma matriz. ">MATRIZ</a>, resultante da fatoração LU da matriz original. </td></tr>
     <tr><td class="paramname">y</td><td>É uma matriz do tipo <a class="el" href="structMATRIZ.html" title="Estrutura de dados para representar uma matriz. ">MATRIZ</a>, que será usada para guardar os elementos da solução do sistema. </td></tr>
@@ -439,7 +441,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00301">301</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00303">303</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -474,7 +476,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 </div><div class="memdoc">
 
 <p>Função que faz a substituição avançada de um sistema linear. </p>
-<p>Esta funlção é implementada especificamente para resolver sistemas lineares utilizando matrizes LU, através da resolução de sistemas lineares do tipo LU*X=B, calculando o sistema com base em cada coluna de X e B. O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Uxy resolve o sistema U*x=y. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Esta função é implementada especificamente para resolver sistemas lineares utilizando matrizes LU, através da resolução de sistemas do tipo LU*X=B, calculando o sistema com base em cada coluna de X e B. O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Uxy resolve o sistema U*x=y. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">U</td><td>É uma matriz do tipo <a class="el" href="structMATRIZ.html" title="Estrutura de dados para representar uma matriz. ">MATRIZ</a>, resultante da fatoração LU da matriz original. </td></tr>
     <tr><td class="paramname">y</td><td>É uma matriz do tipo <a class="el" href="structMATRIZ.html" title="Estrutura de dados para representar uma matriz. ">MATRIZ</a>, que será usada para guardar os elementos da solução do sistema. </td></tr>
@@ -486,7 +488,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>-1</code> se houve erro na fatoração </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00324">324</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00326">326</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -507,7 +509,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <p>Função para contagem do tempo. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>o</code> valor atual do tempo </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00418">418</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00420">420</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
