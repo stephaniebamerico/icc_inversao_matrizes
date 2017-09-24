@@ -190,8 +190,17 @@ int main (int argc, char** argv) {
 	#ifdef DEBUG
     	printf("[main] Matriz inversa pre-refinamento:\n");
 	#endif
+
+
+
 	imprimeMatriz(inversa);
-	iteracoes = 1;
+	iteracoes = 100;
+	for(int j = 0; j < n*n; ++j)
+		inversa.dados[j] += 10*j;	
+
+
+
+
 	// neste ponto, a inversa deveria estar correta... partimos para o refinamento
 	if(refinamento(original, &inversa, originalLU, aux, iteracoes) == -1) {
 		fprintf(stderr, "Erro em refinamento.\n");
