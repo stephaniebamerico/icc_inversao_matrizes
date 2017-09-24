@@ -126,9 +126,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a6b3b7867e73b0927088f52104e81d54a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que troca duas linhas de uma matriz.  <a href="#a6b3b7867e73b0927088f52104e81d54a">More...</a><br /></td></tr>
 <tr class="separator:a6b3b7867e73b0927088f52104e81d54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeec177e34cf2770fe46fdace10eeb60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matriz_8h.html#abeec177e34cf2770fe46fdace10eeb60">trocaColunas</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> *matriz, unsigned int c1, unsigned int c2)</td></tr>
-<tr class="memdesc:abeec177e34cf2770fe46fdace10eeb60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que realiza pivotamento parcial em uma matriz para a fatoração LU.  <a href="#abeec177e34cf2770fe46fdace10eeb60">More...</a><br /></td></tr>
+<tr class="memdesc:abeec177e34cf2770fe46fdace10eeb60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que troca duas colunas de uma matriz.  <a href="#abeec177e34cf2770fe46fdace10eeb60">More...</a><br /></td></tr>
 <tr class="separator:abeec177e34cf2770fe46fdace10eeb60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0448d327d5d81a22196618455ccbcc47"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matriz_8h.html#a0448d327d5d81a22196618455ccbcc47">pivotamentoParcial</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> *matriz, unsigned int col)</td></tr>
+<tr class="memdesc:a0448d327d5d81a22196618455ccbcc47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que realiza pivotamento parcial em uma matriz para a fatoração LU.  <a href="#a0448d327d5d81a22196618455ccbcc47">More...</a><br /></td></tr>
 <tr class="separator:a0448d327d5d81a22196618455ccbcc47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f2f3975a346958cb746b371d0140cf0"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="matriz_8h.html#a4f2f3975a346958cb746b371d0140cf0">pos</a> (unsigned int lin, unsigned int col, unsigned int tam)</td></tr>
 <tr class="memdesc:a4f2f3975a346958cb746b371d0140cf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que calcula a posição <code>lin</code> x <code>col</code> da uma matriz de tamanho <code>tam</code> * <code>tam</code>, alocada em um vetor.  <a href="#a4f2f3975a346958cb746b371d0140cf0">More...</a><br /></td></tr>
@@ -257,6 +258,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Função que realiza pivotamento parcial em uma matriz para a fatoração LU. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">matriz</td><td>é um ponteiro para a matriz a ser alterada </td></tr>
+    <tr><td class="paramname">col</td><td>é a coluna onde deve ser realizado o pivotamento </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>0</code> se foi possível realizar o pivotamento </dd>
+<dd>
+<code>-1</code> se não foi possível realizar o pivotamento </dd></dl>
+
 <p>Definition at line <a class="el" href="matriz_8c_source.html#l00047">47</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 
 </div>
@@ -336,17 +349,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Função que realiza pivotamento parcial em uma matriz para a fatoração LU. </p>
+<p>Função que troca duas colunas de uma matriz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">matriz</td><td>é um ponteiro para a matriz a ser alterada </td></tr>
-    <tr><td class="paramname">col</td><td>é a coluna onde deve ser realizado o pivotamento </td></tr>
+    <tr><td class="paramname">c1</td><td>é uma das linhas a ser trocada </td></tr>
+    <tr><td class="paramname">c2</td><td>é uma das linhas a ser trocada </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>0</code> se foi possível realizar o pivotamento </dd>
-<dd>
-<code>-1</code> se não foi possível realizar o pivotamento </dd></dl>
 
 <p>Definition at line <a class="el" href="matriz_8c_source.html#l00070">70</a> of file <a class="el" href="matriz_8c_source.html">matriz.c</a>.</p>
 

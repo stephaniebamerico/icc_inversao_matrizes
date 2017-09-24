@@ -1,5 +1,14 @@
 #include "matriz.h"
 
+/**
+ * @file matriz.c
+ * @author Stephanie Briere Americo, Talita Halboth Cunha Fernandes
+ * @date 23 Sep 2017
+ * @brief Funções
+ * referentes à manipoulação de matrizes 
+ *
+ */
+
 double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo professor
 #ifdef DEBUG
 	printf("[geraMatrizQuadradaRandomica] Iniciando.\n");

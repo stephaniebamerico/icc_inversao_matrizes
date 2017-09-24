@@ -28,7 +28,7 @@ typedef struct MATRIZ {
  * @brief Função que gera uma matriz quadrada aleatória
  *
  * @param n é o tamanho da matriz a ser gerada
- * \return Retorna o ponteiro para uma matriz
+ * \return Retorna um ponteiro para uma matriz de tamanho n*n
  *
  */
 double *geraMatrizQuadradaRandomica(unsigned int n);
@@ -49,6 +49,15 @@ void imprimeMatriz (MATRIZ matriz, FILE *out);
 void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 
 /**
+ * @brief Função que troca duas colunas de uma matriz
+ * @param matriz é um ponteiro para a matriz a ser alterada
+ * @param c1 é uma das linhas a ser trocada
+ * @param c2 é uma das linhas a ser trocada
+ *
+ */
+void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2);
+
+/**
  * @brief Função que realiza pivotamento parcial em uma matriz para a fatoração LU
  * @param matriz é um ponteiro para a matriz a ser alterada
  * @param col é a coluna onde deve ser realizado o pivotamento
@@ -56,8 +65,6 @@ void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2);
  * \return @c -1 se não foi possível realizar o pivotamento
  * 
  */
-
-void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2);
 
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 

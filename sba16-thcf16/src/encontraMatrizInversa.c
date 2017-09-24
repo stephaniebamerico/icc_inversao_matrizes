@@ -5,8 +5,7 @@
  * @date 23 Sep 2017
  * \section intro_sec Introdução
  *
- * O objetivo deste trabalho é 
- * implementar um programa computacional que, 
+ * O objetivo deste trabalho é  
  * dada uma matriz quadrada A de dimensão n, 
  * encontre a matriz inversa de A (inv(A)), tal que A * inv(A) 
  * = I, onde I é a matriz identidade.
@@ -19,7 +18,7 @@
  * @verbatim invmat [-e arquivo_entrada] [-o arquivo_saida] [-r N] [-i k]@endverbatim
  *
  *<ul>
- *	<li> @c -e @c arquivo_entrada: parâmetro opcional no qual @c arquivo_entrada é o caminho completo para o arquivo contendo a matriz a ser invertida. Em caso de ausência do parâmetro, a entrada será lida de @c stdin.
+ *	<li>@c -e @c arquivo_entrada: parâmetro opcional no qual @c arquivo_entrada é o caminho completo para o arquivo contendo a matriz a ser invertida. Em caso de ausência do parâmetro, a entrada será lida de @c stdin.
  *	<li>@c -o @c arquivo_saida: parâmetro opcional no qual @c arquivo_saida é o caminho completo para o arquivo que vai conter a matriz inversa. Em caso de ausência do parâmetro, a saída será impressa em @c stdout.
  *	<li>@c -r @c N: parâmetro opcional no qual @c N é a dimensão da matriz de entrada a ser gerada aleatoriamente
  *	<li>@c -i @c k: Número de iterações de refinamento a serem executadas (>0)
@@ -43,14 +42,17 @@
 #include <time.h>
 #include <sys/time.h>
 
+/**inf positivo*/ 
 #define P_INF (1.0/0.0)
+/**inf negativo*/ 
 #define N_INF (-1.0/0.0)
+/**Not a Number*/ 
 #define NaN (0.0/0.0)
 
 /**
  * @brief Função que faz a fatoração LU de uma matriz quadrada.
  *
- * Esta função recebe apenas um parâmetro, @p matriz do tipo #MATRIZ.
+ * 
  * @param matriz É a matriz a ser fatorada.
  * @param trocas É um vetor de inteiros que salva quais linhas da matriz 
  * foram trocadas para realizar a fatoração
@@ -65,7 +67,7 @@ int fatoracaoLU (MATRIZ *matriz, int *trocas) ;
  *
  * Esta funlção é implementada especificamente para resolver
  * sistemas lineares utilizando matrizes LU, através da resolução
- * de sistemas lineares do tipo LU*X=B, calculando o sistema com base
+ * de sistemas do tipo LU*X=B, calculando o sistema com base
  * em cada coluna de X e B. 
  * O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Lyb resolve
  * o sistema L*y=b. 
@@ -81,9 +83,9 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) ;
 /**
  * @brief Função que faz a substituição avançada de um sistema linear
  *
- * Esta funlção é implementada especificamente para resolver
+ * Esta função é implementada especificamente para resolver
  * sistemas lineares utilizando matrizes LU, através da resolução
- * de sistemas lineares do tipo LU*X=B, calculando o sistema com base
+ * de sistemas do tipo LU*X=B, calculando o sistema com base
  * em cada coluna de X e B. 
  * O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Uxy resolve
  * o sistema U*x=y. 
@@ -100,7 +102,7 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 
 /**
  * @brief Função que realiza o refinamento da solução obtida pela resolução do S.L.
- * e calcula o residuo a cada nova iteracao do refinamento.
+ * e calcula o residuo a cada nova iteração do refinamento.
  *
  * @param A é uma matriz do tipo #MATRIZ, que guarda o valor inicial em cima do
  * qual calculamos a inversa.
