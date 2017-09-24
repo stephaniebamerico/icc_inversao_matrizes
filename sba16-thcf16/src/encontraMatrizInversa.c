@@ -40,7 +40,6 @@
 #include "matriz.h"
 #include "inOut.h"
 #include <math.h>
-#include <float.h>
 #include <time.h>
 #include <sys/time.h>
 
