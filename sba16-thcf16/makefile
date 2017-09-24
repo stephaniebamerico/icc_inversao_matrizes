@@ -3,11 +3,12 @@ OBJ = obj
 INCLUDE = include
 
 CC = gcc
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -DDEBUG
+CFLAGS = -Wall -g -lm -I $(INCLUDE) 
+#-DDEBUG
 
 .PHONY: dir
 
-all: dir invmat
+all: dir invmat doc
 
 doc: $(SRC)/* $(INCLUDE)/*
 	doxygen Doxyfile 
@@ -15,6 +16,7 @@ doc: $(SRC)/* $(INCLUDE)/*
 clean:
 	-rm invmat
 	-rm -r $(OBJ)
+	-rm -r doc
 
 # ----
 

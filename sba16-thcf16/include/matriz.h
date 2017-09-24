@@ -37,7 +37,7 @@ double *geraMatrizQuadradaRandomica(unsigned int n);
  * @brief Função que imprime os elementos de uma matriz
  *
  */
-void imprimeMatriz (MATRIZ matriz);
+void imprimeMatriz (MATRIZ matriz, FILE *out);
 
 /**
  * @brief Função que troca duas linhas de uma matriz

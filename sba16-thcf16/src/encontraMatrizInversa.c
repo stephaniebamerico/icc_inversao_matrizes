@@ -1,7 +1,7 @@
 /*! \mainpage notitle
  *
- * \authors Stephanie Briere Americo @b GRR29165313
- * \authors Talita Halboth Cunha Fernandes @b GRR29165399
+ * \authors Stephanie Briere Americo @b GRR20165313
+ * \authors Talita Halboth Cunha Fernandes @b GRR20165399
  * @date 23 Sep 2017
  * \section intro_sec Introdução
  *
@@ -16,7 +16,7 @@
  * Há uma makefile no projeto que compila o código, gerando o executável @c invmat
  *
  * \subsection run_sec Rodando o programa
- * @verbatim invmat [-e arquivo_entrada] [-o arquivo_saida] [-r N] -i k@endverbatim
+ * @verbatim invmat [-e arquivo_entrada] [-o arquivo_saida] [-r N] [-i k]@endverbatim
  *
  *<ul>
  *	<li> @c -e @c arquivo_entrada: parâmetro opcional no qual @c arquivo_entrada é o caminho completo para o arquivo contendo a matriz a ser invertida. Em caso de ausência do parâmetro, a entrada será lida de @c stdin.
@@ -43,6 +43,10 @@
 #include <time.h>
 #include <sys/time.h>
 
+#define P_INF (1.0/0.0)
+#define N_INF (-1.0/0.0)
+#define NaN (0.0/0.0)
+
 /**
  * @brief Função que faz a fatoração LU de uma matriz quadrada.
  *
@@ -62,7 +66,7 @@ int fatoracaoLU (MATRIZ *matriz);
  * de sistemas lineares do tipo LU*X=B, calculando o sistema com base
  * em cada coluna de X e B. 
  * O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Lyb resolve
- * o sistema L*Y=B. 
+ * o sistema L*y=b. 
  * @param L É uma matriz do tipo #MATRIZ, resultante da fatoração LU
  * da matriz original.
  * @param y É uma matriz do tipo #MATRIZ, que será usada para guardar
@@ -82,7 +86,7 @@ int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) ;
  * de sistemas lineares do tipo LU*X=B, calculando o sistema com base
  * em cada coluna de X e B. 
  * O sistema linear foi dividido em L*Y=B e U*X=Y. substituicao_Uxy resolve
- * o sistema L*Y=B. 
+ * o sistema U*x=y. 
  * @param U É uma matriz do tipo #MATRIZ, resultante da fatoração LU
  * da matriz original.
  * @param y É uma matriz do tipo #MATRIZ, que será usada para guardar
@@ -95,23 +99,49 @@ int substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) ;
 int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 
 /**
- * @brief Função que faz a substituição avançada de um sistema linear
- * Faz o refinamento.
- * \return @c 0 se a fatoração não deu erro
- * \return @c -1 se houve erro na fatoração
+ * @brief Função que realiza o refinamento da solução obtida pela resolução do S.L.
+ * e calcula o residuo a cada nova iteracao do refinamento.
+ *
+ * @param A é uma matriz do tipo #MATRIZ, que guarda o valor inicial em cima do
+ * qual calculamos a inversa.
+ * @param inv_A é uma matriz do tipo #MATRIZ, que guarda o valor da matriz inversa
+ * resultante da solução do S.L. A*inv_A=I, A=LU
+ * @param LU é uma matriz do tipo #MATRIZ, que guarda o valor da matriz original
+ * após a fatoração LU
+ * @param aux é um vetor auxiliar do tipo double
+ * @param iter é o número de iterações do refinamento que devem ser realizadas
+ * @param tempoIter é o tempo médio para calcular o S.L. (incluindo refinamento)
+ * @param tempoResiduo é o tempo médio para calcular o resíduo
+ *
+ * \return @c 0 se não houve nenhum erro
+ * \return @c -1 se houve algum erro
  * 
  */
-int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter);
-int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R);
-
-double timestamp (void);
-
+int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, double *tempoIter, double *tempoResiduo);
 /**
- * @brief Função para calcular o reíduo.
+ * @brief Função que encontra a #MATRIZ R resultado de R = I - A*A_inv.
+ * Além disso, calcula o resíduo da iteração atual do refinamento.
+ *
+ * @param A é uma matriz do tipo #MATRIZ, que guarda o valor inicial em cima do
+ * qual calculamos a inversa.
+ * @param inv_A é uma matriz do tipo #MATRIZ, que guarda o valor da matriz inversa
+ * resultante da solução do S.L. A*inv_A=I, A=LU
+ * @param R é uma matriz do tipo #MATRIZ, que guarda o resultado de R = I - A*A_inv
+ * @param iter é o número da iteração atual do refinamento
+ * @param tempoResiduo é o tempo médio para calcular o resíduo
+ *
+ * \return @c 0 se não houve nenhum erro
+ * \return @c 1 se o calculo do residuo resultou em NaN ou inf (não consideramos erro)
  * 
  */
-void residuo(MATRIZ LU, MATRIZ B, MATRIZ *R);
-
+int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R, int iter, double *tempoResiduo);
+/**
+ * @brief Função para contagem do tempo
+ *
+ * \return @c o valor atual do tempo
+ * 
+ */
+double timestamp (void);
 
 int main (int argc, char** argv) {
 
@@ -120,7 +150,7 @@ int main (int argc, char** argv) {
 	char *arqEntrada , *arqSaida;
 	MATRIZ original, originalLU, inversa; // matrizes utilizadas
 	double *aux = NULL;
-	double tempo;
+	double tempoLU, tempoIter, tempoResiduo;
 	out = stdout;
 
 	trataArgumentos(argc, argv, &arqEntrada, &arqSaida, &n, &iteracoes);	   
@@ -129,82 +159,93 @@ int main (int argc, char** argv) {
 	
 	//leitura dos dados da matriz
 	if (n == -1) {
-		if (entradaPorArquivo(arqEntrada,&original) == -1)
-			return 0;
+		if (entradaPorArquivo(arqEntrada,&original) == -1) {
+			fprintf(stderr, " Falha ao abrir o arquivo de entrada.\n");
+			return -1;
+		}
 		n = original.tam; // usaremos n como tam da matriz
 	}
 	else { //caso não se defina nenhum arquivo de entrada e nem o tamanho da matriz, cria uma matriz aleatoria
 		original.tam = n;
 		if(! (original.dados = geraMatrizQuadradaRandomica(n)) ) {
 			fprintf(stderr, "Erro ao alocar a matriz original.\n");
-			return 0;
+			return -1;
 		}
 	}
 
 	#ifdef DEBUG
 	    printf("[main] Matriz Original:\n");
-		imprimeMatriz(original);
+		imprimeMatriz(original, out);
 	#endif
 
 	originalLU.tam = n; 
 	// alocando a matriz que guardará a fatoração LU
 	if(alocaMatrizQuadrada(&originalLU) == -1) {
 		fprintf(stderr, "Erro ao alocar a matriz originalLU\n");
-		return 0;
+		return -1;
 	}
 
 	// copia matriz original para a matriz que sofrerá a fatoração LU
 	for (int i = 0; i < n*n; ++i)
 		originalLU.dados[i] = original.dados[i];
 	
-	tempo = timestamp();
+	tempoLU = timestamp();
 	fatoracaoLU(&originalLU); // fatora a matriz original em uma LU
-	tempo = timestamp() - tempo;
+	tempoLU = timestamp() - tempoLU;
 	#ifdef DEBUG
     	printf("[main] Matriz LU:\n");
+		imprimeMatriz(originalLU, out); // imprime matriz LU
 	#endif
-	imprimeMatriz(originalLU); // imprime matriz LU
-	printf("# Tempo LU: %.17lf\n", tempo); // imprime tempo levado para calcular LU
 	
 	if (!(aux = (double*) malloc(n*sizeof(double)))) {
 		fprintf(stderr, "Erro ao alocar o vetor auxiliar.\n");
-		return 0;		
+		return -1;		
 	}
 
 	inversa.tam = n; 
 	// alocando a matriz que guardará a fatoração LU
 	if(alocaMatrizQuadrada(&inversa) == -1) {
 		fprintf(stderr, "Erro ao alocar a matriz inversa\n");
-		return 0;
+		return -1;
 	} 
 	for (int i = 0; i < n; ++i) // inversa inicia como uma matriz identidade
 		inversa.dados[pos(i, i, n)] = 1;
+	tempoIter = timestamp();
 	if (substituicao_Lyb(originalLU, &inversa, aux, 1) == -1) { // resolve o sistema L*y=b (o resultado é armazenado na inversa)
 		fprintf(stderr, "Erro em substituicao_Lyb.\n");
-		return 0;
+		return -1;
 	}
 	#ifdef DEBUG
 	    printf("[main] Matriz LYB:\n");
-		imprimeMatriz(inversa);
+		imprimeMatriz(inversa, out);
 	#endif
 	if (substituicao_Uxy(originalLU, &inversa, aux) == -1) { // resolve o sistema U*x=y (o resultado é armazenado na inversa)
 		fprintf(stderr, "Erro em substituicao_Uxy.\n");
-		return 0;
+		return -1;
 	}
+	tempoIter = timestamp() - tempoIter;
 	#ifdef DEBUG
     	printf("[main] Matriz inversa pre-refinamento:\n");
+		imprimeMatriz(inversa, out);
 	#endif
-	imprimeMatriz(inversa);
 	
 	//iteracoes = 1;
-	/*for(int j = 0; j < n*n; ++j)
+	/*for(int j = 0; j < n*n; ++j) // insere erro para testar refinamento
 		inversa.dados[j] += 10*j;	*/
 
+
+	fprintf(out, "#\n");
 	// neste ponto, a inversa deveria estar correta... partimos para o refinamento
-	if(refinamento(original, &inversa, originalLU, aux, iteracoes) == -1) {
+	if(refinamento(original, &inversa, originalLU, aux, iteracoes, &tempoIter, &tempoResiduo) == -1) {
 		fprintf(stderr, "Erro em refinamento.\n");
-		return 0;
+		return -1;
 	}
+
+	fprintf(out, "# Tempo LU: %.17lf\n", tempoLU); // tempo levado para calcular a matriz LU
+	fprintf(out, "# Tempo iter: %.17lf\n", tempoIter/(iteracoes+1)); // tempo medio levado para calcular o S.L.
+	fprintf(out, "# Tempo residuo: %.17lf\n", tempoResiduo/(iteracoes+1)); // tempo medio levado para calcular o residuo
+	fprintf(out, "%d\n", n);
+	imprimeMatriz(inversa, out);
 
 	free(original.dados);
 	free(originalLU.dados);
@@ -279,7 +320,9 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 			b[k] = y->dados[pos(k,i,tam)];
 		// faz a retrosubstituição 
 		if(U.dados[pos(tam-1, tam-1, tam)] == 0) {
+		#ifdef DEBUG
 			printf("[substituicao_Uxy] Operacao gera NaN/inf.\n");
+		#endif
 			return -1;
 		}
 
@@ -289,7 +332,9 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 			for (int j = tam-1; j > k; --j)
 				y->dados[pos(k,i,tam)] -= U.dados[pos(k,j,tam)]*y->dados[pos(j,i,tam)];
 			if(U.dados[pos(k,k,tam)] == 0) {
+			#ifdef DEBUG
 				printf("[substituicao_Uxy] Operacao gera NaN/inf.\n");
+			#endif
 				return -1;
 			}
 			y->dados[pos(k,i,tam)]=(y->dados[pos(k,i,tam)]*1.0)/U.dados[pos(k,k,tam)];
@@ -301,22 +346,23 @@ int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 	return 0;
 }
 
-int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter) {
+int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, double *tempoIter, double *tempoResiduo) {
 	MATRIZ R;
 	unsigned int tam = A.tam;
+	double tempo_i;
 	R.tam = tam; 
 	// alocando a matriz que guardará o residuo
 	if(alocaMatrizQuadrada(&R) == -1)
 		return -1;
 
 	for (int i = 0; i < iter; ++i) {
-		if(calculaResiduo(A, *inv_A, &R) == -1)
-			return -1;
+		if(calculaResiduo(A, *inv_A, &R, i+1, tempoResiduo) == 1)
+			return 0;
 		#ifdef DEBUG
 	    	printf("[refinamento] Matriz R %d:\n", i+1);
-			imprimeMatriz(R);
+			imprimeMatriz(R, out);
 		#endif
-
+		tempo_i = timestamp() - tempo_i;
 		if (substituicao_Lyb(LU, &R, aux, 1) == -1)
 			return -1;
 		if (substituicao_Uxy(LU, &R, aux) == -1) 
@@ -325,10 +371,11 @@ int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter) {
 		for(int j = 0; j < tam*tam; ++j) {
 			inv_A->dados[j] += R.dados[j];
 		}
-
+		tempo_i = timestamp() - tempo_i;
+		*tempoIter += tempo_i;
 		#ifdef DEBUG
 	    	printf("[refinamento] Matriz Inversa %d:\n", i+1);
-			imprimeMatriz(*inv_A);
+			imprimeMatriz(*inv_A, out);
 		#endif
 	}
 
@@ -336,9 +383,10 @@ int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter) {
 	return 0;
 }
 
-int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R) {
+int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R, int iter, double *tempoResiduo) {
 	unsigned int tam = A.tam;
 	double C, r = 0;
+	double tempo_r = timestamp();
 	for (int lin = 0; lin < tam; lin++) {
 		for (int col = 0; col < tam; col++) {
 			C = 0;
@@ -350,12 +398,16 @@ int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R) {
 		}
 	}
 	r = sqrt(r); // ||r|| = sqrt(sum(R[i,j]^2))
-	if (r == 0) {
-		printf("[calculaResiduo] Residuo se tornou inf.\n");
-		return -1;
+	tempo_r = timestamp() - tempo_r;
+	*tempoResiduo += tempo_r;
+	if (r == N_INF || r == P_INF || r == NaN) {
+		#ifdef DEBUG
+			printf("Residuo se tornou inf/NaN, iteracoes interrompidas.\n");
+		#endif
+		return 1;
 	}
 
-	printf("r = %.17g\n", r);
+	fprintf(out, "# iter %d: %.17g\n", iter, r);
 	return 0;
 }
 

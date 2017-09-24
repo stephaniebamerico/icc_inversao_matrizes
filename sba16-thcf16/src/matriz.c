@@ -29,7 +29,7 @@ double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo pr
 	return (mat);
 }
 
-void imprimeMatriz (MATRIZ matriz) {
+void imprimeMatriz (MATRIZ matriz, FILE *out) {
 #ifdef DEBUG
 	printf("[imprimeMatriz] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
 #endif
@@ -38,9 +38,9 @@ void imprimeMatriz (MATRIZ matriz) {
 		for (int j = 0; j < tam; ++j) {
 			if (matriz.dados[pos(i, j, tam)] == 0) matriz.dados[pos(i, j, tam)] = 0;
 			// usar %.17g porque lf arredonda...
-			printf("%.17g  ", matriz.dados[pos(i, j, tam)]);
+			fprintf(out, "%.17g  ", matriz.dados[pos(i, j, tam)]);
 		}
-		printf("\n");
+		fprintf(out, "\n");
 	}
 }
 

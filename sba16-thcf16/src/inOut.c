@@ -55,7 +55,6 @@ int entradaPorArquivo (char *entrada, MATRIZ *matriz) {
     #ifdef DEBUG
         printf("[ENTRADAPORARQUIVO] Falha ao abrir o arquivo de entrada.\n");
     #endif
-        fprintf(stderr, " Falha ao abrir o arquivo de entrada.\n");
         return -1;
     }
 
