@@ -55,7 +55,7 @@ int pivotamentoParcial (MATRIZ *matriz, unsigned int col) {
     
     else if (max != col) trocaLinhas (matriz, max, col);
 
-    return 0;
+    return max;
 }
 
 void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2) { // troca 2 linhas de uma matriz
@@ -66,6 +66,16 @@ void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2) { // troca 2
         matriz->dados[pos(l2, i, matriz->tam)] = aux;
     }
 }
+
+void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2) { // troca 2 colunas de uma matriz
+    double aux;
+    for (int i = 0; i < matriz->tam; ++i) {
+        aux = matriz->dados[pos(i, c1, matriz->tam)];
+        matriz->dados[pos(i, c1, matriz->tam)] = matriz->dados[pos(i, c2, matriz->tam)];
+        matriz->dados[pos(i, c2, matriz->tam)] = aux;
+    }
+}
+
 
 unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam) {
   return (lin*tam + col);

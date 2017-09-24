@@ -102,9 +102,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac216894ccd8dce10f75b4d8956215667"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inOut_8c.html#ac216894ccd8dce10f75b4d8956215667">trataArgumentos</a> (int argc, char **argv, char **entrada, char **saida, int *N)</td></tr>
-<tr class="memdesc:ac216894ccd8dce10f75b4d8956215667"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que trata os argumentos.  <a href="#ac216894ccd8dce10f75b4d8956215667">More...</a><br /></td></tr>
-<tr class="separator:ac216894ccd8dce10f75b4d8956215667"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7494eb20a51bb9d04901731762d754cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inOut_8c.html#a7494eb20a51bb9d04901731762d754cb">trataArgumentos</a> (int argc, char **argv, char **entrada, char **saida, int *N, int *k)</td></tr>
+<tr class="memdesc:a7494eb20a51bb9d04901731762d754cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que trata os argumentos.  <a href="#a7494eb20a51bb9d04901731762d754cb">More...</a><br /></td></tr>
+<tr class="separator:a7494eb20a51bb9d04901731762d754cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade4c1ca4005f1580d82cc94371cca395"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="inOut_8c.html#ade4c1ca4005f1580d82cc94371cca395">entradaPorArquivo</a> (char *entrada, <a class="el" href="structMATRIZ.html">MATRIZ</a> *matriz)</td></tr>
 <tr class="memdesc:ade4c1ca4005f1580d82cc94371cca395"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que trata a entrada de dados por arquivo.  <a href="#ade4c1ca4005f1580d82cc94371cca395">More...</a><br /></td></tr>
 <tr class="separator:ade4c1ca4005f1580d82cc94371cca395"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,7 +160,7 @@ Variables</h2></td></tr>
 <dd>
 <code>-1</code> se houve erro ao abrir o arquivo ou ao alocar a matriz </dd></dl>
 
-<p>Definition at line <a class="el" href="inOut_8c_source.html#l00051">51</a> of file <a class="el" href="inOut_8c_source.html">inOut.c</a>.</p>
+<p>Definition at line <a class="el" href="inOut_8c_source.html#l00045">45</a> of file <a class="el" href="inOut_8c_source.html">inOut.c</a>.</p>
 
 </div>
 </div>
@@ -189,16 +189,16 @@ Variables</h2></td></tr>
 <dd>
 <code>-1</code> se houve erro ao abrir o arquivo </dd></dl>
 
-<p>Definition at line <a class="el" href="inOut_8c_source.html#l00095">95</a> of file <a class="el" href="inOut_8c_source.html">inOut.c</a>.</p>
+<p>Definition at line <a class="el" href="inOut_8c_source.html#l00076">76</a> of file <a class="el" href="inOut_8c_source.html">inOut.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac216894ccd8dce10f75b4d8956215667"></a>
+<a class="anchor" id="a7494eb20a51bb9d04901731762d754cb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int trataArgumentos </td>
+          <td class="memname">void trataArgumentos </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
@@ -225,7 +225,13 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>N</em>&#160;</td>
+          <td class="paramname"><em>N</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>k</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -242,11 +248,11 @@ Variables</h2></td></tr>
     <tr><td class="paramname">argv</td><td>Vetor de string com os argumentos passados na execução do programa </td></tr>
     <tr><td class="paramname">entrada</td><td>Ponteiro para vetor de chars, que é alterado com o nome do arquivo de entrada (se houver) </td></tr>
     <tr><td class="paramname">saida</td><td>Ponteiro para vetor de chars, que é alterado com o nome do arquivo de saida (se houver) </td></tr>
-    <tr><td class="paramname">N</td><td>Ponteiro para um inteiro N, que é alterado com a dimensão da matriz de entrada a ser gerada aleatoriamente </td></tr>
+    <tr><td class="paramname">N</td><td>ponteiro para um inteiro N, que é alterado com a dimensão da matriz de entrada a ser gerada aleatoriamente </td></tr>
+    <tr><td class="paramname">k</td><td>ponteiro para um inteiro k, que é alterado com o número de iterações a serem realizadas durante o refinamento </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Retorna o número k de iterações a serem realizadas durante o refinamento </dd></dl>
 
 <p>Definition at line <a class="el" href="inOut_8c_source.html#l00022">22</a> of file <a class="el" href="inOut_8c_source.html">inOut.c</a>.</p>
 

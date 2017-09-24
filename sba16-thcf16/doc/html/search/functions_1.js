@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fatoracaolu',['fatoracaoLU',['../encontraMatrizInversa_8c.html#a009b196faaf0e8e1ae651f2d35e9b44d',1,'encontraMatrizInversa.c']]]
+  ['calcularesiduo',['calculaResiduo',['../encontraMatrizInversa_8c.html#a4eecaf9f872839d3d8e2aa991fefba43',1,'encontraMatrizInversa.c']]]
 ];

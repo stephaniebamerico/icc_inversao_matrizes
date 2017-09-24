@@ -56,6 +56,9 @@ void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2);
  * \return @c -1 se não foi possível realizar o pivotamento
  * 
  */
+
+void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2);
+
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 
 /**

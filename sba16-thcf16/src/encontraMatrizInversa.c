@@ -51,12 +51,14 @@
  * @brief Função que faz a fatoração LU de uma matriz quadrada.
  *
  * Esta função recebe apenas um parâmetro, @p matriz do tipo #MATRIZ.
- * @param matriz é a matriz a ser fatorada.
+ * @param matriz É a matriz a ser fatorada.
+ * @param trocas É um vetor de inteiros que salva quais linhas da matriz 
+ * foram trocadas para realizar a fatoração
  * \return @c 0 se a fatoração não deu erro
  * \return @c -1 se houve erro na fatoração
  *
  */
-int fatoracaoLU (MATRIZ *matriz);
+int fatoracaoLU (MATRIZ *matriz, int *trocas) ;
 
 /**
  * @brief Função que faz a retrosubstituição de um sistema linear
@@ -188,14 +190,18 @@ int main (int argc, char** argv) {
 	// copia matriz original para a matriz que sofrerá a fatoração LU
 	for (int i = 0; i < n*n; ++i)
 		originalLU.dados[i] = original.dados[i];
-	
+
+	int *trocas =(int*) malloc(original.tam * sizeof (int));
+
 	tempoLU = timestamp();
-	fatoracaoLU(&originalLU); // fatora a matriz original em uma LU
+	fatoracaoLU(&originalLU, trocas); // fatora a matriz original em uma LU
 	tempoLU = timestamp() - tempoLU;
 	#ifdef DEBUG
     	printf("[main] Matriz LU:\n");
 		imprimeMatriz(originalLU, out); // imprime matriz LU
 	#endif
+	for (int i = 0; i < original.tam; ++i)
+		if (i != trocas[i]) trocaLinhas(&original, i, trocas[i]);
 	
 	if (!(aux = (double*) malloc(n*sizeof(double)))) {
 		fprintf(stderr, "Erro ao alocar o vetor auxiliar.\n");
@@ -240,6 +246,8 @@ int main (int argc, char** argv) {
 		fprintf(stderr, "Erro em refinamento.\n");
 		return -1;
 	}
+	for (int i = 0; i < inversa.tam; ++i)
+		if (i != trocas[i]) trocaColunas (&inversa, i, trocas[i]);
 
 	fprintf(out, "# Tempo LU: %.17lf\n", tempoLU); // tempo levado para calcular a matriz LU
 	fprintf(out, "# Tempo iter: %.17lf\n", tempoIter/(iteracoes+1)); // tempo medio levado para calcular o S.L.
@@ -257,16 +265,17 @@ int main (int argc, char** argv) {
 	return 0;
 }
 
-int fatoracaoLU (MATRIZ *matriz) {
+int fatoracaoLU (MATRIZ *matriz, int *trocas) {
 #ifdef DEBUG
 	printf("[fatoracaoLU] Iniciando a fatoracao LU.\n");
 #endif
 	double m;
 	for (int col = 0; col < matriz->tam-1; ++col) { // zerando colunas
-		if(pivotamentoParcial(matriz, col) == -1) { // se o pivotamento falha, a matriz é inválida
+		if((trocas[col] = pivotamentoParcial(matriz, col)) == -1) { // se o pivotamento falha, a matriz é inválida
 			fprintf(stderr, "[fatoracaoLU] Matriz singular, impossivel fatorar.\n");
 			return -1;
 		}
+		trocas[matriz->tam-1] = matriz->tam-1;
 		for (int lin = col+1; lin < matriz->tam; ++lin) { // calcula o modificador m para cada linha
 			m = (matriz->dados[pos(lin, col, matriz->tam)]*1.0)/matriz->dados[pos(col, col, matriz->tam)];
 			// U
@@ -406,7 +415,6 @@ int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R, int iter, double *tempoRes
 		#endif
 		return 1;
 	}
-
 	fprintf(out, "# iter %d: %.17g\n", iter, r);
 	return 0;
 }
@@ -416,3 +424,4 @@ double timestamp(void){
     gettimeofday(&tp, NULL);
     return((double)(tp.tv_sec*1000.0 + tp.tv_usec/1000.0));
 }
+

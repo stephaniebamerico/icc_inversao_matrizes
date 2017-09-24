@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dados',['dados',['../structMATRIZ.html#a76628cd7ed1681bf1035384a02f398ca',1,'MATRIZ']]]
+  ['alocamatrizquadrada',['alocaMatrizQuadrada',['../matriz_8h.html#a88b890af3742b25e56802a773a5300e6',1,'alocaMatrizQuadrada(MATRIZ *matriz):&#160;matriz.c'],['../matriz_8c.html#a88b890af3742b25e56802a773a5300e6',1,'alocaMatrizQuadrada(MATRIZ *matriz):&#160;matriz.c']]]
 ];

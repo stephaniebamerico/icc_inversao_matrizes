@@ -8,7 +8,7 @@ CFLAGS = -Wall -g -lm -I $(INCLUDE)
 
 .PHONY: dir
 
-all: dir invmat doc
+all: dir invmat
 
 doc: $(SRC)/* $(INCLUDE)/*
 	doxygen Doxyfile 
@@ -16,7 +16,6 @@ doc: $(SRC)/* $(INCLUDE)/*
 clean:
 	-rm invmat
 	-rm -r $(OBJ)
-	-rm -r doc
 
 # ----
 

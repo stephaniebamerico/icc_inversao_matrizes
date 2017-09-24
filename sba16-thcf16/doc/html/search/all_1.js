@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['encontramatrizinversa_2ec',['encontraMatrizInversa.c',['../encontraMatrizInversa_8c.html',1,'']]],
-  ['entradaporarquivo',['entradaPorArquivo',['../inOut_8h.html#ade4c1ca4005f1580d82cc94371cca395',1,'entradaPorArquivo(char *entrada, MATRIZ *matriz):&#160;inOut.c'],['../inOut_8c.html#ade4c1ca4005f1580d82cc94371cca395',1,'entradaPorArquivo(char *entrada, MATRIZ *matriz):&#160;inOut.c']]]
+  ['calcularesiduo',['calculaResiduo',['../encontraMatrizInversa_8c.html#a4eecaf9f872839d3d8e2aa991fefba43',1,'encontraMatrizInversa.c']]]
 ];

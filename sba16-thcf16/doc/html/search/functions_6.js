@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['refina',['refina',['../encontraMatrizInversa_8c.html#a1f807a8dff8c2ffd11a63bc10923581f',1,'encontraMatrizInversa.c']]],
-  ['refinamento',['refinamento',['../encontraMatrizInversa_8c.html#a8ada016da2268bfbb0dd4b17f44f0465',1,'encontraMatrizInversa.c']]],
-  ['residuo',['residuo',['../encontraMatrizInversa_8c.html#a1b013e84f55d70e71f65f6694411da23',1,'encontraMatrizInversa.c']]]
+  ['main',['main',['../encontraMatrizInversa_8c.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'encontraMatrizInversa.c']]],
+  ['multiply',['multiply',['../encontraMatrizInversa_8c.html#a4c33b70ff60cfd88100fe1b1df5d1833',1,'encontraMatrizInversa.c']]]
 ];

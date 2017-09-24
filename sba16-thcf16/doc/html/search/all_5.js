@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../encontraMatrizInversa_8c.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'encontraMatrizInversa.c']]],
-  ['matriz',['MATRIZ',['../structMATRIZ.html',1,'MATRIZ'],['../matriz_8h.html#ab192fb5e617196f0e9b428a703bc3f74',1,'MATRIZ():&#160;matriz.h']]],
-  ['matriz_2ec',['matriz.c',['../matriz_8c.html',1,'']]],
-  ['matriz_2eh',['matriz.h',['../matriz_8h.html',1,'']]],
-  ['multiply',['multiply',['../encontraMatrizInversa_8c.html#a879fbd8f6268c9c507a4ef72256d3093',1,'encontraMatrizInversa.c']]]
+  ['geramatrizquadradarandomica',['geraMatrizQuadradaRandomica',['../matriz_8h.html#ae7bc932f2aeedceb0494273ddbdfed67',1,'geraMatrizQuadradaRandomica(unsigned int n):&#160;matriz.c'],['../matriz_8c.html#ae7bc932f2aeedceb0494273ddbdfed67',1,'geraMatrizQuadradaRandomica(unsigned int n):&#160;matriz.c']]]
 ];
