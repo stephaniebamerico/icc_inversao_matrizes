@@ -117,9 +117,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a389acaa74568e85edbfd3891557837d0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#a389acaa74568e85edbfd3891557837d0">fatoracaoLU</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> *matriz, int *trocas)</td></tr>
 <tr class="memdesc:a389acaa74568e85edbfd3891557837d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que faz a fatoração LU de uma matriz quadrada.  <a href="#a389acaa74568e85edbfd3891557837d0">More...</a><br /></td></tr>
 <tr class="separator:a389acaa74568e85edbfd3891557837d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9574362ed57458c1f7d033d90b6b635f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#a9574362ed57458c1f7d033d90b6b635f">substituicao_Lyb</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> L, <a class="el" href="structMATRIZ.html">MATRIZ</a> *y, double *b, int identity)</td></tr>
-<tr class="memdesc:a9574362ed57458c1f7d033d90b6b635f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que faz a retrosubstituição de um sistema linear.  <a href="#a9574362ed57458c1f7d033d90b6b635f">More...</a><br /></td></tr>
-<tr class="separator:a9574362ed57458c1f7d033d90b6b635f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0fab7fd70392700031d1723323de618"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#af0fab7fd70392700031d1723323de618">substituicao_Lyb</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> L, <a class="el" href="structMATRIZ.html">MATRIZ</a> *y, double *b, int identity)</td></tr>
+<tr class="memdesc:af0fab7fd70392700031d1723323de618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que faz a retrosubstituição de um sistema linear.  <a href="#af0fab7fd70392700031d1723323de618">More...</a><br /></td></tr>
+<tr class="separator:af0fab7fd70392700031d1723323de618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b05b7fb541cc5167cb6d485e3b04939"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#a9b05b7fb541cc5167cb6d485e3b04939">substituicao_Uxy</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> U, <a class="el" href="structMATRIZ.html">MATRIZ</a> *y, double *b)</td></tr>
 <tr class="memdesc:a9b05b7fb541cc5167cb6d485e3b04939"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função que faz a substituição avançada de um sistema linear.  <a href="#a9b05b7fb541cc5167cb6d485e3b04939">More...</a><br /></td></tr>
 <tr class="separator:a9b05b7fb541cc5167cb6d485e3b04939"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,8 +132,6 @@ Functions</h2></td></tr>
 <tr class="memitem:ad1f75d4b6d05731f71dd8fe6ee54bfeb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#ad1f75d4b6d05731f71dd8fe6ee54bfeb">timestamp</a> (void)</td></tr>
 <tr class="memdesc:ad1f75d4b6d05731f71dd8fe6ee54bfeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Função para contagem do tempo.  <a href="#ad1f75d4b6d05731f71dd8fe6ee54bfeb">More...</a><br /></td></tr>
 <tr class="separator:ad1f75d4b6d05731f71dd8fe6ee54bfeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c33b70ff60cfd88100fe1b1df5d1833"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#a4c33b70ff60cfd88100fe1b1df5d1833">multiply</a> (<a class="el" href="structMATRIZ.html">MATRIZ</a> A, <a class="el" href="structMATRIZ.html">MATRIZ</a> B)</td></tr>
-<tr class="separator:a4c33b70ff60cfd88100fe1b1df5d1833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="encontraMatrizInversa_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -246,7 +244,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>1</code> se o calculo do residuo resultou em NaN ou inf (não consideramos erro) </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00400">400</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00391">391</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -286,7 +284,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>-1</code> se houve erro na fatoração </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00273">273</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00275">275</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -314,35 +312,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00150">150</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4c33b70ff60cfd88100fe1b1df5d1833"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void multiply </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structMATRIZ.html">MATRIZ</a>&#160;</td>
-          <td class="paramname"><em>A</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structMATRIZ.html">MATRIZ</a>&#160;</td>
-          <td class="paramname"><em>B</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00433">433</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00146">146</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -417,16 +387,16 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>-1</code> se houve algum erro </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00363">363</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00360">360</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9574362ed57458c1f7d033d90b6b635f"></a>
+<a class="anchor" id="af0fab7fd70392700031d1723323de618"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int substituicao_Lyb </td>
+          <td class="memname">void substituicao_Lyb </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structMATRIZ.html">MATRIZ</a>&#160;</td>
           <td class="paramname"><em>L</em>, </td>
@@ -467,11 +437,8 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><code>0</code> se a fatoração não deu erro </dd>
-<dd>
-<code>-1</code> se houve erro na fatoração </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00299">299</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00301">301</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -518,7 +485,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <dd>
 <code>-1</code> se houve erro na fatoração </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00323">323</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00324">324</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>
@@ -539,7 +506,7 @@ Talita Halboth Cunha Fernandes GRR29165399 </dd></dl>
 <p>Função para contagem do tempo. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>o</code> valor atual do tempo </dd></dl>
 
-<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00427">427</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
+<p>Definition at line <a class="el" href="encontraMatrizInversa_8c_source.html#l00418">418</a> of file <a class="el" href="encontraMatrizInversa_8c_source.html">encontraMatrizInversa.c</a>.</p>
 
 </div>
 </div>

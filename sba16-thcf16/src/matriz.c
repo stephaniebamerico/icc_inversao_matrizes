@@ -31,14 +31,14 @@ double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo pr
 
 void imprimeMatriz (MATRIZ matriz, FILE *out) {
 #ifdef DEBUG
-	printf("[imprimeMatriz] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
+	fprintf(out, "[imprimeMatriz] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
 #endif
 	unsigned int tam = matriz.tam;
 	for (int i = 0; i < tam; ++i) {
 		for (int j = 0; j < tam; ++j) {
 			if (matriz.dados[pos(i, j, tam)] == 0) matriz.dados[pos(i, j, tam)] = 0;
 			// usar %.17g porque lf arredonda...
-			fprintf(out, "%.17g  ", matriz.dados[pos(i, j, tam)]);
+			fprintf(out, "%.17g ", matriz.dados[pos(i, j, tam)]);
 		}
 		fprintf(out, "\n");
 	}
@@ -83,12 +83,7 @@ unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam) {
 
 int alocaMatrizQuadrada(MATRIZ *matriz) {
     unsigned tam = matriz->tam;
-    if (!(matriz->dados = (double *) calloc(tam*tam, sizeof(double)))) {
-        #ifdef DEBUG
-        printf("[alocaMatrizQuadrada] Falha ao alocar a matriz.\n");
-        #endif
-        fprintf(stderr,"[alocaMatrizQuadrada] Erro ao alocar a matriz.\n");
+    if (!(matriz->dados = (double *) calloc(tam*tam, sizeof(double))))
         return -1;
-    }
     return 0;
 }

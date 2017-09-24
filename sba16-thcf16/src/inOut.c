@@ -43,20 +43,13 @@ void trataArgumentos (int argc, char** argv, char** entrada, char** saida, int *
 }
 
 int entradaPorArquivo (char *entrada, MATRIZ *matriz) {
-#ifdef DEBUG
-    printf("[ENTRADAPORARQUIVO] Iniciando leitura de arquivos.\n");
-#endif
     FILE *in = NULL;
     if (entrada != NULL)
         in = fopen(entrada, "r");
     else
         in = stdin;
-    if (!in) {
-    #ifdef DEBUG
-        printf("[ENTRADAPORARQUIVO] Falha ao abrir o arquivo de entrada.\n");
-    #endif
+    if (!in)
         return -1;
-    }
 
     fscanf(in,"%d", &matriz->tam);
 
@@ -66,11 +59,8 @@ int entradaPorArquivo (char *entrada, MATRIZ *matriz) {
     for (int i = 0; i < matriz->tam*matriz->tam; ++i)
         fscanf(in,"%lf", &matriz->dados[i]);
     fclose (in);
-#ifdef DEBUG
-    printf("[ENTRADAPORARQUIVO] Leitura de arquivos completa.\n");
-#endif
-    return 0;
 
+    return 0;
 }
 
 int saidaPorArquivo(char *saida) {
