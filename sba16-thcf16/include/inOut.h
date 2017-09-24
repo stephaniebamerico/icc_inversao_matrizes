@@ -21,12 +21,11 @@ extern FILE *out;
  * @param argv Vetor de string com os argumentos passados na execução do programa
  * @param entrada Ponteiro para vetor de chars, que é alterado com o nome do arquivo de entrada (se houver)
  * @param saida Ponteiro para vetor de chars, que é alterado com o nome do arquivo de saida (se houver)
- * @param N Ponteiro para um inteiro N, que é alterado com a dimensão da matriz de entrada a ser gerada aleatoriamente
- * \return Retorna o número k de iterações a serem realizadas durante o refinamento
+ * @param N ponteiro para um inteiro N, que é alterado com a dimensão da matriz de entrada a ser gerada aleatoriamente
+ * @param k ponteiro para um inteiro k, que é alterado com o número de iterações a serem realizadas durante o refinamento
  *
  */
-int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N);
-
+void trataArgumentos (int argc, char** argv, char** entrada, char** saida, int *N, int*k);
 /**
  * @brief Função que trata a entrada de dados por arquivo
  *

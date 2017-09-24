@@ -2,7 +2,7 @@
 #define __MATRIZ_H__
 
 /**
- * @file inOut.h
+ * @file matriz.h
  * @author Stephanie Briere Americo, Talita Halboth Cunha Fernandes
  * @date 23 Sep 2017
  * @brief Header com funções e estruturas de dados
@@ -67,4 +67,5 @@ int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
  * 
  */
 unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
+int alocaMatrizQuadrada(MATRIZ *matriz);
 #endif

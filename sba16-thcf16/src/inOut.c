@@ -19,51 +19,39 @@ FILE *out;
 
 
 
-int trataArgumentos (int argc, char** argv,char** entrada, char** saida, int *N)
-{
+void trataArgumentos (int argc, char** argv, char** entrada, char** saida, int *N, int*k) {
     *entrada = NULL;
     *saida = NULL; 
     *N = -1;
-    int k = 0;
-    for (int i = 0; i < argc; ++i)
-    {
-        if (argv[i][0]=='-')
-        {
-            if (argv[i][1]=='e')
-            {
-                *entrada = (char*)malloc(strlen(argv[2]) + 1);
+    *k = 0;
+    for (int i = 0; i < argc; ++i) {
+        if (argv[i][0]=='-') {
+            if (argv[i][1]=='e') {
+                *entrada = (char*) malloc(strlen(argv[2]) + 1);
                 strcpy(*entrada, argv[i+1]);
             }
-            else if (argv[i][1]=='o')
-            {
-                *saida =  (char*)malloc(strlen(argv[i+1]) + 1);
+            else if (argv[i][1]=='o') {
+                *saida =  (char*) malloc(strlen(argv[i+1]) + 1);
                 strcpy(*saida, argv[i+1]);
             }
             else if (argv[i][1]=='r')
                 *N = atoi (argv[i+1]);
             else if (argv[i][1]=='i')
-                k = atoi (argv[i+1]);
+                *k = atoi (argv[i+1]);
         }
     }
-    return k;
 }
 
-int entradaPorArquivo (char *entrada, MATRIZ *matriz)
-{
+int entradaPorArquivo (char *entrada, MATRIZ *matriz) {
 #ifdef DEBUG
     printf("[ENTRADAPORARQUIVO] Iniciando leitura de arquivos.\n");
 #endif
     FILE *in = NULL;
     if (entrada != NULL)
-    {
         in = fopen(entrada, "r");
-    }
     else
-    {
         in = stdin;
-    }
-    if (!in)
-    {
+    if (!in) {
     #ifdef DEBUG
         printf("[ENTRADAPORARQUIVO] Falha ao abrir o arquivo de entrada.\n");
     #endif
@@ -72,18 +60,12 @@ int entradaPorArquivo (char *entrada, MATRIZ *matriz)
     }
 
     fscanf(in,"%d", &matriz->tam);
-    if (!(matriz->dados = (double *)malloc(matriz->tam*matriz->tam*sizeof(double))))
-    {
-    #ifdef DEBUG
-        printf("[ENTRADAPORARQUIVO] Falha ao alocar a matriz.\n");
-    #endif
-        fprintf(stderr, "Falha ao alocar a matriz.\n");
+
+    if(alocaMatrizQuadrada(matriz) == -1)
         return -1;
-    }
+
     for (int i = 0; i < matriz->tam*matriz->tam; ++i)
-    {
         fscanf(in,"%lf", &matriz->dados[i]);
-    }
     fclose (in);
 #ifdef DEBUG
     printf("[ENTRADAPORARQUIVO] Leitura de arquivos completa.\n");
@@ -92,16 +74,13 @@ int entradaPorArquivo (char *entrada, MATRIZ *matriz)
 
 }
 
-int saidaPorArquivo(char *saida)
-{
-    if (saida == NULL)
-    {
+int saidaPorArquivo(char *saida) {
+    if (saida == NULL) {
         out = stdout;
         return 0;
     }
     out = fopen(saida,"w");
-    if (!out)
-    {
+    if (!out) {
     #ifdef DEBUG
         printf("[SAIDAPORARQUIVO] Falha ao abrir o arquivo de saida.\n");
     #endif

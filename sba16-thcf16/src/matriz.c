@@ -2,13 +2,17 @@
 
 double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo professor
 #ifdef DEBUG
-	printf("[GERAMATRIZQUADRADARANDOMICA] Iniciando.\n");
+	printf("[geraMatrizQuadradaRandomica] Iniciando.\n");
 #endif
 	double *mat = NULL;
 
 	/* return NULL if memory allocation fails */
-	if ( ! (mat = (double *) malloc(n*n*sizeof(double))) )
+	if ( ! (mat = (double *) malloc(n*n*sizeof(double))) ){
+        #ifdef DEBUG
+            printf("[geraMatrizQuadradaRandomica] Falha ao alocar a matriz original.\n");
+        #endif
 		return (NULL);
+    }
 
 	/* generate a randomly initialized matrix in row-major order */
 	double *ptr = mat;
@@ -20,23 +24,21 @@ double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo pr
 		*ptr++ = (double)rand() * invRandMax;
 	}
 #ifdef DEBUG
-	printf("[GERAMATRIZQUADRADARANDOMICA] Matriz randomica gerada.\n");
+	printf("[geraMatrizQuadradaRandomica] Matriz randomica gerada.\n");
 #endif
 	return (mat);
 }
 
 void imprimeMatriz (MATRIZ matriz) {
 #ifdef DEBUG
-	printf("[IMPRIMEMATRIZ] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
+	printf("[imprimeMatriz] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
 #endif
-	fprintf(stderr, "TROCAR LF POR G\n");
 	unsigned int tam = matriz.tam;
 	for (int i = 0; i < tam; ++i) {
 		for (int j = 0; j < tam; ++j) {
 			if (matriz.dados[pos(i, j, tam)] == 0) matriz.dados[pos(i, j, tam)] = 0;
-			if (matriz.dados[pos(i, j, tam)] >= 0) printf(" ");
 			// usar %.17g porque lf arredonda...
-			printf("%.17lf  ", matriz.dados[pos(i, j, tam)]);
+			printf("%.17g  ", matriz.dados[pos(i, j, tam)]);
 		}
 		printf("\n");
 	}
@@ -67,4 +69,16 @@ void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2) { // troca 2
 
 unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam) {
   return (lin*tam + col);
+}
+
+int alocaMatrizQuadrada(MATRIZ *matriz) {
+    unsigned tam = matriz->tam;
+    if (!(matriz->dados = (double *) calloc(tam*tam, sizeof(double)))) {
+        #ifdef DEBUG
+        printf("[alocaMatrizQuadrada] Falha ao alocar a matriz.\n");
+        #endif
+        fprintf(stderr,"[alocaMatrizQuadrada] Erro ao alocar a matriz.\n");
+        return -1;
+    }
+    return 0;
 }
