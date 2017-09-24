@@ -5,12 +5,16 @@ O objetivo deste trabalho é implementar um programa computacional que, dada uma
 ## Compilando
 
 Há uma makefile no projeto que compila o código, gerando o executável invmat.
-> cd sba16-thfc16
-> make
+```
+cd sba16-thfc16
+make
+```
 
 Para gerar a documentação, use make doc.
-> cd sba16-thfc16
-> make doc
+```
+cd sba16-thfc16
+make doc
+```
 
 ### Rodando o programa
 
