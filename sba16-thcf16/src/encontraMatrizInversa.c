@@ -246,7 +246,7 @@ int main (int argc, char** argv) {
 		fprintf(stderr, "Erro em refinamento.\n");
 		return -1;
 	}
-	for (int i = 0; i < inversa.tam; ++i)
+	for (int i = inversa.tam-1; i >= 0; --i)
 		if (i != trocas[i]) trocaColunas (&inversa, i, trocas[i]);
 
 	fprintf(out, "# Tempo LU: %.17lf\n", tempoLU); // tempo levado para calcular a matriz LU
