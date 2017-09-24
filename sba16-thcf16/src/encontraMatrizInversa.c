@@ -76,9 +76,8 @@ int fatoracaoLU (MATRIZ *matriz, int *trocas) ;
  * @param y É uma matriz do tipo #MATRIZ, que será usada para guardar
  * os elementos da solução do sistema.
  * @param b é um vetor auxiliar do tipo double.
- * @param itentity é uma flag que indica se a matriz B é a identidade.
  */
-void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) ;
+void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b);
 
 /**
  * @brief Função que faz a substituição avançada de um sistema linear
@@ -145,6 +144,13 @@ int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R, int iter, double *tempoRes
  */
 double timestamp (void);
 
+/**
+ * @brief Função que multiplica duas matrizes
+ *
+ * 
+ */
+void multiplica(MATRIZ A, MATRIZ B);
+
 int main (int argc, char** argv) {
 /*##############################################*/
 /*  [INICIO] DECLARACAO DAS VARIAVEIS UTILIZADAS*/
@@ -208,6 +214,7 @@ int main (int argc, char** argv) {
 	// aplica pivotamento na matriz original
 	for (int i = 0; i < original.tam; ++i)
 		if (i != trocas[i]) trocaLinhas(&original, i, trocas[i]);
+
 /*  [FIM] FATORACAO A=L*U DA MATRIZ ORIGINAL */
 /*##############################################*/
 
@@ -231,14 +238,13 @@ int main (int argc, char** argv) {
 
 	tempoIter = timestamp();
 	// resolve o sistema L*y=b (o resultado é armazenado na inversa)
-	substituicao_Lyb(originalLU, &inversa, aux, 1); 
+	substituicao_Lyb(originalLU, &inversa, aux); 
 	// resolve o sistema U*x=y (o resultado é armazenado na inversa)
 	if (substituicao_Uxy(originalLU, &inversa, aux) == -1)
 		return -1;
 	tempoIter = timestamp() - tempoIter;
 /*  [FIM] RESOLUCAO DO SISTEMA LINEAR LU*X=B */
 /*##############################################*/
-
 	fprintf(out, "#\n");
 	
 /*##############################################*/
@@ -250,8 +256,10 @@ int main (int argc, char** argv) {
 /*##############################################*/
 
 	// arruma a inversa (pivotamento)
+
 	for (int i = inversa.tam-1; i >= 0; --i)
 		if (i != trocas[i]) trocaColunas (&inversa, i, trocas[i]);
+
 
 /*##############################################*/
 /*  [INICIO] IMPRIME VALORES DE SAIDA ESPERADOS */
@@ -260,6 +268,11 @@ int main (int argc, char** argv) {
 	fprintf(out, "# Tempo residuo: %.17lf\n", tempoResiduo/(iteracoes+1)); // tempo medio levado para calcular o residuo
 	fprintf(out, "%d\n", n);
 	imprimeMatriz(inversa, out);
+#ifdef DEBUG
+	for (int i = inversa.tam-1; i >= 0; --i)
+		if (i != trocas[i]) trocaLinhas (&original, i, trocas[i]);
+	multiplica(original,inversa);
+#endif
 /*  [FIM] IMPRIME VALORES DE SAIDA ESPERADOS */
 /*##############################################*/
 
@@ -300,7 +313,7 @@ int fatoracaoLU (MATRIZ *matriz, int *trocas) {
 	return 0;
 }
 
-void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b, int identity) {
+void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b) {
 #ifdef DEBUG
 	fprintf(out, "[substituicao_Lyb] Iniciando a resolucao do sistema Ly=b.\n");
 #endif
@@ -375,7 +388,7 @@ int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, doubl
 			return 0;
 
 		tempo_i = timestamp() - tempo_i;
-		substituicao_Lyb(LU, &R, aux, 1);
+		substituicao_Lyb(LU, &R, aux);
 		if (substituicao_Uxy(LU, &R, aux) == -1) 
 			return -1;
 
@@ -391,14 +404,21 @@ int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, doubl
 }
 
 int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R, int iter, double *tempoResiduo) {
+	
 	unsigned int tam = A.tam;
 	double C, r = 0;
 	double tempo_r = timestamp();
 	for (int lin = 0; lin < tam; lin++) {
 		for (int col = 0; col < tam; col++) {
+			double soma = 0.0, c = 0.0;
 			C = 0;
-			for (int k = 0; k < tam; k++)
-				C += A.dados[pos(lin,k,tam)]*inv_A.dados[pos(k,col,tam)];
+			for (int k = 0; k < tam; k++) {
+				double y = A.dados[pos(lin,k,tam)]*inv_A.dados[pos(k,col,tam)] - c;
+				double t = soma + y;
+				c = (t - soma) - y;
+				soma = t;
+			}
+			C = soma;
 			C = (lin == col ? 1.0 - C : -C);
 			R->dados[pos(lin, col, tam)] = C; // R = I - A*inv_A
 			r += C*C; // ||r|| = sum(R[i,j]^2)
@@ -423,3 +443,19 @@ double timestamp(void){
     return((double)(tp.tv_sec*1000.0 + tp.tv_usec/1000.0));
 }
 
+void multiplica(MATRIZ A, MATRIZ B)
+{
+    int i, j, k;
+    for (i = 0; i < A.tam; i++)
+    {
+        for (j = 0; j < A.tam; j++)
+        {
+            double C = 0;
+            for (k = 0; k < A.tam; k++)
+                C += A.dados[pos(i,k,A.tam)]*B.dados[pos(k,j,B.tam)];
+           
+            printf("%s%.20lf ",C>=0?" ":"",C );
+        }
+        printf("\n");
+    }
+}

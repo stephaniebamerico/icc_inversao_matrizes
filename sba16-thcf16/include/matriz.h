@@ -15,12 +15,14 @@
 #include <string.h>
 /**
  * @brief Estrutura de dados para representar uma matriz
- * 
+ * @p dados é um vetor de tipo double. Alocar a matriz dessa forma garante que 
+ * os dados estejam contínuos na memória, aumentando a eficiẽncia do programa
+ * por causa da localidade física de cada elemento.
  * 
  */
 typedef struct MATRIZ {
     unsigned int tam; /**< Inteiro que representa o tamanho da matriz */
-    double *dados; /**< Vetor de double par armazenar os dados da matriz */
+    double *dados; /**< Vetor de tipo double par armazenar os dados da matriz */
 } MATRIZ;
 
 
@@ -53,8 +55,8 @@ void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2);
 /**
  * @brief Função que troca duas colunas de uma matriz
  * @param matriz é um ponteiro para a matriz a ser alterada
- * @param c1 é uma das linhas a ser trocada
- * @param c2 é uma das linhas a ser trocada
+ * @param c1 é uma das colunas a ser trocada
+ * @param c2 é uma das colunas a ser trocada
  *
  */
 void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2);
@@ -63,8 +65,8 @@ void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2);
  * @brief Função que realiza pivotamento parcial em uma matriz para a fatoração LU
  * @param matriz é um ponteiro para a matriz a ser alterada
  * @param col é a coluna onde deve ser realizado o pivotamento
- * \return @c 0 se foi possível realizar o pivotamento
  * \return @c -1 se não foi possível realizar o pivotamento
+ * \return @max linha da matriz com o valor máxino da coluna 
  * 
  */
 
