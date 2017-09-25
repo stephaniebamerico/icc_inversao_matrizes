@@ -160,7 +160,7 @@ int main (int argc, char** argv) {
 	char *arqEntrada , *arqSaida;
 	MATRIZ original, originalLU, inversa; // matrizes utilizadas
 	double *aux = NULL;
-	double tempoLU, tempoIter, tempoResiduo;
+	double tempoLU=0, tempoIter=0, tempoResiduo=0;
 	out = stdout;
 /*  [FIM] DECLARACAO DAS VARIAVEIS UTILIZADAS*/
 /*##############################################*/
@@ -186,6 +186,8 @@ int main (int argc, char** argv) {
 			return -1;
 		}
 	}
+
+
 /*  [FIM] LEITURA/CRIACAO DA MATRIZ ORIGINAL */
 /*##############################################*/
 
@@ -214,6 +216,7 @@ int main (int argc, char** argv) {
 	// aplica pivotamento na matriz original
 	for (int i = 0; i < original.tam; ++i)
 		if (i != trocas[i]) trocaLinhas(&original, i, trocas[i]);
+	
 
 /*  [FIM] FATORACAO A=L*U DA MATRIZ ORIGINAL */
 /*##############################################*/
@@ -243,6 +246,9 @@ int main (int argc, char** argv) {
 	if (substituicao_Uxy(originalLU, &inversa, aux) == -1)
 		return -1;
 	tempoIter = timestamp() - tempoIter;
+
+
+
 /*  [FIM] RESOLUCAO DO SISTEMA LINEAR LU*X=B */
 /*##############################################*/
 	fprintf(out, "#\n");
@@ -320,7 +326,7 @@ void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b) {
 	// variavel auxiliar pro tamanho das matrizes
 	unsigned int tam = L.tam;
 
-	for (int sl = 0; sl < tam-1; ++sl) { // cada coluna da matriz é um vetor b (A*x=b) para resolver o sistema
+	for (int sl = 0; sl < tam; ++sl) { // cada coluna da matriz é um vetor b (A*x=b) para resolver o sistema
 		for (int k = 0; k < tam; ++k)
 				b[k] = y->dados[pos(k,sl,tam)];
 		
