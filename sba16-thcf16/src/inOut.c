@@ -11,9 +11,7 @@
  */
 
 
-/**
- * Variável com o arquivo de saída a ser utilizado na impressão de dados
- */
+
 FILE *out;
 //retorna o numero k de iterações
 

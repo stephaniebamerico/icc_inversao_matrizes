@@ -5,9 +5,9 @@
  * @date 23 Sep 2017
  * \section intro_sec Introdução
  *
- * O objetivo deste trabalho é  
+ * O objetivo deste trabalho é,  
  * dada uma matriz quadrada A de dimensão n, 
- * encontre a matriz inversa de A (inv(A)), tal que A * inv(A) 
+ * encontrar sua matriz inversa (inv(A)), tal que A * inv(A) 
  * = I, onde I é a matriz identidade.
  * Para tal, o programa utiliza o Método da Eliminação de Gauss com Pivotamento Parcial, Fatoração LU e Refinamento.
  *

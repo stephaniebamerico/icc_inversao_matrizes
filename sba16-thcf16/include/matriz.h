@@ -6,7 +6,7 @@
  * @author Stephanie Briere Americo, Talita Halboth Cunha Fernandes
  * @date 23 Sep 2017
  * @brief Header com funções e estruturas de dados
- * referentes à manipoulação de matrizes 
+ * referentes à manipulação de matrizes 
  *
  */
 
@@ -15,8 +15,10 @@
 #include <string.h>
 /**
  * @brief Estrutura de dados para representar uma matriz
+ *
+ *
  * @p dados é um vetor de tipo double. Alocar a matriz dessa forma garante que 
- * os dados estejam contínuos na memória, aumentando a eficiẽncia do programa
+ * os dados estejam contínuos na memória, aumentando a eficiência do programa
  * por causa da localidade física de cada elemento.
  * 
  */
@@ -66,14 +68,14 @@ void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2);
  * @param matriz é um ponteiro para a matriz a ser alterada
  * @param col é a coluna onde deve ser realizado o pivotamento
  * \return @c -1 se não foi possível realizar o pivotamento
- * \return @max linha da matriz com o valor máxino da coluna 
+ * \return @c max Linha da matriz com o valor máxino da coluna 
  * 
  */
 
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 
 /**
- * @brief Função que calcula a posição @p lin x @p col da uma matriz de tamanho @p tam * @p tam, alocada em um vetor
+ * @brief Função que calcula a posição @p lin x @p col de uma matriz de tamanho @p tam * @p tam, alocada em um vetor
  * @param lin é a linha da matriz
  * @param col é a coluna da matriz
  * @param tam é o tamanho da matriz

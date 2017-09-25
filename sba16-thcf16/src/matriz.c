@@ -5,7 +5,7 @@
  * @author Stephanie Briere Americo, Talita Halboth Cunha Fernandes
  * @date 23 Sep 2017
  * @brief Funções
- * referentes à manipoulação de matrizes 
+ * referentes à manipulação de matrizes 
  *
  */
 
