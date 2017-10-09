@@ -269,7 +269,7 @@ int main (int argc, char** argv) {
 /*##############################################*/
 /*  [INICIO] IMPRIME VALORES DE SAIDA ESPERADOS */
 	fprintf(out, "# Tempo LU: %.17lf\n", tempoLU); // tempo levado para calcular a matriz LU
-	fprintf(out, "# Tempo iter: %.17lf\n", (tempoIter/(iteracoes+1))/original.tam); // tempo medio levado para calcular o S.L.
+	fprintf(out, "# Tempo iter: %.17lf\n", (tempoIter/(iteracoes+1))); // tempo medio levado para calcular o S.L.
 	fprintf(out, "# Tempo residuo: %.17lf\n", tempoResiduo/(iteracoes+1)); // tempo medio levado para calcular o residuo
 	fprintf(out, "%d\n", n);
 	imprimeMatrizTransposta (inversa, out);

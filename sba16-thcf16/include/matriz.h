@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define pos(lin, col, tam) (lin*tam + col)
 /**
  * @brief Estrutura de dados para representar uma matriz
  *
@@ -84,6 +86,6 @@ int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
  * \return Retorna um inteiro que é a posição no vetor
  * 
  */
-unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
+//unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
 int alocaMatrizQuadrada(MATRIZ *matriz);
 #endif

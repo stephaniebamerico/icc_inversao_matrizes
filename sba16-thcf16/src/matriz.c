@@ -101,9 +101,6 @@ void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2) { // troca 
 }
 
 
-unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam) {
-  return (lin*tam + col);
-}
 
 int alocaMatrizQuadrada(MATRIZ *matriz) {
     unsigned tam = matriz->tam;
