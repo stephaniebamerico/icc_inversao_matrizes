@@ -24,7 +24,7 @@
  */
 typedef struct MATRIZ {
     unsigned int tam; /**< Inteiro que representa o tamanho da matriz */
-    double * restrict dados; /**< Vetor de tipo double par armazenar os dados da matriz */
+    double *dados; /**< Vetor de tipo double par armazenar os dados da matriz */
 } MATRIZ;
 
 
@@ -44,8 +44,6 @@ double *geraMatrizQuadradaRandomica(unsigned int n);
  *
  */
 void imprimeMatriz (MATRIZ matriz, FILE *out);
-
-void imprimeMatrizTransposta (MATRIZ matriz, FILE *out) ;
 
 /**
  * @brief Função que troca duas linhas de uma matriz

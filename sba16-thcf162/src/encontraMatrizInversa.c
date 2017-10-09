@@ -60,7 +60,7 @@
  * \return @c -1 se houve erro na fatoração
  *
  */
-int fatoracaoLU (MATRIZ * restrict matriz, int *trocas) ;
+int fatoracaoLU (MATRIZ *matriz, int *trocas) ;
 
 /**
  * @brief Função que faz a retrosubstituição de um sistema linear
@@ -77,7 +77,7 @@ int fatoracaoLU (MATRIZ * restrict matriz, int *trocas) ;
  * os elementos da solução do sistema.
  * @param b é um vetor auxiliar do tipo double.
  */
-void substituicao_Lyb (MATRIZ L, MATRIZ * restrict y, double * restrict b);
+void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b);
 
 /**
  * @brief Função que faz a substituição avançada de um sistema linear
@@ -97,7 +97,7 @@ void substituicao_Lyb (MATRIZ L, MATRIZ * restrict y, double * restrict b);
  * \return @c -1 se houve erro na fatoração
  * 
  */
-int substituicao_Uxy (MATRIZ U, MATRIZ * restrict y, double * restrict b);
+int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b);
 
 /**
  * @brief Função que realiza o refinamento da solução obtida pela resolução do S.L.
@@ -118,7 +118,7 @@ int substituicao_Uxy (MATRIZ U, MATRIZ * restrict y, double * restrict b);
  * \return @c -1 se houve algum erro
  * 
  */
-int refinamento(MATRIZ A, MATRIZ * restrict inv_A, MATRIZ LU, double * restrict aux, int iter, double *tempoIter, double *tempoResiduo);
+int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, double *tempoIter, double *tempoResiduo);
 /**
  * @brief Função que encontra a #MATRIZ R resultado de R = I - A*A_inv.
  * Além disso, calcula o resíduo da iteração atual do refinamento.
@@ -135,7 +135,7 @@ int refinamento(MATRIZ A, MATRIZ * restrict inv_A, MATRIZ LU, double * restrict 
  * \return @c 1 se o calculo do residuo resultou em NaN ou inf (não consideramos erro)
  * 
  */
-int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ * restrict R, int iter, double *tempoResiduo);
+int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R, int iter, double *tempoResiduo);
 /**
  * @brief Função para contagem do tempo
  *
@@ -156,7 +156,7 @@ int main (int argc, char** argv) {
 /*  [INICIO] DECLARACAO DAS VARIAVEIS UTILIZADAS*/
 	srand( 20172 );
 	int n, iteracoes; // tam da matriz e iteracoes do refinamento
-	int * restrict trocas; // vetor que guarda historico do pivotamento
+	int *trocas; // vetor que guarda historico do pivotamento
 	char *arqEntrada , *arqSaida;
 	MATRIZ original, originalLU, inversa; // matrizes utilizadas
 	double *aux = NULL;
@@ -248,6 +248,7 @@ int main (int argc, char** argv) {
 	tempoIter = timestamp() - tempoIter;
 
 
+
 /*  [FIM] RESOLUCAO DO SISTEMA LINEAR LU*X=B */
 /*##############################################*/
 	fprintf(out, "#\n");
@@ -263,16 +264,16 @@ int main (int argc, char** argv) {
 	// arruma a inversa (pivotamento)
 
 	for (int i = inversa.tam-1; i >= 0; --i)
-		if (i != trocas[i]) trocaLinhas (&inversa, i, trocas[i]);
+		if (i != trocas[i]) trocaColunas (&inversa, i, trocas[i]);
 
 
 /*##############################################*/
 /*  [INICIO] IMPRIME VALORES DE SAIDA ESPERADOS */
 	fprintf(out, "# Tempo LU: %.17lf\n", tempoLU); // tempo levado para calcular a matriz LU
-	fprintf(out, "# Tempo iter: %.17lf\n", (tempoIter/(iteracoes+1))/original.tam); // tempo medio levado para calcular o S.L.
+	fprintf(out, "# Tempo iter: %.17lf\n", tempoIter/(iteracoes+1)); // tempo medio levado para calcular o S.L.
 	fprintf(out, "# Tempo residuo: %.17lf\n", tempoResiduo/(iteracoes+1)); // tempo medio levado para calcular o residuo
 	fprintf(out, "%d\n", n);
-	imprimeMatrizTransposta (inversa, out);
+	imprimeMatriz(inversa, out);
 #ifdef DEBUG
 	for (int i = inversa.tam-1; i >= 0; --i)
 		if (i != trocas[i]) trocaLinhas (&original, i, trocas[i]);
@@ -292,7 +293,7 @@ int main (int argc, char** argv) {
 	return 0;
 }
 
-int fatoracaoLU (MATRIZ * restrict matriz, int * restrict trocas) {
+int fatoracaoLU (MATRIZ *matriz, int *trocas) {
 #ifdef DEBUG
 	fprintf(out, "[fatoracaoLU] Iniciando a fatoracao LU.\n");
 #endif
@@ -318,7 +319,7 @@ int fatoracaoLU (MATRIZ * restrict matriz, int * restrict trocas) {
 	return 0;
 }
 
-void substituicao_Lyb (MATRIZ L, MATRIZ * restrict y, double *b) {
+void substituicao_Lyb (MATRIZ L, MATRIZ *y, double *b) {
 #ifdef DEBUG
 	fprintf(out, "[substituicao_Lyb] Iniciando a resolucao do sistema Ly=b.\n");
 #endif
@@ -327,13 +328,13 @@ void substituicao_Lyb (MATRIZ L, MATRIZ * restrict y, double *b) {
 
 	for (int sl = 0; sl < tam; ++sl) { // cada coluna da matriz é um vetor b (A*x=b) para resolver o sistema
 		for (int k = 0; k < tam; ++k)
-				b[k] = y->dados[pos(sl,k,tam)];
+				b[k] = y->dados[pos(k,sl,tam)];
 		
-		y->dados[pos(sl,0,tam)] = (b[0]*1.0);
+		y->dados[pos(0,sl,tam)] = (b[0]*1.0);
 		for (int lin = 1; lin < tam; ++lin) { // da segunda linha em diante (a primeira sofre alteração)
-			y->dados[pos(sl,lin,tam)] = b[lin];
+			y->dados[pos(lin,sl,tam)] = b[lin];
 			for (int col = 0; col < lin; ++col)
-				y->dados[pos(sl, lin, tam)] -= L.dados[pos(lin, col, tam)]*y->dados[pos(sl, col, tam)];
+				y->dados[pos(lin, sl, tam)] -= L.dados[pos(lin, col, tam)]*y->dados[pos(col, sl, tam)];
 		}
 	}
 #ifdef DEBUG
@@ -341,7 +342,7 @@ void substituicao_Lyb (MATRIZ L, MATRIZ * restrict y, double *b) {
 #endif 
 }
 
-int substituicao_Uxy (MATRIZ U, MATRIZ * restrict y, double * restrict b) {
+int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 #ifdef DEBUG
 	fprintf(out, "[substituicao_Uxy] Iniciando a resolucao do sistema Ux=y.\n");
 #endif
@@ -352,23 +353,23 @@ int substituicao_Uxy (MATRIZ U, MATRIZ * restrict y, double * restrict b) {
 		// y será alterado para armazenar a matriz resultante (funcionando como x em Ax = b)
 		// a coluna i de y é copiada para o vetor b
 		for (int k = 0; k < tam; ++k)
-			b[k] = y->dados[pos(i,k,tam)];
+			b[k] = y->dados[pos(k,i,tam)];
 		// faz a retrosubstituição 
 		if(U.dados[pos(tam-1, tam-1, tam)] == 0) {
 			fprintf(stderr, "[substituicao_Uxy] Operacao gera NaN/inf.\n");
 			return -1;
 		}
 
-		y->dados[pos(i,tam-1,tam)] = (b[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
+		y->dados[pos(tam-1,i,tam)] = (b[tam-1]*1.0)/U.dados[pos(tam-1, tam-1, tam)];
 		for (int k = tam-1; k >= 0; --k) {
-			y->dados[pos(i,k,tam)] = b[k];
+			y->dados[pos(k,i,tam)] = b[k];
 			for (int j = tam-1; j > k; --j)
-				y->dados[pos(i,k,tam)] -= U.dados[pos(k,j,tam)]*y->dados[pos(i,j,tam)];
+				y->dados[pos(k,i,tam)] -= U.dados[pos(k,j,tam)]*y->dados[pos(j,i,tam)];
 			if(U.dados[pos(k,k,tam)] == 0) {
 				fprintf(stderr, "[substituicao_Uxy] Operacao gera NaN/inf.\n");
 				return -1;
 			}
-			y->dados[pos(i,k,tam)]=(y->dados[pos(i,k,tam)]*1.0)/U.dados[pos(k,k,tam)];
+			y->dados[pos(k,i,tam)]=(y->dados[pos(k,i,tam)]*1.0)/U.dados[pos(k,k,tam)];
 		}        
 	}
 #ifdef DEBUG
@@ -377,7 +378,7 @@ int substituicao_Uxy (MATRIZ U, MATRIZ * restrict y, double * restrict b) {
 	return 0;
 }
 
-int refinamento(MATRIZ A, MATRIZ * restrict inv_A, MATRIZ LU, double * restrict aux, int iter, double *tempoIter, double *tempoResiduo) {
+int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, double *tempoIter, double *tempoResiduo) {
 	MATRIZ R;
 	unsigned int tam = A.tam;
 	double tempo_i = 0;
@@ -408,7 +409,7 @@ int refinamento(MATRIZ A, MATRIZ * restrict inv_A, MATRIZ LU, double * restrict 
 	return 0;
 }
 
-int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ * restrict R, int iter, double *tempoResiduo) {
+int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ *R, int iter, double *tempoResiduo) {
 	
 	unsigned int tam = A.tam;
 	double C, r = 0;
@@ -418,14 +419,14 @@ int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ * restrict R, int iter, double
 			double soma = 0.0, c = 0.0;
 			C = 0;
 			for (int k = 0; k < tam; k++) {
-				double y = A.dados[pos(lin,k,tam)]*inv_A.dados[pos(col,k,tam)] - c;
+				double y = A.dados[pos(lin,k,tam)]*inv_A.dados[pos(k,col,tam)] - c;
 				double t = soma + y;
 				c = (t - soma) - y;
 				soma = t;
 			}
 			C = soma;
 			C = (lin == col ? 1.0 - C : -C);
-			R->dados[pos(col, lin, tam)] = C; // R = I - A*inv_A
+			R->dados[pos(lin, col, tam)] = C; // R = I - A*inv_A
 			r += C*C; // ||r|| = sum(R[i,j]^2)
 		}
 	}
@@ -457,7 +458,7 @@ void multiplica(MATRIZ A, MATRIZ B)
         {
             double C = 0;
             for (k = 0; k < A.tam; k++)
-                C += A.dados[pos(i,k,A.tam)]*B.dados[pos(j,k,B.tam)];
+                C += A.dados[pos(i,k,A.tam)]*B.dados[pos(k,j,B.tam)];
            
             printf("%s%.20lf ",C>=0?" ":"",C );
         }

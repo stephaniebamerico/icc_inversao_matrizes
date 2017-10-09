@@ -53,21 +53,6 @@ void imprimeMatriz (MATRIZ matriz, FILE *out) {
 	}
 }
 
-void imprimeMatrizTransposta (MATRIZ matriz, FILE *out) {
-#ifdef DEBUG
-    fprintf(out, "[imprimeMatriz] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
-#endif
-    unsigned int tam = matriz.tam;
-    for (int i = 0; i < tam; ++i) {
-        for (int j = 0; j < tam; ++j) {
-            if (matriz.dados[pos(j, i, tam)] == 0) matriz.dados[pos(j, i, tam)] = 0;
-            // usar %.17g porque lf arredonda...
-            fprintf(out, "%.17g ", matriz.dados[pos(j, i, tam)]);
-        }
-        fprintf(out, "\n");
-    }
-}
-
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col) {
     unsigned int max = col;
     for (unsigned int l_atual = col+1; l_atual < matriz->tam; ++l_atual) // encontra o maior elemento da coluna
