@@ -14,6 +14,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+/**
+ * @brief Macro que calcula a posição @p lin x @p col de uma matriz de tamanho @p tam * @p tam, alocada em um vetor
+ * @param lin é a linha da matriz
+ * @param col é a coluna da matriz
+ * @param tam é o tamanho da matriz
+ * \return Retorna um inteiro que é a posição no vetor
+ * 
+ */
 #define pos(lin, col, tam) (lin*tam + col)
 /**
  * @brief Estrutura de dados para representar uma matriz
@@ -78,14 +87,6 @@ void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2);
 
 int pivotamentoParcial (MATRIZ *matriz, unsigned int col);
 
-/**
- * @brief Função que calcula a posição @p lin x @p col de uma matriz de tamanho @p tam * @p tam, alocada em um vetor
- * @param lin é a linha da matriz
- * @param col é a coluna da matriz
- * @param tam é o tamanho da matriz
- * \return Retorna um inteiro que é a posição no vetor
- * 
- */
-//unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam);
+
 int alocaMatrizQuadrada(MATRIZ *matriz);
 #endif
