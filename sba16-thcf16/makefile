@@ -3,7 +3,7 @@ OBJ = obj
 INCLUDE = include
 
 CC = gcc
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3 -fstrict-aliasing
+CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3
 #-DDEBUG
 
 .PHONY: dir

@@ -1,131 +1,120 @@
 
 Otimizado:
 
-real	2m30.639s
-user	2m30.248s
-sys	0m0.101s
+real	8m45.321s
+user	8m42.816s
+sys	0m1.796s
 
 Não Otimizado:
 
-real	3m4.278s
-user	3m3.875s
-sys	0m0.060s
+real	26m37.581s
+user	26m33.488s
+sys	0m2.304s
 
 Otimizado:
 
-real	2m27.825s
-user	2m27.561s
-sys	0m0.052s
+real	9m15.338s
+user	9m11.864s
+sys	0m1.676s
 
 Não Otimizado:
 
-real	3m2.490s
-user	3m2.099s
-sys	0m0.082s
+real	22m8.785s
+user	22m7.720s
+sys	0m0.236s
 
 Otimizado:
 
-real	2m28.146s
-user	2m26.774s
-sys	0m0.060s
+real	8m35.991s
+user	8m35.592s
+sys	0m0.144s
 
 Não Otimizado:
 
-real	3m3.013s
-user	3m2.715s
-sys	0m0.067s
+real	21m48.988s
+user	21m48.616s
+sys	0m0.208s
 
 Otimizado:
 
-real	2m27.604s
-user	2m27.325s
-sys	0m0.078s
+real	8m36.518s
+user	8m36.276s
+sys	0m0.140s
 
 Não Otimizado:
 
-real	3m1.698s
-user	3m1.433s
-sys	0m0.057s
+real	21m37.179s
+user	21m36.560s
+sys	0m0.204s
 
 Otimizado:
 
-real	2m26.191s
-user	2m25.950s
-sys	0m0.072s
+real	8m36.243s
+user	8m35.920s
+sys	0m0.104s
 
 Não Otimizado:
 
-real	3m5.370s
-user	3m4.995s
-sys	0m0.108s
+real	21m25.989s
+user	21m24.992s
+sys	0m0.372s
 
 Otimizado:
 
-real	2m27.399s
-user	2m27.037s
-sys	0m0.096s
+real	8m26.762s
+user	8m26.116s
+sys	0m0.444s
 
 Não Otimizado:
 
-real	3m15.459s
-user	3m13.010s
-sys	0m0.164s
+real	23m45.609s
+user	23m39.976s
+sys	0m3.680s
 
 Otimizado:
 
-real	2m34.250s
-user	2m33.791s
-sys	0m0.123s
+real	9m3.694s
+user	9m1.364s
+sys	0m1.304s
 
 Não Otimizado:
 
-real	3m20.116s
-user	3m19.620s
-sys	0m0.130s
+real	22m47.650s
+user	22m42.360s
+sys	0m3.320s
 
 Otimizado:
 
-real	2m34.747s
-user	2m34.467s
-sys	0m0.072s
-
-
-Otimizado2:
-
-Otimizado:
-
-real	8m49.495s
-user	8m47.808s
-sys	0m0.912s
+real	8m43.893s
+user	8m41.160s
+sys	0m1.900s
 
 Não Otimizado:
 
-real	23m30.986s
-user	23m27.544s
-sys	0m0.944s
+real	22m3.535s
+user	21m50.948s
+sys	0m2.088s
 
 Otimizado:
 
-real	8m22.488s
-user	8m21.392s
-sys	0m0.584s
+real	117m53.204s
+user	9m13.988s
+sys	0m1.760s
 
 Não Otimizado:
 
-real	20m58.898s
-user	20m56.904s
-sys	0m0.868s
+real	20m28.895s
+user	20m27.808s
+sys	0m0.248s
 
 Otimizado:
 
-real	8m32.592s
-user	8m31.192s
-sys	0m0.668s
+real	8m16.445s
+user	8m14.052s
+sys	0m0.156s
 
 Não Otimizado:
 
-Otimizado:
-
-real	8m36.621s
-user	8m28.020s
-sys	0m0.644s
+real	20m56.008s
+user	20m53.864s
+sys	0m1.288s
