@@ -213,8 +213,6 @@ int main (int argc, char** argv) {
 		return -1;
 	tempoLU = timestamp() - tempoLU;
 
-	imprimeMatriz(originalLU, out);
-
 	// aplica pivotamento na matriz original
 	for (int i = 0; i < original.tam; ++i)
 		if (i != trocas[i]) trocaLinhas(&original, i, trocas[i]);

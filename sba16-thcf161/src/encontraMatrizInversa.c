@@ -343,7 +343,6 @@ int fatoracaoLU (MATRIZ *  matriz, int *  trocas) {
 	return 0;
 }
 
-
 void substituicao_Lyb (MATRIZ L, MATRIZ * y, double *b) {
 #ifdef DEBUG
 	fprintf(out, "[substituicao_Lyb] Iniciando a resolucao do sistema Ly=b.\n");
@@ -367,7 +366,7 @@ void substituicao_Lyb (MATRIZ L, MATRIZ * y, double *b) {
 #endif 
 }
 
-int substituicao_Uxy (MATRIZ U, MATRIZ * y, double * b) {
+int substituicao_Uxy (MATRIZ U, MATRIZ *y, double *b) {
 #ifdef DEBUG
 	fprintf(out, "[substituicao_Uxy] Iniciando a resolucao do sistema Ux=y.\n");
 #endif
@@ -403,7 +402,7 @@ int substituicao_Uxy (MATRIZ U, MATRIZ * y, double * b) {
 	return 0;
 }
 
-int refinamento(MATRIZ A, MATRIZ * inv_A, MATRIZ LU, double * aux, int iter, double *tempoIter, double *tempoResiduo) {
+int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, double *tempoIter, double *tempoResiduo) {
 	MATRIZ R;
 	unsigned int tam = A.tam;
 	double tempo_i = 0;
