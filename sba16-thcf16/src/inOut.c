@@ -42,6 +42,7 @@ void trataArgumentos (int argc, char** argv, char** entrada, char** saida, int *
 
 int entradaPorArquivo (char *entrada, MATRIZ *matriz) {
     FILE *in = NULL;
+    int x;
     if (entrada != NULL)
         in = fopen(entrada, "r");
     else
@@ -49,13 +50,15 @@ int entradaPorArquivo (char *entrada, MATRIZ *matriz) {
     if (!in)
         return -1;
 
-    fscanf(in,"%d", &matriz->tam);
+    x = fscanf(in,"%d", &matriz->tam);
 
     if(alocaMatrizQuadrada(matriz) == -1)
         return -1;
 
     for (int i = 0; i < matriz->tam*matriz->tam; ++i)
-        fscanf(in,"%lf", &matriz->dados[i]);
+        x = fscanf(in,"%lf", &matriz->dados[i]);
+    if (!x)
+        return -1;
     fclose (in);
 
     return 0;

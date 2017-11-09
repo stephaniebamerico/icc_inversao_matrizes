@@ -14,6 +14,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
+ extern "C"
+{
+#include <immintrin.h>
+}
 /**
  * @brief Estrutura de dados para representar uma matriz
  *
@@ -25,7 +29,7 @@
  */
 typedef struct MATRIZ {
     unsigned int tam; /**< Inteiro que representa o tamanho da matriz */
-    double *dados; /**< Vetor de tipo double par armazenar os dados da matriz */
+    double * __restrict dados; /**< Vetor de tipo double par armazenar os dados da matriz */
 } MATRIZ;
 
 

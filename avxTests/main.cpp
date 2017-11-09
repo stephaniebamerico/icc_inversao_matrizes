@@ -8,7 +8,7 @@ extern "C"
 using namespace std;
 
 int main() {
-  const int col = 128, row = 24, num_trails = 10000000;
+  const int col = 128, row = 24, num_trails = 1000000;
 
   float w[row][col];
   float x[col];
@@ -135,3 +135,17 @@ int main() {
 
   return 0;
 }
+
+
+
+void saxpy(int n, float alpha, float *X, float *Y) {
+    __m128 x_vec, y_vec, a_vec, res_vec; /* Vector variables */
+    int i;
+    a_vec = _mm_set1_ps(alpha); /* Vector of 4 alpha values */
+    for (i=0; i<n; i+=4) {
+      x_vec = _mm_load_ps(&X[i]); /* Load 4 values from X */
+      y_vec = _mm_load_ps(&Y[i]); /* Load 4 values from Y */
+      res_vec = _mm_add_ps(_mm_mul_ps(a_vec, x_vec), y_vec); /* Compute */
+      _mm_store_ps(&Y[i], res_vec); /* Store the result */
+    }
+  }

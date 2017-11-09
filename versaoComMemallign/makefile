@@ -2,8 +2,8 @@ SRC = src
 OBJ = obj
 INCLUDE = include
 
-CC = gcc
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3
+CC = g++
+CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3 -ftree-vectorizer-verbose=2 -fstrict-aliasing
 #-DDEBUG
 
 .PHONY: dir
@@ -23,14 +23,14 @@ invmat: $(OBJ)/encontraMatrizInversa.o $(OBJ)/matriz.o $(OBJ)/inOut.o
 		$(CC) -o invmat $(OBJ)/*.o $(CFLAGS) 
 # ----
 
-$(OBJ)/encontraMatrizInversa.o: $(SRC)/encontraMatrizInversa.c $(INCLUDE)/matriz.h $(INCLUDE)/inOut.h
-		$(CC) -c $(SRC)/encontraMatrizInversa.c -o $(OBJ)/encontraMatrizInversa.o $(CFLAGS)
+$(OBJ)/encontraMatrizInversa.o: $(SRC)/encontraMatrizInversa.C $(INCLUDE)/matriz.h $(INCLUDE)/inOut.h
+		$(CC) -c $(SRC)/encontraMatrizInversa.C -o $(OBJ)/encontraMatrizInversa.o $(CFLAGS)
 
-$(OBJ)/matriz.o: $(SRC)/matriz.c
-		$(CC) -c $(SRC)/matriz.c -o $(OBJ)/matriz.o $(CFLAGS)
+$(OBJ)/matriz.o: $(SRC)/matriz.C
+		$(CC) -c $(SRC)/matriz.C -o $(OBJ)/matriz.o $(CFLAGS)
 
-$(OBJ)/inOut.o: $(SRC)/inOut.c
-		$(CC) -c $(SRC)/inOut.c -o $(OBJ)/inOut.o $(CFLAGS)
+$(OBJ)/inOut.o: $(SRC)/inOut.C
+		$(CC) -c $(SRC)/inOut.C -o $(OBJ)/inOut.o $(CFLAGS)
 
 dir:
 	mkdir -p $(OBJ)
