@@ -9,12 +9,12 @@
  *
  */
 
-double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo professor
+double *geraMatrizQuadradaRandomica( int n ) { // função dada pelo professor
 #ifdef DEBUG
 	printf("[geraMatrizQuadradaRandomica] Iniciando.\n");
 #endif
 	double *mat = NULL;
-    unsigned int tam = n +(4 - n%4);
+    int tam = n +(4 - n%4);
 
 	/* return NULL if memory allocation fails */
 	if ( ! (mat = (double *) malloc(tam*tam*sizeof(double))) ){
@@ -27,8 +27,8 @@ double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo pr
 	/* generate a randomly initialized matrix in row-major order */
 
 	double invRandMax = 1.0/(double)RAND_MAX;
-    for (unsigned int i = 0; i < tam; ++i)
-        for (unsigned int j = 0; j < tam; ++j) {
+    for (int i = 0; i < tam; ++i)
+        for (int j = 0; j < tam; ++j) {
             if (i < n && j < n)
                 mat[i*tam+j] = (double)rand() * invRandMax;
             else
@@ -46,9 +46,9 @@ void imprimeMatriz (MATRIZ matriz, FILE *out) {
 #ifdef DEBUG
 	fprintf(out, "[imprimeMatriz] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
 #endif
-	unsigned int tam = matriz.tam;
-	for (unsigned int i = 0; i < tam; ++i) {
-		for (unsigned int j = 0; j < tam; ++j) {
+	int tam = matriz.tam;
+	for (int i = 0; i < tam; ++i) {
+		for (int j = 0; j < tam; ++j) {
 			if (matriz.dados[pos(i, j, tam)] == 0) matriz.dados[pos(i, j, tam)] = 0;
 			// usar %.17g porque lf arredonda...
 			fprintf(out, "%.17g ", matriz.dados[pos(i, j, tam)]);
@@ -61,9 +61,9 @@ void imprimeMatrizTransposta (MATRIZ matriz, FILE *out) {
 #ifdef DEBUG
     fprintf(out, "[imprimeMatriz] Imprimindo matriz %ux%u.\n", matriz.tam, matriz.tam);
 #endif
-    unsigned int tam = matriz.tam;
-    for (unsigned int i = 0; i < tam; ++i) {
-        for (unsigned int j = 0; j < tam; ++j) {
+    int tam = matriz.tam;
+    for (int i = 0; i < tam; ++i) {
+        for (int j = 0; j < tam; ++j) {
             if (matriz.dados[pos(j, i, tam)] == 0) matriz.dados[pos(j, i, tam)] = 0;
             // usar %.17g porque lf arredonda...
             fprintf(out, "%.17g ", matriz.dados[pos(j, i, tam)]);
@@ -72,9 +72,9 @@ void imprimeMatrizTransposta (MATRIZ matriz, FILE *out) {
     }
 }
 
-int pivotamentoParcial (MATRIZ *matriz, unsigned int col) {
-    unsigned int max = col;
-    for (unsigned int l_atual = col+1; l_atual < matriz->tam; ++l_atual) // encontra o maior elemento da coluna
+int pivotamentoParcial (MATRIZ *matriz, int col) {
+    int max = col;
+    for (int l_atual = col+1; l_atual < matriz->tam; ++l_atual) // encontra o maior elemento da coluna
         if (matriz->dados[pos(max, col, matriz->tam)] < matriz->dados[pos(l_atual, col, matriz->tam)])
             max = l_atual;
 
@@ -86,18 +86,18 @@ int pivotamentoParcial (MATRIZ *matriz, unsigned int col) {
     return max;
 }
 
-void trocaLinhas (MATRIZ *matriz, unsigned int l1, unsigned int l2) { // troca 2 linhas de uma matriz
+void trocaLinhas (MATRIZ *matriz, int l1, int l2) { // troca 2 linhas de uma matriz
     double aux;
-    for (unsigned int i = 0; i < matriz->tam; ++i) {
+    for (int i = 0; i < matriz->tam; ++i) {
         aux = matriz->dados[pos(l1, i, matriz->tam)];
         matriz->dados[pos(l1, i, matriz->tam)] = matriz->dados[pos(l2, i, matriz->tam)];
         matriz->dados[pos(l2, i, matriz->tam)] = aux;
     }
 }
 
-void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2) { // troca 2 colunas de uma matriz
+void trocaColunas (MATRIZ *matriz, int c1, int c2) { // troca 2 colunas de uma matriz
     double aux;
-    for (unsigned int i = 0; i < matriz->tam; ++i) {
+    for (int i = 0; i < matriz->tam; ++i) {
         aux = matriz->dados[pos(i, c1, matriz->tam)];
         matriz->dados[pos(i, c1, matriz->tam)] = matriz->dados[pos(i, c2, matriz->tam)];
         matriz->dados[pos(i, c2, matriz->tam)] = aux;
@@ -105,13 +105,13 @@ void trocaColunas (MATRIZ *matriz, unsigned int c1, unsigned int c2) { // troca 
 }
 
 
-unsigned int pos(unsigned int lin, unsigned int col, unsigned int tam) {
+int pos(int lin, int col, int tam) {
     tam = tam+(4- tam%4);
     return (lin*tam + col);
 }
 
 int alocaMatrizQuadrada(MATRIZ *matriz) {
-    unsigned tam = matriz->tam;
+    tam = matriz->tam;
     tam = tam+(4- tam%4);
     if (!(matriz->dados = (double*)memalign(64, sizeof(double)*tam*tam)))
         return -1;

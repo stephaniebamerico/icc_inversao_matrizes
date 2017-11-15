@@ -3,7 +3,7 @@ OBJ = obj
 INCLUDE = include
 
 CC = gcc
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3
+CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3 -mavx -march=native -DLIKWID_PERFMON -I/usr/local/include -L/usr/local/lib -llikwid
 #-DDEBUG
 
 .PHONY: dir

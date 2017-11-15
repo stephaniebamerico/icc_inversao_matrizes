@@ -3,7 +3,7 @@ OBJ = obj
 INCLUDE = include
 
 CC = gcc
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3
+CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3 -mavx -march=native
 #-DDEBUG
 
 .PHONY: dir

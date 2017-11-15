@@ -3,7 +3,7 @@ OBJ = obj
 INCLUDE = include
 
 CC = g++
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3 -ftree-vectorizer-verbose=2 -fstrict-aliasing
+CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3 -ftree-vectorizer-verbose=2 -fstrict-aliasing -mavx -march=native
 #-DDEBUG
 
 .PHONY: dir

@@ -13,6 +13,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <malloc.h>
+ extern "C"
+{
+#include <immintrin.h>
+}
 
 
 /**
@@ -23,7 +28,7 @@
  * \return Retorna um inteiro que é a posição no vetor
  * 
  */
-#define pos(lin, col, tam) (lin*tam + col)
+#define pos(lin, col, tam) (lin*(tam+(4- tam%4))+ col)
 /**
  * @brief Estrutura de dados para representar uma matriz
  *
@@ -34,8 +39,8 @@
  * 
  */
 typedef struct MATRIZ {
-    unsigned int tam; /**< Inteiro que representa o tamanho da matriz */
-    double * restrict dados; /**< Vetor de tipo double par armazenar os dados da matriz */
+    int tam; /**< Inteiro que representa o tamanho da matriz */
+    double * __restrict dados; /**< Vetor de tipo double par armazenar os dados da matriz */
 } MATRIZ;
 
 
