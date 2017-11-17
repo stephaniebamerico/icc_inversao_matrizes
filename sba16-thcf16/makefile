@@ -3,8 +3,8 @@ OBJ = obj
 INCLUDE = include
 
 CC = g++
-CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3  -DLIKWID_PERFMON -I/home/soft/likwid/include -L/home/soft/likwid/lib -llikwid -ftree-vectorizer-verbose=0 -fstrict-aliasing -mavx -march=native
-
+CFLAGS = -Wall -g -lm -I $(INCLUDE) -O3  -DLIKWID_PERFMON -I/home/soft/likwid/include -L/home/soft/likwid/lib -llikwid -ftree-vectorizer-verbose=0 -fstrict-aliasing
+# -mavx -march=native 
 #-DDEBUG
 
 .PHONY: dir

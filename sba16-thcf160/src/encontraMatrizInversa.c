@@ -41,6 +41,7 @@
 #include <math.h>
 #include <time.h>
 #include <sys/time.h>
+#include <likwid.h>
 
 /**inf positivo*/ 
 #define P_INF (1.0/0.0)
@@ -152,6 +153,8 @@ double timestamp (void);
 void multiplica(MATRIZ A, MATRIZ B);
 
 int main (int argc, char** argv) {
+	LIKWID_MARKER_INIT;
+
 /*##############################################*/
 /*  [INICIO] DECLARACAO DAS VARIAVEIS UTILIZADAS*/
 	srand( 20172 );
@@ -240,11 +243,13 @@ int main (int argc, char** argv) {
 		inversa.dados[pos(i, i, n)] = 1;
 
 	tempoIter = timestamp();
+	LIKWID_MARKER_START("OP1");
 	// resolve o sistema L*y=b (o resultado é armazenado na inversa)
 	substituicao_Lyb(originalLU, &inversa, aux); 
 	// resolve o sistema U*x=y (o resultado é armazenado na inversa)
 	if (substituicao_Uxy(originalLU, &inversa, aux) == -1)
 		return -1;
+	LIKWID_MARKER_STOP("OP1");
 	tempoIter = timestamp() - tempoIter;
 
 
@@ -273,7 +278,9 @@ int main (int argc, char** argv) {
 	fprintf(out, "# Tempo iter: %.17lf\n", tempoIter/(iteracoes+1)); // tempo medio levado para calcular o S.L.
 	fprintf(out, "# Tempo residuo: %.17lf\n", tempoResiduo/(iteracoes+1)); // tempo medio levado para calcular o residuo
 	fprintf(out, "%d\n", n);
+#ifdef IMPRIME
 	imprimeMatriz(inversa, out);
+#endif
 #ifdef DEBUG
 	for (int i = inversa.tam-1; i >= 0; --i)
 		if (i != trocas[i]) trocaLinhas (&original, i, trocas[i]);
@@ -290,6 +297,7 @@ int main (int argc, char** argv) {
 	free(arqSaida);
 	free(aux);
 	fclose(out);
+	LIKWID_MARKER_CLOSE;
 	return 0;
 }
 
@@ -390,13 +398,23 @@ int refinamento(MATRIZ A, MATRIZ *inv_A, MATRIZ LU, double *aux, int iter, doubl
 	}
 
 	for (int i = 0; i < iter; ++i) {
+		LIKWID_MARKER_START("OP2");
 		if(calculaResiduo(A, *inv_A, &R, i+1, tempoResiduo) == 1)
+		{
+			LIKWID_MARKER_STOP("OP2");
 			return 0;
+		}
+		LIKWID_MARKER_STOP("OP2");
 
 		tempo_i = timestamp() - tempo_i;
+		LIKWID_MARKER_START("OP1");
 		substituicao_Lyb(LU, &R, aux);
 		if (substituicao_Uxy(LU, &R, aux) == -1) 
+		{
+			LIKWID_MARKER_STOP("OP1");
 			return -1;
+		}
+		LIKWID_MARKER_STOP("OP1");		
 
 		for(int j = 0; j < tam*tam; ++j) {
 			inv_A->dados[j] += R.dados[j];
