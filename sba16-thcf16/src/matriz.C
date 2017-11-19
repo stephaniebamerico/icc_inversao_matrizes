@@ -17,7 +17,7 @@ double *geraMatrizQuadradaRandomica( unsigned int n ) { // função dada pelo pr
     unsigned int tam = n +(4 - n%4);
 
     /* return NULL if memory allocation fails */
-    if ( ! (mat = (double *) malloc(tam*tam*sizeof(double))) ){
+    if ( ! (mat = (double *)memalign(64, sizeof(double)*tam*tam))){
         #ifdef DEBUG
             printf("[geraMatrizQuadradaRandomica] Falha ao alocar a matriz original.\n");
         #endif

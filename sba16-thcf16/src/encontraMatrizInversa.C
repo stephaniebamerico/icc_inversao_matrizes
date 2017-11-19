@@ -333,7 +333,7 @@ void substituicao_Lyb (MATRIZ L, MATRIZ * __restrict y, double *b) {
 	// variavel auxiliar pro tamanho das matrizes
 	int tam = L.tam;
 
-	for (int sl = 0; sl < tam; ++sl) { // cada coluna da matriz é um vetor b (A*x=b) para resolver o sistema
+	for (int sl = 0; sl < tam; ++sl) {
 		for (int k = 0; k < tam; ++k)
 				b[k] = y->dados[pos(sl,k,tam)];
 		
@@ -434,9 +434,9 @@ int calculaResiduo(MATRIZ A, MATRIZ inv_A, MATRIZ * __restrict R, int iter, doub
 	for (int col = 0; col < tam; col++) {
 		for (int lin = 0; lin < tam; lin++) {
 			C = 0;
-			for (int k = 0; k < tam; k++) {
-				C+= A.dados[pos(lin,k,tam)]*inv_A.dados[pos(col,k,tam)];
-			}
+for (int k = 0; k < tam; k++) {
+	C+= A.dados[pos(lin,k,tam)]*inv_A.dados[pos(col,k,tam)];
+}
 			C = (lin == col ? 1.0 - C : -C);
 			R->dados[pos(col, lin, tam)] = C; // R = I - A*inv_A
 			r += C*C; // ||r|| = sum(R[i,j]^2)
@@ -466,14 +466,14 @@ void multiplica(MATRIZ A, MATRIZ B)
     int i, j, k;
     for (i = 0; i < A.tam; i++)
     {
-        for (j = 0; j < A.tam; j++)
-        {
-            double C = 0;
-            for (k = 0; k < A.tam; k++)
-                C += A.dados[pos(i,k,A.tam)]*B.dados[pos(j,k,B.tam)];
-           
-            printf("%.0lf ",C>=0?C:-C );
-        }
-        printf("\n");
+for (j = 0; j < A.tam; j++)
+{
+    double C = 0;
+    for (k = 0; k < A.tam; k++)
+        C += A.dados[pos(i,k,A.tam)]*B.dados[pos(j,k,B.tam)];
+   
+    printf("%.0lf ",C>=0?C:-C );
+}
+printf("\n");
     }
 }
